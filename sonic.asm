@@ -9826,12 +9826,18 @@ loc_AB30:				; DATA XREF: ROM:0000A1D2o
 locret_AB48:
 		rts
 ; ---------------------------------------------------------------------------
-		dc.b $00, $14, $02, $F2	; ori.b	  #$F2,(a4)
-		bset	d1,(a0)+
-		bset	d1,-(a6)
-		subi.l	#$6F8072C,(a0)+
-		bchg	d3,-(a0)
-		bset	d3,-(a2)
+		dc.w loc_AB5C-locret_AB48
+                dc.w loc_AE3A-locret_AB48
+		dc.w loc_AF20-locret_AB48
+		dc.w loc_AF2E-locret_AB48
+		dc.w loc_AFE0-locret_AB48
+		dc.w loc_B240-locret_AB48
+		dc.w loc_B274-locret_AB48
+		dc.w loc_B2A8-locret_AB48
+		dc.w loc_B32A-locret_AB48
+; ---------------------------------------------------------------------------
+
+loc_AB5C:
 		pea	loc_ADB8(pc)
 		bset	#0,$25(a6)
 		bclr	#4,$25(a6)
@@ -10129,6 +10135,8 @@ loc_AE1E:				; CODE XREF: ROM:0000AE18j
 		moveq	#0,d0
 		rts
 ; ---------------------------------------------------------------------------
+
+loc_AE3A:
 		btst	#0,$25(a6)
 		bne.w	loc_AEF0
 		pea	loc_AECC(pc)
@@ -10226,10 +10234,14 @@ loc_AF0A:				; CODE XREF: ROM:0000AEFEj
 		move.l	#0,$26(a6)
 		rts
 ; ---------------------------------------------------------------------------
+
+loc_AF20:
 		move.b	#2,7(a6)
 		bset	#4,$25(a6)
 		rts
 ; ---------------------------------------------------------------------------
+
+loc_AF2E:
 		pea	loc_AF9A(pc)
 		addi.l	#$3800,$1C(a6)
 		bclr	#0,$25(a6)
@@ -10304,6 +10316,8 @@ loc_AFCA:				; CODE XREF: ROM:0000AFBEj
 locret_AFDE:				; CODE XREF: ROM:0000AFAEj
 		rts
 ; ---------------------------------------------------------------------------
+
+loc_AFE0:
 		btst	#4,$25(a6)
 		beq.s	loc_AFEA
 		rts
@@ -10542,6 +10556,8 @@ loc_B236:				; CODE XREF: ROM:0000B202j
 		addi.l	#$3800,$1C(a6)
 		rts
 ; ---------------------------------------------------------------------------
+
+loc_B240:
 		cmpi.b	#$A,7(a4)
 		beq.s	loc_B250
 		move.b	#8,7(a6)
@@ -10559,6 +10575,8 @@ loc_B250:				; CODE XREF: ROM:0000B246j
 		move.l	d0,$1C(a6)
 		rts
 ; ---------------------------------------------------------------------------
+
+loc_B274:
 		bclr	#4,$25(a6)
 		move.w	#$2E,$26(a6) ; "."
 		addq.b	#1,$28(a6)
@@ -10577,6 +10595,8 @@ loc_B2A0:				; CODE XREF: ROM:0000B290j
 		jsr	(sub_CBC0).l
 		rts
 ; ---------------------------------------------------------------------------
+
+loc_B2A8:
 		move.w	#$100,$30(a6)
 		btst	#0,$25(a6)
 		bne.w	loc_B2EC
@@ -10624,6 +10644,8 @@ loc_B322:				; CODE XREF: ROM:0000B310j
 		move.b	#$12,7(a6)
 		rts
 ; ---------------------------------------------------------------------------
+
+loc_B32A:
 		andi.b	#8,$20(a6)
 		moveq	#0,d0
 		move.w	d0,$2C(a6)
@@ -11765,7 +11787,7 @@ loc_BC44:				; CODE XREF: ROM:0000BC38j
 		move.w	word_BC56(pc,d7.w),d7
 		jmp	word_BC56(pc,d7.w)
 ; ---------------------------------------------------------------------------
-word_BC56:	dc.w loc_BC8A-*
+word_BC56:	dc.w loc_BC8A-word_BC56
 		dc.w loc_BCBC-word_BC56
 		dc.w loc_BCBC-word_BC56
 		dc.w loc_BCBC-word_BC56
