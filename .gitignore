@@ -2,7 +2,7 @@
 scbuilt.bin
 scbuilt.prev.bin
 sonic.lst
-log.txt
+sonic.log
 
 # mainly cause Amiga-Assembly extension on VS code does this..
 build/*
