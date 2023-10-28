@@ -1,0 +1,8 @@
+
+scbuilt.bin
+scbuilt.prev.bin
+sonic.lst
+log.txt
+
+# mainly cause Amiga-Assembly extension on VS code does this..
+build/*
