@@ -308,25 +308,25 @@ ErrorTrap:
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 VDPSetupArray:	dc.w $8004
-                dc.w $8104	; Display mode
+		dc.w $8104	; Display mode
 		dc.w $8230      ; FG Scroll
-                dc.w $832C	; Window
+		dc.w $832C	; Window
 		dc.w $8407      ; BG Scroll
-                dc.w $8578	; Sprite Table
+		dc.w $8578	; Sprite Table
 		dc.w $8600
-                dc.w $8730	; Background Colour (Backdrop)
+		dc.w $8730	; Background Colour (Backdrop)
 		dc.w $8800
-                dc.w $8900
+		dc.w $8900
 		dc.w $8A00      ; Horizontal Interupt
-                dc.w $8B00	; Scroll type
+		dc.w $8B00	; Scroll type
 		dc.w $8C81      ; 40 Cell Display
-                dc.w $8D34	; Horizontal Scroll
+		dc.w $8D34	; Horizontal Scroll
 		dc.w $8E00
-                dc.w $8F02	; VDP Increment on
+		dc.w $8F02	; VDP Increment on
 		dc.w $9001      ; 64 Cell Display (Out of screen extended)
-                dc.w $9100	; Window horizontal position
+		dc.w $9100	; Window horizontal position
 		dc.w $9200      ; Window vertical position
-                dc.w 0
+		dc.w 0
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -1369,7 +1369,7 @@ sub_DAA:
 
 ; ===========================================================================
 
-                include "_inc\Nemesis Decompression.asm"
+		include "_inc\Nemesis Decompression.asm"
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -2359,7 +2359,7 @@ sub_1918:
 		beq.s	loc_193E
 		tst.l	d0
 		bpl.s	loc_1934
-		moveq	#$FFFFFFFF,d7
+		moveq	#-1,d7
 
 loc_1934:
 		tst.w	(a0)
@@ -2812,7 +2812,7 @@ W1C6A_loc00:
 		move.b	(a1),d0
 		move.w	d7,d1
 		andi.w	#$F,d1
-		sub.w   d1,d0
+		sub.w	d1,d0
 		subq.w  #1,d0
 		bpl.s	loc_1C24
 		rts
@@ -4100,7 +4100,7 @@ Z80Lag:
 Z80_Driver:
 		save
 		phase	0
-                cpu z80
+		cpu z80
 		listing purecode
 		include	"sound\Z80.asm"				; Zilog	Z80 ROM
 		restore
@@ -4116,7 +4116,7 @@ Z80_Driver_end:	even
 PlayMusic:
 		stopZ80
 		waitZ80
-		move.b	d0,(z80_playsound).l				; save BGM number to Z80
+		move.b	d0,(z80_soundqueue0).l				; save BGM number to Z80
 		startZ80
 		rts						; return
 
@@ -6060,7 +6060,7 @@ loc_8356:				; CODE XREF: sub_82B2+84j
 ; ---------------------------------------------------------------------------
 PALCY_RainbowField:dc.w	$EEA
 		dc.w $EC4
-        	dc.w $E82
+		dc.w $E82
 		dc.w $E40
 		dc.w $EC4
 		dc.w $E82
@@ -6118,11 +6118,11 @@ loc_83E4:				; CODE XREF: sub_82B2+FCj
 ; ---------------------------------------------------------------------------
 PALCY_ElectricField_1:dc.w $CE0
 		dc.w $AC2
-        	dc.w $880
+		dc.w $880
 		dc.w $642
         	dc.w $EAE
 		dc.w $A8E
-        	dc.w $86A
+		dc.w $86A
 		dc.w $626
 		dc.w $CE0
 		dc.w $AC2
@@ -6609,7 +6609,7 @@ word_87BC:	dc.l ANI_SonicFields
 
 ; ===========================================================================
 
-                include "_inc\Crackers Decompression.asm"
+		include "_inc\Crackers Decompression.asm"
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -9581,10 +9581,10 @@ loc_A8D6:				; DATA XREF: ROM:0000A75Eo
 		move.b	5(a5),d2
 		andi.b	#$F,d1
 		bne.s	loc_A8F8
-		moveq	#$FFFFFFA0,d2
+		moveq	#-$60,d2
 		btst	#3,$25(a6)
 		bne.s	loc_A8F8
-		moveq	#$FFFFFFE0,d2
+		moveq	#-$20,d2
 
 loc_A8F8:				; CODE XREF: ROM:0000A8EAj
 					; ROM:0000A8F4j
@@ -9840,7 +9840,7 @@ locret_AB48:
 		rts
 ; ---------------------------------------------------------------------------
 		dc.w loc_AB5C-locret_AB48
-                dc.w loc_AE3A-locret_AB48
+		dc.w loc_AE3A-locret_AB48
 		dc.w loc_AF20-locret_AB48
 		dc.w loc_AF2E-locret_AB48
 		dc.w loc_AFE0-locret_AB48
@@ -10510,10 +10510,10 @@ loc_B184:				; DATA XREF: ROM:0000B00Co
 		move.b	5(a5),d2
 		andi.b	#$F,d1
 		bne.s	loc_B1A6
-		moveq	#$FFFFFFA0,d2
+		moveq	#-$60,d2
 		btst	#3,$25(a6)
 		bne.s	loc_B1A6
-		moveq	#$FFFFFFE0,d2
+		moveq	#-$20,d2
 
 loc_B1A6:				; CODE XREF: ROM:0000B198j
 					; ROM:0000B1A2j
@@ -10584,7 +10584,7 @@ loc_B250:				; CODE XREF: ROM:0000B246j
 		moveq	#0,d0
 		move.w	d0,$2C(a6)
 		move.l	d0,$18(a6)
-		moveq	#$FFFFFFFF,d0
+		moveq	#-1,d0
 		move.l	d0,$1C(a6)
 		rts
 ; ---------------------------------------------------------------------------
@@ -10811,35 +10811,35 @@ loc_B422:				; DATA XREF: ROM:off_A206o
 loc_B436:				; CODE XREF: ROM:0000B42Aj
 		pea	(loc_B7D2).l
 		move.w	$26(a5),d7
-		move.w	word_B448(pc,d7.w),d7
-		jmp	word_B448(pc,d7.w)
+		move.w	off_B448(pc,d7.w),d7
+		jmp	off_B448(pc,d7.w)
 ; ---------------------------------------------------------------------------
-word_B448:	dc.w loc_B47C-word_B448
-		dc.w sub_B512-word_B448
-		dc.w sub_B548-word_B448
-		dc.w sub_B580-word_B448
-		dc.w sub_B5B8-word_B448
-		dc.w sub_B5F0-word_B448
-		dc.w sub_B610-word_B448
-		dc.w sub_B632-word_B448
-		dc.w sub_B652-word_B448
-		dc.w loc_B674-word_B448
-		dc.w sub_B67C-word_B448
-		dc.w sub_B6A2-word_B448
-		dc.w sub_B6CC-word_B448
-		dc.w loc_B6F6-word_B448
-		dc.w sub_B6FE-word_B448
-		dc.w sub_B714-word_B448
-		dc.w sub_B734-word_B448
-		dc.w sub_B756-word_B448
-		dc.w sub_B776-word_B448
-		dc.w sub_B714-word_B448
-		dc.w sub_B734-word_B448
-		dc.w sub_B756-word_B448
-		dc.w sub_B776-word_B448
-		dc.w loc_B798-word_B448
-		dc.w loc_B7A0-word_B448
-		dc.w sub_B7A8-word_B448
+off_B448:	dc.w loc_B47C-off_B448
+		dc.w sub_B512-off_B448
+		dc.w sub_B548-off_B448
+		dc.w sub_B580-off_B448
+		dc.w sub_B5B8-off_B448
+		dc.w sub_B5F0-off_B448
+		dc.w sub_B610-off_B448
+		dc.w sub_B632-off_B448
+		dc.w sub_B652-off_B448
+		dc.w loc_B674-off_B448
+		dc.w sub_B67C-off_B448
+		dc.w sub_B6A2-off_B448
+		dc.w sub_B6CC-off_B448
+		dc.w loc_B6F6-off_B448
+		dc.w sub_B6FE-off_B448
+		dc.w sub_B714-off_B448
+		dc.w sub_B734-off_B448
+		dc.w sub_B756-off_B448
+		dc.w sub_B776-off_B448
+		dc.w sub_B714-off_B448
+		dc.w sub_B734-off_B448
+		dc.w sub_B756-off_B448
+		dc.w sub_B776-off_B448
+		dc.w loc_B798-off_B448
+		dc.w loc_B7A0-off_B448
+		dc.w sub_B7A8-off_B448
 ; ---------------------------------------------------------------------------
 
 loc_B47C:
@@ -10870,7 +10870,7 @@ loc_B4A2:				; CODE XREF: ROM:0000B516j
 		move.w	word_B4CC(pc,d0.w),$26(a6)
 		clr.b	$20(a6)
 		moveq	#0,d0
-		moveq	#$FFFFFFFE,d1
+		moveq	#-2,d1
 		bra.w	loc_CA8A
 ; ---------------------------------------------------------------------------
 word_B4CC:	dc.w $9C
@@ -10972,7 +10972,7 @@ word_B550:
 ; ---------------------------------------------------------------------------
 
 sub_B580:
-                lea	word_B588(pc),a0
+		lea	word_B588(pc),a0
 		bra.w	loc_B4A2
 ; ---------------------------------------------------------------------------
 word_B588:
@@ -11048,11 +11048,11 @@ loc_B604:				; CODE XREF: ROM:0000B600j
 
 sub_B610:
 		ori.w	#$80,4(a6) ; "€"
-		moveq	#$FFFFFFFE,d0
+		moveq	#-2,d0
 		moveq	#$FFFFFFF6,d1
 		btst	#0,$28(a5)
 		beq.s	loc_B626
-		moveq	#$FFFFFFFD,d0
+		moveq	#-3,d0
 		moveq	#$FFFFFFF7,d1
 
 loc_B626:				; CODE XREF: ROM:0000B620j
@@ -11077,11 +11077,11 @@ loc_B646:				; CODE XREF: ROM:0000B642j
 
 sub_B652:
 		ori.w	#$80,4(a6) ; "€"
-		moveq	#$FFFFFFFD,d0
+		moveq	#-3,d0
 		moveq	#$FFFFFFF4,d1
 		btst	#0,$28(a5)
 		beq.s	loc_B668
-		moveq	#$FFFFFFFE,d0
+		moveq	#-2,d0
 		moveq	#$FFFFFFF5,d1
 
 loc_B668:				; CODE XREF: ROM:0000B662j
@@ -11166,7 +11166,7 @@ loc_B6F6:
 
 sub_B6FE:
 		ori.w	#$80,4(a6) ; "€"
-		moveq	#$FFFFFFFD,d0
+		moveq	#-3,d0
 		moveq	#$FFFFFFF3,d1
 		bsr.w	sub_CA82
 		move.w	#$BC,$26(a6) ; "¼"
@@ -11179,7 +11179,7 @@ sub_B714:
 		moveq	#$FFFFFFF3,d1
 		btst	#0,$28(a5)
 		beq.s	loc_B728
-		moveq	#$FFFFFFFE,d0
+		moveq	#-2,d0
 
 loc_B728:				; CODE XREF: ROM:0000B724j
 		bsr.w	sub_CA82
@@ -11204,7 +11204,7 @@ loc_B74A:				; CODE XREF: ROM:0000B744j
 
 sub_B756:
 		ori.w	#$80,4(a6) ; "€"
-		moveq	#$FFFFFFFB,d0
+		moveq	#-5,d0
 		moveq	#$FFFFFFE9,d1
 		btst	#0,$28(a5)
 		beq.s	loc_B76A
@@ -11361,7 +11361,7 @@ loc_B8A2:				; CODE XREF: ROM:0000B91Aj
 		move.w	word_B8D0(pc,d0.w),$26(a6)
 		clr.b	$20(a6)
 		moveq	#0,d0
-		moveq	#$FFFFFFFE,d1
+		moveq	#-2,d1
 		move.b	$20(a5),d2
 		bra.w	loc_CA8A
 ; ---------------------------------------------------------------------------
@@ -11662,8 +11662,8 @@ loc_BB08:
 
 sub_BB10:
 		ori.w	#$80,4(a6) ; "€"
-		moveq	#$FFFFFFFD,d0
-		moveq	#$FFFFFFFB,d1
+		moveq	#-3,d0
+		moveq	#-5,d1
 		bsr.w	sub_CA82
 		move.w	#$BC,$26(a6) ; "¼"
 		rts
@@ -11672,10 +11672,10 @@ sub_BB10:
 sub_BB26:
 		ori.w	#$80,4(a6) ; "€"
 		moveq	#0,d0
-		moveq	#$FFFFFFFB,d1
+		moveq	#-5,d1
 		btst	#0,$28(a5)
 		beq.s	loc_BB3A
-		moveq	#$FFFFFFFE,d0
+		moveq	#-2,d0
 
 loc_BB3A:				; CODE XREF: ROM:0000BB36j
 		bsr.w	sub_CA82
@@ -11700,7 +11700,7 @@ loc_BB5C:				; CODE XREF: ROM:0000BB56j
 
 sub_BB68:
 		ori.w	#$80,4(a6) ; "€"
-		moveq	#$FFFFFFFB,d0
+		moveq	#-5,d0
 		moveq	#$FFFFFFE9,d1
 		btst	#0,$28(a5)
 		beq.s	loc_BB7C
@@ -11984,8 +11984,8 @@ loc_BDDE:
 		move.b	$28(a5),d0
 		add.w	d0,d0
 		move.w	word_BDFC(pc,d0.w),$26(a6)
-		moveq	#$FFFFFFE0,d0
-		moveq	#$FFFFFFFC,d1
+		moveq	#-$20,d0
+		moveq	#-4,d1
 		bsr.w	sub_CA82
 		rts
 ; ---------------------------------------------------------------------------
@@ -12624,7 +12624,7 @@ loc_C2CE:				; CODE XREF: ROM:loc_C2BEj
 		move.w	(sp)+,d2
 		move.b	d2,$2A(a6)
 		move.l	(sp)+,d3
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -12633,7 +12633,7 @@ loc_C326:				; CODE XREF: ROM:0000C312j
 		sub.w	d0,$C(a6)
 		move.b	d2,$2A(a6)
 		addq.l	#6,sp
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -12676,7 +12676,7 @@ loc_C340:				; CODE XREF: ROM:0000C2C2j
 		move.w	(sp)+,d2
 		move.b	d2,$2A(a6)
 		move.l	(sp)+,d3
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -12685,7 +12685,7 @@ loc_C39A:				; CODE XREF: ROM:0000C386j
 		sub.w	d0,8(a6)
 		move.b	d2,$2A(a6)
 		addq.l	#6,sp
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -12728,7 +12728,7 @@ loc_C3B4:				; CODE XREF: ROM:0000C2C6j
 		move.w	(sp)+,d2
 		move.b	d2,$2A(a6)
 		move.l	(sp)+,d3
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -12737,7 +12737,7 @@ loc_C40E:				; CODE XREF: ROM:0000C3FAj
 		sub.w	d0,$C(a6)
 		move.b	d2,$2A(a6)
 		addq.l	#6,sp
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -12781,7 +12781,7 @@ loc_C442:				; DATA XREF: ROM:loc_FA06r
 		move.w	(sp)+,d2
 		move.b	d2,$2A(a6)
 		move.l	(sp)+,d3
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -12790,7 +12790,7 @@ loc_C480:				; CODE XREF: ROM:0000C46Cj
 		sub.w	d0,8(a6)
 		move.b	d2,$2A(a6)
 		addq.l	#6,sp
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -12844,7 +12844,7 @@ loc_C4CA:				; CODE XREF: ROM:loc_C4BAj
 		sub.w	d5,8(a6)
 		clr.w	$2C(a6)
 		clr.l	$18(a6)
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -12859,7 +12859,7 @@ loc_C4FC:				; CODE XREF: ROM:0000C4EAj
 		sub.w	d5,8(a6)
 		clr.w	$2C(a6)
 		clr.l	$18(a6)
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -12885,7 +12885,7 @@ loc_C524:				; CODE XREF: ROM:0000C4BEj
 		sub.w	d5,$C(a6)
 		clr.w	$2C(a6)
 		clr.l	$1C(a6)
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -12900,7 +12900,7 @@ loc_C558:				; CODE XREF: ROM:0000C546j
 		sub.w	d5,$C(a6)
 		clr.w	$2C(a6)
 		clr.l	$1C(a6)
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -12926,7 +12926,7 @@ loc_C580:				; CODE XREF: ROM:0000C4C2j
 		sub.w	d5,8(a6)
 		clr.w	$2C(a6)
 		clr.l	$18(a6)
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -12941,7 +12941,7 @@ loc_C5B4:				; CODE XREF: ROM:0000C5A2j
 		sub.w	d5,8(a6)
 		clr.w	$2C(a6)
 		clr.l	$18(a6)
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -12966,7 +12966,7 @@ loc_C5DC:				; CODE XREF: ROM:0000C4C6j
 		sub.w	d5,$C(a6)
 		clr.w	$2C(a6)
 		clr.l	$1C(a6)
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -12981,7 +12981,7 @@ loc_C60E:				; CODE XREF: ROM:0000C5FCj
 		sub.w	d5,$C(a6)
 		clr.w	$2C(a6)
 		clr.l	$1C(a6)
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -13009,7 +13009,7 @@ sub_C636:				; CODE XREF: ROM:0000A628p
 		tst.w	d5
 		bpl.s	loc_C66C
 		sub.w	d5,$C(a6)
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -13021,7 +13021,7 @@ loc_C66C:				; CODE XREF: sub_C636+2Cj
 		tst.w	d5
 		bpl.s	loc_C686
 		sub.w	d5,$C(a6)
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -13042,7 +13042,7 @@ loc_C68A:				; CODE XREF: sub_C636+4j
 		tst.w	d5
 		bmi.s	loc_C6B4
 		sub.w	d5,$C(a6)
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -13055,7 +13055,7 @@ loc_C6B4:				; CODE XREF: sub_C636+74j
 		tst.w	d5
 		bmi.s	loc_C6D0
 		sub.w	d5,$C(a6)
-		moveq	#$FFFFFFFF,d5
+		moveq	#-1,d5
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -13466,7 +13466,7 @@ loc_CAEA:				; CODE XREF: ROM:0000CAE2j
 		move.l	d0,$18(a0)
 		move.l	d0,$1C(a0)
 		bset	#0,$25(a0)
-		moveq	#$FFFFFFFF,d0
+		moveq	#-1,d0
 		movem.l	(sp)+,d0-d7
 		rts
 ; ---------------------------------------------------------------------------

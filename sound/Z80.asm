@@ -68,9 +68,9 @@ WriteFMIorII:				; CODE XREF: SendFMFreq+Fp
 
 
 WriteFMI:				; CODE XREF: RAM:0051p	SendFMFreq+37p	...
-		ld	(4000h), a
+		ld	(ym2612_a0), a
 		ld	a, c
-		ld	(4001h), a
+		ld	(ym2612_d0), a
 		ret
 ; End of function WriteFMI
 
@@ -85,9 +85,9 @@ WriteFMIIPart:				; CODE XREF: WriteFMIorII+Cj
 
 
 WriteFMII:				; CODE XREF: DoPause+139p
-		ld	(4002h), a
+		ld	(ym2612_a1), a
 		ld	a, c
-		ld	(4003h), a
+		ld	(ym2612_d1), a
 		ret
 ; End of function WriteFMII
 
@@ -1568,7 +1568,7 @@ StopAllSound:				; CODE XREF: RAM:00BEp	PlaySoundID+5j	...
 ; FUNCTION CHUNK AT 0605 SIZE 00000006 BYTES
 
 		ld	hl, 1C09h
-		ld	de, 1C0Ah
+		ld	de, soundqueue0
 		ld	bc, 396h
 		ld	(hl), 0
 		ldir
@@ -1698,7 +1698,7 @@ loc_8D1:				; CODE XREF: DoTempo+13j
 DoSoundQueue:				; CODE XREF: RAM:003Dp
 		ld	a, r
 		ld	(1C17h), a
-		ld	de, 1C0Ah
+		ld	de, soundqueue0
 		ld	b, 3
 
 loc_8E0:				; CODE XREF: DoSoundQueue+32j
@@ -1740,7 +1740,7 @@ loc_90B:				; CODE XREF: DoSoundQueue+12j
 		ld	(1C09h), a
 		xor	a
 		ld	(1C18h), a
-		ld	de, 1C0Ah
+		ld	de, soundqueue0
 		ld	(de), a
 		inc	de
 		ld	(de), a
@@ -2793,9 +2793,9 @@ loc_F02:				; DATA XREF: RAM:0EFEw
 		ld	c, a
 		ld	a, 2Ah
 		di
-		ld	(4000h), a
+		ld	(ym2612_a0), a
 		ld	a, c
-		ld	(4001h), a
+		ld	(ym2612_d0), a
 		ei
 
 loc_F11:				; DATA XREF: RAM:0065w
@@ -2813,9 +2813,9 @@ loc_F1C:				; DATA XREF: RAM:0F18w
 		ld	c, a
 		ld	a, 2Ah
 		di
-		ld	(4000h), a
+		ld	(ym2612_a0), a
 		ld	a, c
-		ld	(4001h), a
+		ld	(ym2612_d0), a
 		ei
 		inc	hl
 		ld	a, h
