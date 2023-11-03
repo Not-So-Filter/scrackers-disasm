@@ -636,8 +636,7 @@ loc_312:
 		jr	z, loc_341
 		ld	(ix+13h), 0
 
-loc_341:				; CODE XREF: DoPanAnimation+2Bj
-					; DoPanAnimation+35j
+loc_341:
 		ld	d, 0
 		add	hl, de
 		ex	de, hl
@@ -648,7 +647,7 @@ loc_341:				; CODE XREF: DoPanAnimation+2Bj
 		ret
 ; ---------------------------------------------------------------------------
 
-loc_34C:				; CODE XREF: DoPanAnimation+5j
+loc_34C:
 		xor	a
 		ld	(ix+13h), a
 ; End of function DoPanAnimation
@@ -657,7 +656,7 @@ loc_34C:				; CODE XREF: DoPanAnimation+5j
 ; =============== S U B	R O U T	I N E =======================================
 
 
-ExecPanAnim:				; CODE XREF: UpdateTrack:loc_181p
+ExecPanAnim:
 		ld	a, (ix+11h)
 		sub	2
 		ret	m
@@ -665,16 +664,16 @@ ExecPanAnim:				; CODE XREF: UpdateTrack:loc_181p
 ; End of function ExecPanAnim
 
 ; ---------------------------------------------------------------------------
-PanAniPtrList:	dw byte_360, byte_361, byte_362, byte_363 ; DATA XREF: DoPanAnimation+1Co
-byte_360:	db 0C0h			; DATA XREF: RAM:PanAniPtrListo
-byte_361:	db  80h			; DATA XREF: RAM:PanAniPtrListo
-byte_362:	db 0C0h			; DATA XREF: RAM:PanAniPtrListo
-byte_363:	db  40h,0C0h, 80h	; DATA XREF: RAM:PanAniPtrListo
+PanAniPtrList:	dw byte_360, byte_361, byte_362, byte_363
+byte_360:	db 0C0h
+byte_361:	db  80h
+byte_362:	db 0C0h
+byte_363:	db  40h,0C0h, 80h
 
 ; =============== S U B	R O U T	I N E =======================================
 
 
-DoFMVolEnv:				; CODE XREF: UpdateTrack+2Bp
+DoFMVolEnv:
 		ld	a, (ix+18h)
 		or	a
 		ret	z
@@ -689,7 +688,7 @@ DoFMVolEnv:				; CODE XREF: UpdateTrack+2Bp
 		ld	b, 4
 		ld	c, (ix+19h)
 
-loc_382:				; CODE XREF: DoFMVolEnv+2Cj
+loc_382:
 		push	af
 		sra	c
 		push	bc
@@ -700,7 +699,7 @@ loc_382:				; CODE XREF: DoFMVolEnv+2Cj
 		ld	a, (de)
 		rst	WriteFMIorII
 
-loc_38E:				; CODE XREF: DoFMVolEnv+20j
+loc_38E:
 		pop	bc
 		inc	de
 		inc	hl
@@ -713,8 +712,7 @@ loc_38E:				; CODE XREF: DoFMVolEnv+20j
 ; =============== S U B	R O U T	I N E =======================================
 
 
-PrepareModulat:				; CODE XREF: UpdateTrack+14p
-					; UpdateTrack+CCEp
+PrepareModulat:
 		bit	7, (ix+7)
 		ret	z
 		bit	1, (ix+0)
@@ -743,8 +741,7 @@ PrepareModulat:				; CODE XREF: UpdateTrack+14p
 ; =============== S U B	R O U T	I N E =======================================
 
 
-DoModulation:				; CODE XREF: UpdateTrack+1Ap
-					; UpdateTrack+42p ...
+DoModulation:
 		ld	a, (ix+7)
 		or	a
 		ret	z
@@ -774,7 +771,7 @@ DoModulation:				; CODE XREF: UpdateTrack+1Ap
 		ld	(ix+22h), l
 		ld	(ix+23h), h
 
-loc_3FC:				; CODE XREF: DoModulation+23j
+loc_3FC:
 		pop	bc
 		add	hl, bc
 		dec	(ix+27h)
@@ -791,7 +788,7 @@ loc_40D:
 		ret
 ; ---------------------------------------------------------------------------
 
-DoModEnv:				; CODE XREF: DoModulation+7j
+DoModEnv:
 		dec	a
 		ex	de, hl
 		ld	hl, ModEnvPtrs
@@ -799,12 +796,10 @@ DoModEnv:				; CODE XREF: DoModulation+7j
 		jr	loc_41C
 ; ---------------------------------------------------------------------------
 
-loc_419:				; CODE XREF: DoModulation+82j
-					; DoModulation+85j
+loc_419:
 		ld	(ix+25h), a
 
-loc_41C:				; CODE XREF: DoModulation+57j
-					; DoModulation+95j
+loc_41C:
 		push	hl
 		ld	c, (ix+25h)
 		ld	b, 0
@@ -826,18 +821,18 @@ loc_41C:				; CODE XREF: DoModulation+57j
 		ret
 ; ---------------------------------------------------------------------------
 
-ModEnv_Jump2Idx:			; CODE XREF: DoModulation+6Cj
+ModEnv_Jump2Idx:
 		inc	bc
 		ld	a, (bc)
 		jr	loc_419
 ; ---------------------------------------------------------------------------
 
-ModEnv_Reset:				; CODE XREF: DoModulation+70j
+ModEnv_Reset:
 		xor	a
 		jr	loc_419
 ; ---------------------------------------------------------------------------
 
-ModEnv_ChgMult:				; CODE XREF: DoModulation+74j
+ModEnv_ChgMult:
 		inc	bc
 		ld	a, (bc)
 		add	a, (ix+22h)
@@ -847,16 +842,16 @@ ModEnv_ChgMult:				; CODE XREF: DoModulation+74j
 		jr	loc_41C
 ; ---------------------------------------------------------------------------
 
-ModEnv_Positive:			; CODE XREF: DoModulation+67j
+ModEnv_Positive:
 		ld	h, 0		; make HL positive (00xx)
 
-ModEnv_Next:				; CODE XREF: DoModulation+78j
+ModEnv_Next:
 		ld	l, a
 		ld	b, (ix+22h)
 		inc	b
 		ex	de, hl
 
-loc_45F:				; CODE XREF: DoModulation+A0j
+loc_45F:
 		add	hl, de
 		djnz	loc_45F
 		inc	(ix+25h)
@@ -867,15 +862,14 @@ loc_45F:				; CODE XREF: DoModulation+A0j
 ; =============== S U B	R O U T	I N E =======================================
 
 
-DoPitchSlide:				; CODE XREF: UpdateTrack+17p
-					; UpdateTrack:loc_198p	...
+DoPitchSlide:
 		ld	b, 0
 		ld	a, (ix+10h)
 		or	a
 		jp	p, loc_470
 		dec	b
 
-loc_470:				; CODE XREF: DoPitchSlide+6j
+loc_470:
 		ld	h, (ix+0Eh)
 		ld	l, (ix+0Dh)
 		ld	c, a
@@ -896,7 +890,7 @@ loc_470:				; CODE XREF: DoPitchSlide+6j
 		jr	loc_4A0
 ; ---------------------------------------------------------------------------
 
-loc_492:				; CODE XREF: DoPitchSlide+24j
+loc_492:
 		or	a
 		ld	hl, 508h
 		sbc	hl, bc
@@ -905,11 +899,10 @@ loc_492:				; CODE XREF: DoPitchSlide+24j
 		add	hl, de
 		ex	de, hl
 
-loc_49F:				; CODE XREF: DoPitchSlide+32j
+loc_49F:
 		ex	de, hl
 
-loc_4A0:				; CODE XREF: DoPitchSlide+16j
-					; DoPitchSlide+2Aj
+loc_4A0:
 		bit	5, (ix+0)
 		ret	z
 		ld	(ix+0Eh), h
@@ -921,7 +914,7 @@ loc_4A0:				; CODE XREF: DoPitchSlide+16j
 ; =============== S U B	R O U T	I N E =======================================
 
 
-GetFMInsPtr:				; CODE XREF: SetInsFromSong+1Bp
+GetFMInsPtr:
 		ld	hl, (1C37h)
 		ld	a, (1C19h)
 		or	a
@@ -934,35 +927,32 @@ GetFMInsPtr:				; CODE XREF: SetInsFromSong+1Bp
 ; =============== S U B	R O U T	I N E =======================================
 
 
-JumpToInsData:				; CODE XREF: GetFMInsPtr+7j
-					; SetInsFromSong+14p ...
+JumpToInsData:
 		xor	a
 		or	b
 		ret	z
 		ld	de, 19h
 
-loc_4C1:				; CODE XREF: JumpToInsData+7j
+loc_4C1:
 		add	hl, de
 		djnz	loc_4C1
 		ret
 ; End of function JumpToInsData
 
 ; ---------------------------------------------------------------------------
-FMInsOperators:	db 0B0h			; DATA XREF: SendFMInso
+FMInsOperators:	db 0B0h
 		db  30h, 38h, 34h, 3Ch
 		db  50h, 58h, 54h, 5Ch
 		db  60h, 68h, 64h, 6Ch
 		db  70h, 78h, 74h, 7Ch
 		db  80h, 88h, 84h, 8Ch
-Volume_Ops:	db  40h, 48h, 44h, 4Ch	; DATA XREF: DoFMVolEnv+14o
-					; RefreshVolume+1o
-SSGEG_Ops:	db  90h, 98h, 94h, 9Ch	; DATA XREF: Sends.bSGEGo
+Volume_Ops:	db  40h, 48h, 44h, 4Ch
+SSGEG_Ops:	db  90h, 98h, 94h, 9Ch
 
 ; =============== S U B	R O U T	I N E =======================================
 
 
-SendFMIns:				; CODE XREF: SetInsFromSong:loc_BC4p
-					; PlaySoundID+769p
+SendFMIns:
 		ld	de, FMInsOperators
 		ld	c, (ix+0Ah)
 		ld	a, 0B4h
@@ -971,7 +961,7 @@ SendFMIns:				; CODE XREF: SetInsFromSong:loc_BC4p
 		ld	(ix+1Bh), a
 		ld	b, 14h
 
-loc_4F3:				; CODE XREF: SendFMIns+14j
+loc_4F3:
 		call	WriteInsReg
 		djnz	loc_4F3
 		ld	(ix+1Ch), l
@@ -983,8 +973,7 @@ loc_4F3:				; CODE XREF: SendFMIns+14j
 ; =============== S U B	R O U T	I N E =======================================
 
 
-WriteInsReg:				; CODE XREF: SendFMIns+9p
-					; SendFMIns:loc_4F3p
+WriteInsReg:
 		ld	a, (de)
 		inc	de
 		ld	c, (hl)
@@ -997,11 +986,7 @@ WriteInsReg:				; CODE XREF: SendFMIns+9p
 ; =============== S U B	R O U T	I N E =======================================
 
 
-PlaySoundID:				; CODE XREF: UpdateAll+9p
-
-; FUNCTION CHUNK AT 061F SIZE 000000B8 BYTES
-; FUNCTION CHUNK AT 0BE7 SIZE 000000C4 BYTES
-
+PlaySoundID:
 		ld	a, (1C09h)
 		bit	7, a
 		jp	z, StopAllSound	; 00-7F	- Stop All
@@ -1022,17 +1007,19 @@ PlaySnd_Command:
 		ld	(1C18h), a
 		jp	(hl)
 ; ---------------------------------------------------------------------------
-CmdPtrTable:				; DATA XREF: PlaySoundID+1Eo
-		dw FadeOutMusic, StopAllSound, SilencePSG, FadeInMusic
+CmdPtrTable:	dw FadeOutMusic
+		dw StopAllSound
+		dw SilencePSG
+		dw FadeInMusic
 ; ---------------------------------------------------------------------------
 
-FadeInMusic:				; DATA XREF: PlaySoundID:CmdPtrTableo
+FadeInMusic:
 		ld	ix, 1F70h
 		ld	b, 2
 		ld	a, 80h
 		ld	(1C19h), a
 
-loc_541:				; CODE XREF: PlaySoundID+48j
+loc_541:
 		push	bc
 		bit	7, (ix+0)
 		call	nz, loc_552
@@ -1043,13 +1030,13 @@ loc_541:				; CODE XREF: PlaySoundID+48j
 		ret
 ; ---------------------------------------------------------------------------
 
-loc_552:				; CODE XREF: PlaySoundID+3Fp
+loc_552:
 		push	hl
 		push	hl
 		jp	cfF2_StopTrk
 ; ---------------------------------------------------------------------------
 
-zPlayMusic:				; CODE XREF: PlaySoundID+Aj
+zPlayMusic:
 		sub	81h
 		ret	m
 		ex	af, af'
@@ -1106,7 +1093,7 @@ zPlayMusic:				; CODE XREF: PlaySoundID+Aj
 		ld	b, (iy+2)
 		ld	a, (iy+4)
 
-loc_5B2:				; CODE XREF: PlaySoundID+CAj
+loc_5B2:
 		push	bc
 		ld	hl, (1C35h)
 		ldi
@@ -1132,7 +1119,7 @@ loc_5B2:				; CODE XREF: PlaySoundID+CAj
 		ld	de, 1D90h
 		ld	a, (iy+4)
 
-loc_5E7:				; CODE XREF: PlaySoundID+FCj
+loc_5E7:
 		push	bc
 		ld	hl, (1C35h)
 		ldi
@@ -1149,30 +1136,24 @@ loc_5E7:				; CODE XREF: PlaySoundID+FCj
 		djnz	loc_5E7
 ; End of function PlaySoundID
 
-; START	OF FUNCTION CHUNK FOR StopAllSound
-
-ClearSoundID:				; CODE XREF: PlaySoundID+D0j
-					; PlaySoundID+1CDj ...
+ClearSoundID:
 		ld	a, 80h
 		ld	(1C09h), a
 		ret
-; END OF FUNCTION CHUNK	FOR StopAllSound
 ; ---------------------------------------------------------------------------
-FMInitBytes:	db  80h,   6		; DATA XREF: PlaySoundID+9Co
-					; StopAllSound+Do
+FMInitBytes:	db  80h,   6
 		db  80h,   0
 		db  80h,   1
 		db  80h,   2
 		db  80h,   4
 		db  80h,   5
 		db  80h,   6
-PSGInitBytes:	db  80h, 80h		; DATA XREF: PlaySoundID+D4o
+PSGInitBytes:	db  80h, 80h
 		db  80h,0A0h
 		db  80h,0C0h
 ; ---------------------------------------------------------------------------
-; START	OF FUNCTION CHUNK FOR PlaySoundID
 
-PlaySpcSFX:				; CODE XREF: PlaySoundID+14j
+PlaySpcSFX:
 		ex	af, af'
 		ld	hl, 6000h	; switch to Bank 018000
 		xor	a		; Bank bits written: 003h
@@ -1194,7 +1175,7 @@ PlaySpcSFX:				; CODE XREF: PlaySoundID+14j
 		jr	loc_652
 ; ---------------------------------------------------------------------------
 
-PlaySFX:				; CODE XREF: PlaySoundID+Fj
+PlaySFX:
 		ex	af, af'
 		ld	hl, 6000h	; switch to Bank 018000
 		xor	a		; Bank bits written: 003h
@@ -1214,7 +1195,7 @@ PlaySFX:				; CODE XREF: PlaySoundID+Fj
 		xor	a
 		ld	hl, SFXPtrs
 
-loc_652:				; CODE XREF: PlaySoundID+131j
+loc_652:
 		ld	(1C19h), a
 		ex	af, af'
 		rst	ReadPtrTable
@@ -1235,7 +1216,7 @@ loc_652:				; CODE XREF: PlaySoundID+131j
 		add	hl, de
 		ld	b, (iy+3)
 
-loc_674:				; CODE XREF: PlaySoundID+1CBj
+loc_674:
 		push	bc
 		push	hl
 		inc	hl
@@ -1249,7 +1230,7 @@ loc_674:				; CODE XREF: PlaySoundID+1CBj
 		pop	hl
 		push	iy
 
-loc_688:				; CODE XREF: PlaySoundID+17Cj
+loc_688:
 		pop	de
 		pop	hl
 		ldi
@@ -1272,8 +1253,7 @@ loc_688:				; CODE XREF: PlaySoundID+17Cj
 		jr	nz, loc_6B6
 		set	2, (iy+0)
 
-loc_6B6:				; CODE XREF: PlaySoundID+1A1j
-					; PlaySoundID+1A9j
+loc_6B6:
 		push	hl
 		ld	hl, (1C39h)
 		ld	a, (1C19h)
@@ -1282,7 +1262,7 @@ loc_6B6:				; CODE XREF: PlaySoundID+1A1j
 		push	iy
 		pop	ix
 
-loc_6C4:				; CODE XREF: PlaySoundID+1B7j
+loc_6C4:
 		ld	(ix+2Ah), l
 		ld	(ix+2Bh), h
 		call	DoNoteOff
@@ -1291,13 +1271,11 @@ loc_6C4:				; CODE XREF: PlaySoundID+1B7j
 		pop	bc
 		djnz	loc_674
 		jp	ClearSoundID
-; END OF FUNCTION CHUNK	FOR PlaySoundID
 
 ; =============== S U B	R O U T	I N E =======================================
 
 
-GetSFXChnPtrs:				; CODE XREF: PlaySoundID+171p
-					; PlaySoundID+6F1p
+GetSFXChnPtrs:
 		bit	7, c
 		jr	nz, loc_6E3
 		ld	a, c
@@ -1307,7 +1285,7 @@ GetSFXChnPtrs:				; CODE XREF: PlaySoundID+171p
 		jr	loc_6FA
 ; ---------------------------------------------------------------------------
 
-loc_6E3:				; CODE XREF: GetSFXChnPtrs+2j
+loc_6E3:
 		ld	a, 1Fh
 		call	SilencePSGChn
 		ld	a, 0FFh
@@ -1320,8 +1298,7 @@ loc_6E3:				; CODE XREF: GetSFXChnPtrs+2j
 		srl	a
 		add	a, 2
 
-loc_6FA:				; CODE XREF: GetSFXChnPtrs+7j
-					; GetSFXChnPtrs+Aj
+loc_6FA:
 		sub	2
 		ld	(1C32h), a
 		push	af
@@ -1345,8 +1322,7 @@ loc_6FA:				; CODE XREF: GetSFXChnPtrs+7j
 ; =============== S U B	R O U T	I N E =======================================
 
 
-FinishFMTrkInit:			; CODE XREF: PlaySoundID+C6p
-					; PlaySoundID+19Ap
+FinishFMTrkInit:
 		ex	af, af'
 		xor	a
 		ld	(de), a
@@ -1360,7 +1336,7 @@ FinishFMTrkInit:			; CODE XREF: PlaySoundID+C6p
 ; =============== S U B	R O U T	I N E =======================================
 
 
-FinishTrkInit:				; CODE XREF: PlaySoundID+F8p
+FinishTrkInit:
 		ex	de, hl
 		ld	(hl), 30h
 		inc	hl
@@ -1369,7 +1345,7 @@ FinishTrkInit:				; CODE XREF: PlaySoundID+F8p
 		ld	(hl), 1
 		ld	b, 24h
 
-loc_728:				; CODE XREF: FinishTrkInit+Ej
+loc_728:
 		inc	hl
 		ld	(hl), 0
 		djnz	loc_728
@@ -1380,19 +1356,13 @@ loc_728:				; CODE XREF: FinishTrkInit+Ej
 
 ; ---------------------------------------------------------------------------
 SpcSFXChnPtrs:	dw  1F70h, 1F70h, 1F70h, 1F70h,	1F70h, 1F70h, 1F70h, 1F70h
-					; DATA XREF: GetSFXChnPtrs+32o
 SFXChnPtrs:	dw  1E20h, 1E50h, 1E80h, 1EB0h,	1EE0h, 1F10h, 1F40h, 1F40h
-					; DATA XREF: GetSFXChnPtrs+29o
 BGMChnPtrs:	dw  1CD0h, 1D00h, 1D30h, 1D60h,	1D90h, 1DC0h, 1DF0h, 1DF0h
-					; DATA XREF: GetSFXChnPtrs+3Ao
 
 ; =============== S U B	R O U T	I N E =======================================
 
 
-DoPause:				; CODE XREF: UpdateAllp
-
-; FUNCTION CHUNK AT 0881 SIZE 0000002F BYTES
-
+DoPause:
 		ld	hl, 1C10h
 		ld	a, (hl)
 		or	a
@@ -1405,7 +1375,7 @@ DoPause:				; CODE XREF: UpdateAllp
 		jp	SilenceAll
 ; ---------------------------------------------------------------------------
 
-UnpauseMusic:				; CODE XREF: DoPause+6j
+UnpauseMusic:
 		xor	a
 		ld	(hl), a
 		ld	a, (1C0Dh)
@@ -1414,26 +1384,26 @@ UnpauseMusic:				; CODE XREF: DoPause+6j
 		ld	ix, 1C40h
 		ld	b, 7
 
-loc_780:				; CODE XREF: DoPause+37j
+loc_780:
 		ld	a, (1C11h)
 		or	a
 		jr	nz, locb_78C
 		bit	7, (ix+0)
 		jr	z, loc_792
 
-locb_78C:				; CODE XREF: DoPause+24j
+locb_78C:
 		ld	c, (ix+0Ah)
 		ld	a, 0B4h
 		rst	WriteFMIorII
 
-loc_792:				; CODE XREF: DoPause+2Aj
+loc_792:
 		ld	de, 30h
 		add	ix, de
 		djnz	loc_780
 		ld	ix, 1E20h
 		ld	b, 8
 
-loc_79F:				; CODE XREF: DoPause+56j
+loc_79F:
 		bit	7, (ix+0)
 		jr	z, loc_7B1
 		bit	7, (ix+1)
@@ -1442,7 +1412,7 @@ loc_79F:				; CODE XREF: DoPause+56j
 		ld	a, 0B4h
 		rst	WriteFMIorII
 
-loc_7B1:				; CODE XREF: DoPause+43j DoPause+49j
+loc_7B1:
 		ld	de, 30h
 		add	ix, de
 		djnz	loc_79F
@@ -1451,7 +1421,7 @@ loc_7B1:				; CODE XREF: DoPause+43j DoPause+49j
 
 ; ---------------------------------------------------------------------------
 
-FadeOutMusic:				; DATA XREF: PlaySoundID:CmdPtrTableo
+FadeOutMusic:
 		ld	a, 28h
 		ld	(1C0Dh), a
 		ld	a, 6
@@ -1461,7 +1431,7 @@ FadeOutMusic:				; DATA XREF: PlaySoundID:CmdPtrTableo
 ; =============== S U B	R O U T	I N E =======================================
 
 
-StopDrumPSG:				; CODE XREF: DoFading+6p
+StopDrumPSG:
 		xor	a
 		ld	(1C40h), a
 		ld	(1D60h), a
@@ -1475,7 +1445,7 @@ StopDrumPSG:				; CODE XREF: DoFading+6p
 ; =============== S U B	R O U T	I N E =======================================
 
 
-DoFading:				; CODE XREF: UpdateAll+6p
+DoFading:
 		ld	hl, 1C0Dh
 		ld	a, (hl)
 		or	a
@@ -1489,7 +1459,7 @@ DoFading:				; CODE XREF: UpdateAll+6p
 		ret
 ; ---------------------------------------------------------------------------
 
-loc_7EE:				; CODE XREF: DoFading+Fj
+loc_7EE:
 		ld	a, (1C0Eh)
 		ld	(1C0Fh), a
 		ld	a, (1C0Dh)
@@ -1519,7 +1489,7 @@ loc_7EE:				; CODE XREF: DoFading+Fj
 		ld	ix, 1C40h
 		ld	b, 6
 
-loc_81D:				; CODE XREF: DoFading+5Aj
+loc_81D:
 		bit	7, (ix+0)
 		jr	z, loc_82E
 		bit	2, (ix+0)
@@ -1528,7 +1498,7 @@ loc_81D:				; CODE XREF: DoFading+5Aj
 		call	RefreshVolume
 		pop	bc
 
-loc_82E:				; CODE XREF: DoFading+48j DoFading+4Ej
+loc_82E:
 		ld	de, 30h
 		add	ix, de
 		djnz	loc_81D
@@ -1539,10 +1509,7 @@ loc_82E:				; CODE XREF: DoFading+48j DoFading+4Ej
 ; =============== S U B	R O U T	I N E =======================================
 
 
-StopAllSound:				; CODE XREF: RAM:00BEp	PlaySoundID+5j	...
-
-; FUNCTION CHUNK AT 0605 SIZE 00000006 BYTES
-
+StopAllSound:
 		ld	hl, 1C09h
 		ld	de, soundqueue0
 		ld	bc, 396h
@@ -1551,7 +1518,7 @@ StopAllSound:				; CODE XREF: RAM:00BEp	PlaySoundID+5j	...
 		ld	ix, FMInitBytes
 		ld	b, 6
 
-loc_849:				; CODE XREF: StopAllSound+1Fj
+loc_849:
 		push	bc
 		call	SilenceFMChn
 		call	DisableSSGEG
@@ -1569,7 +1536,7 @@ loc_849:				; CODE XREF: StopAllSound+1Fj
 		ld	a, 2Bh
 		call	WriteFMI
 
-ResetSpcFM3Mode:			; CODE XREF: PlaySoundID+188p
+ResetSpcFM3Mode:
 		xor	a
 		ld	(1C12h), a
 		ld	c, a
@@ -1582,17 +1549,15 @@ ResetSpcFM3Mode:			; CODE XREF: PlaySoundID+188p
 ; =============== S U B	R O U T	I N E =======================================
 
 
-DisableSSGEG:				; CODE XREF: PlaySoundID+1C6p
-					; StopAllSound+17p
+DisableSSGEG:
 		ld	a, 90h
 		ld	c, 0
 		jp	SendAllFMOps
 ; End of function DisableSSGEG
 
 ; ---------------------------------------------------------------------------
-; START	OF FUNCTION CHUNK FOR DoPause
 
-SilenceAll:				; CODE XREF: DoPause+Ej
+SilenceAll:
 		call	SilencePSG
 		push	bc
 		push	af
@@ -1600,7 +1565,7 @@ SilenceAll:				; CODE XREF: DoPause+Ej
 		ld	a, 0B4h
 		ld	c, 0
 
-loc_88C:				; CODE XREF: DoPause+132j
+loc_88C:
 		push	af
 		call	WriteFMI
 		pop	af
@@ -1609,7 +1574,7 @@ loc_88C:				; CODE XREF: DoPause+132j
 		ld	b, 3
 		ld	a, 0B4h
 
-loc_898:				; CODE XREF: DoPause+13Ej
+loc_898:
 		push	af
 		call	WriteFMII
 		pop	af
@@ -1619,7 +1584,7 @@ loc_898:				; CODE XREF: DoPause+13Ej
 		ld	b, 7
 		ld	a, 28h
 
-loc_8A6:				; CODE XREF: DoPause+14Cj
+loc_8A6:
 		push	af
 		call	WriteFMI
 		inc	c
@@ -1627,18 +1592,16 @@ loc_8A6:				; CODE XREF: DoPause+14Cj
 		djnz	loc_8A6
 		pop	af
 		pop	bc
-; END OF FUNCTION CHUNK	FOR DoPause
 
 ; =============== S U B	R O U T	I N E =======================================
 
 
-SilencePSG:				; CODE XREF: StopDrumPSG+10j
-					; StopAllSound+2Dp ...
+SilencePSG:
 		push	bc
 		ld	b, 4
 		ld	a, 9Fh
 
-loc_8B5:				; CODE XREF: SilencePSG+Aj
+loc_8B5:
 		ld	(7F11h), a
 		add	a, 20h
 		djnz	loc_8B5
@@ -1650,7 +1613,7 @@ loc_8B5:				; CODE XREF: SilencePSG+Aj
 ; =============== S U B	R O U T	I N E =======================================
 
 
-DoTempo:				; CODE XREF: UpdateAll+3p
+DoTempo:
 		ld	a, (1C14h)
 		ld	hl, 1C13h
 		add	a, (hl)
@@ -1660,7 +1623,7 @@ DoTempo:				; CODE XREF: UpdateAll+3p
 		ld	de, 30h
 		ld	b, 0Ah
 
-loc_8D1:				; CODE XREF: DoTempo+13j
+loc_8D1:
 		inc	(hl)
 		add	hl, de
 		djnz	loc_8D1
@@ -1671,13 +1634,13 @@ loc_8D1:				; CODE XREF: DoTempo+13j
 ; =============== S U B	R O U T	I N E =======================================
 
 
-DoSoundQueue:				; CODE XREF: RAM:003Dp
+DoSoundQueue:
 		ld	a, r
 		ld	(1C17h), a
 		ld	de, soundqueue0
 		ld	b, 3
 
-loc_8E0:				; CODE XREF: DoSoundQueue+32j
+loc_8E0:
 		ld	a, (de)
 		ld	c, a
 		bit	7, a
@@ -1696,14 +1659,13 @@ loc_8E0:				; CODE XREF: DoSoundQueue+32j
 		jr	z, loc_8FD
 		jr	nc, loc_905
 
-loc_8FD:				; CODE XREF: DoSoundQueue+23j
+loc_8FD:
 		ld	a, c
 		ld	(1C09h), a
 		ld	a, (hl)
 		ld	(1C18h), a
 
-loc_905:				; CODE XREF: DoSoundQueue+Ej
-					; DoSoundQueue+25j
+loc_905:
 		xor	a
 		ld	(de), a
 		inc	de
@@ -1711,7 +1673,7 @@ loc_905:				; CODE XREF: DoSoundQueue+Ej
 		ret
 ; ---------------------------------------------------------------------------
 
-loc_90B:				; CODE XREF: DoSoundQueue+12j
+loc_90B:
 		ld	a, c
 		ld	(1C09h), a
 		xor	a
@@ -1729,11 +1691,7 @@ loc_90B:				; CODE XREF: DoSoundQueue+12j
 ; =============== S U B	R O U T	I N E =======================================
 
 
-SilenceFMChn:				; CODE XREF: StopAllSound+14p
-					; RAM:cfE3_SilenceTrkp
-
-; FUNCTION CHUNK AT 02FC SIZE 0000000A BYTES
-
+SilenceFMChn:
 		call	SetMaxRelRate
 		ld	a, 40h
 		ld	c, 7Fh
@@ -1746,7 +1704,7 @@ SilenceFMChn:				; CODE XREF: StopAllSound+14p
 ; =============== S U B	R O U T	I N E =======================================
 
 
-SetMaxRelRate:				; CODE XREF: SilenceFMChnp RAM:0B96p
+SetMaxRelRate:
 		ld	a, 80h
 		ld	c, 0FFh
 ; End of function SetMaxRelRate
@@ -1755,11 +1713,10 @@ SetMaxRelRate:				; CODE XREF: SilenceFMChnp RAM:0B96p
 ; =============== S U B	R O U T	I N E =======================================
 
 
-SendAllFMOps:				; CODE XREF: DisableSSGEG+4j
-					; SilenceFMChn+7p
+SendAllFMOps:
 		ld	b, 4
 
-loc_932:				; CODE XREF: SendAllFMOps+7j
+loc_932:
 		push	af
 		rst	WriteFMIorII
 		pop	af
@@ -1770,7 +1727,6 @@ loc_932:				; CODE XREF: SendAllFMOps+7j
 
 ; ---------------------------------------------------------------------------
 PSGFreqs:	dw  3FFh, 3FFh,	3FFh, 3FFh, 3FFh, 3FFh,	3FFh, 3FFh, 3FFh, 3F7h,	3BEh, 388h
-					; DATA XREF: TrkUpdate_Proc+35o
 		dw  356h, 326h,	2F9h, 2CEh, 2A5h, 280h,	25Ch, 23Ah, 21Ah, 1FBh,	1DFh, 1C4h
 		dw  1ABh, 193h,	17Dh, 167h, 153h, 140h,	12Eh, 11Dh, 10Dh, 0FEh,	0EFh, 0E2h
 		dw  0D6h, 0C9h,	0BEh, 0B4h, 0A9h, 0A0h,	 97h,  8Fh,  87h,  7Fh,	 78h,  71h
@@ -1778,12 +1734,11 @@ PSGFreqs:	dw  3FFh, 3FFh,	3FFh, 3FFh, 3FFh, 3FFh,	3FFh, 3FFh, 3FFh, 3F7h,	3BEh, 
 		dw   36h,  33h,	 30h,  2Dh,  2Bh,  28h,	 26h,  24h,  22h,  20h,	 1Fh,  1Dh
 		dw   1Bh,  1Ah,	 18h,  17h,  16h,  15h,	 13h,  12h,  11h,  10h,	   0,	 0
 FMFreqs:	dw  284h, 2ABh,	2D3h, 2FEh, 32Dh, 35Ch,	38Fh, 3C5h, 3FFh, 43Ch,	47Ch, 4C0h
-					; DATA XREF: TrkUpdate_Proc+52o
 
 ; =============== S U B	R O U T	I N E =======================================
 
 
-DrumUpdateTrack:			; CODE XREF: UpdateAll+31p
+DrumUpdateTrack:
 		call	TrackTimeout
 		call	z, DrumUpdate_Proc
 		ret
@@ -1793,11 +1748,11 @@ DrumUpdateTrack:			; CODE XREF: UpdateAll+31p
 ; =============== S U B	R O U T	I N E =======================================
 
 
-DrumUpdate_Proc:			; CODE XREF: DrumUpdateTrack+3p
+DrumUpdate_Proc:
 		ld	e, (ix+3)
 		ld	d, (ix+4)
 
-loc_A07:				; CODE XREF: DrumUpdate_Proc+54j
+loc_A07:
 		ld	a, (de)
 		inc	de
 		cp	0E0h
@@ -1807,7 +1762,7 @@ loc_A07:				; CODE XREF: DrumUpdate_Proc+54j
 		dec	de
 		ld	a, (ix+0Dh)
 
-loc_A16:				; CODE XREF: DrumUpdate_Proc+Ej
+loc_A16:
 		ld	(ix+0Dh), a
 		or	a
 		jp	p, loc_A3E
@@ -1824,13 +1779,12 @@ loc_A16:				; CODE XREF: DrumUpdate_Proc+Ej
 		jp	nz, loc_A38
 		ld	(1C3Ch), a
 
-loc_A38:				; CODE XREF: DrumUpdate_Proc+1Fj
-					; DrumUpdate_Proc+31j
+loc_A38:
 		pop	de
 		ld	hl, 1D60h
 		res	2, (hl)
 
-loc_A3E:				; CODE XREF: DrumUpdate_Proc+19j
+loc_A3E:
 		ld	a, (de)
 		inc	de
 		or	a
@@ -1841,20 +1795,20 @@ loc_A3E:				; CODE XREF: DrumUpdate_Proc+19j
 		jp	loc_2A3
 ; ---------------------------------------------------------------------------
 
-cfHandler_Drum:				; CODE XREF: DrumUpdate_Proc+Aj
+cfHandler_Drum:
 		ld	hl, cfReturn_Drum
 		jp	loc_A5B
 ; ---------------------------------------------------------------------------
 
-cfReturn_Drum:				; DATA XREF: DrumUpdate_Proc:cfHandler_Drumo
+cfReturn_Drum:
 		inc	de
 		jp	loc_A07
 ; ---------------------------------------------------------------------------
 
-cfHandler:				; CODE XREF: TrkUpdate_Proc+12j
+cfHandler:
 		ld	hl, cfReturn
 
-loc_A5B:				; CODE XREF: DrumUpdate_Proc+50j
+loc_A5B:
 		push	hl
 		sub	0E0h
 		ld	hl, cfPtrTable
@@ -1865,25 +1819,52 @@ loc_A5B:				; CODE XREF: DrumUpdate_Proc+50j
 
 ; ---------------------------------------------------------------------------
 
-cfReturn:				; DATA XREF: DrumUpdate_Proc:cfHandlero
+cfReturn:
 		inc	de
 		jp	loc_20B
 ; ---------------------------------------------------------------------------
-cfPtrTable:	dw cfE0_Pan, cfE1_Detune, cfE2_SetComm,	cfE3_SilenceTrk
-					; DATA XREF: DrumUpdate_Proc+5Do
-		dw cfE4_PanAnim, cfE5_ChgPFMVol, cfE6_ChgFMVol,	cfE7_Hold
-		dw cfE8_NoteStop, cfE9_SetLFO, cfEA_PlayDAC, cfEB_LoopExit
-		dw cfEC_ChgPSGVol, cfED_FMChnWrite, cfEE_FM1Write, cfEF_SetIns
-		dw cfF0_Mods.betup, cfF1_ModTypePFM, cfF2_StopTrk, cfF3_PSGNoise
-		dw cfF4_ModType, cfF5_SetPSGIns, cfF6_GoTo, cfF7_Loop
-		dw cfF8_GoSub, cfF9_Return, cfFA_TickMult, cfFB_ChgTransp
-		dw cfFC_PitchSlide, cfFD_RawFrqMode, cfFE_SpcFM3Mode, cfMetaCoordFlag
-cfMetaPtrTable:	dw cf00_SetTempo, cf01_PlaySnd,	cf02_MusPause, cf03_CopyMem
-					; DATA XREF: RAM:cfMetaCoordFlago
-		dw cf04_TickMulAll, cf05_SSGEG,	cf06_FMVolEnv
+cfPtrTable:	dw cfE0_Pan
+		dw cfE1_Detune
+		dw cfE2_SetComm
+		dw cfE3_SilenceTrk
+		dw cfE4_PanAnim
+		dw cfE5_ChgPFMVol
+		dw cfE6_ChgFMVol
+		dw cfE7_Hold
+		dw cfE8_NoteStop
+		dw cfE9_SetLFO
+		dw cfEA_PlayDAC
+		dw cfEB_LoopExit
+		dw cfEC_ChgPSGVol
+		dw cfED_FMChnWrite
+		dw cfEE_FM1Write
+		dw cfEF_SetIns
+		dw cfF0_Mods.betup
+		dw cfF1_ModTypePFM
+		dw cfF2_StopTrk
+		dw cfF3_PSGNoise
+		dw cfF4_ModType
+		dw cfF5_SetPSGIns
+		dw cfF6_GoTo
+		dw cfF7_Loop
+		dw cfF8_GoSub
+		dw cfF9_Return
+		dw cfFA_TickMult
+		dw cfFB_ChgTransp
+		dw cfFC_PitchSlide
+		dw cfFD_RawFrqMode
+		dw cfFE_SpcFM3Mode
+		dw cfMetaCoordFlag
+cfMetaPtrTable:	dw cf00_SetTempo
+		dw cf01_PlaySnd
+		dw cf02_MusPause
+		dw cf03_CopyMem
+		dw cf04_TickMulAll
+		dw cf05_SSGEG
+		dw cf06_FMVolEnv
 ; ---------------------------------------------------------------------------
 
-cfEA_PlayDAC:				; DATA XREF: RAM:cfPtrTableo
+cfEA_PlayDAC:
 		ld	(1C3Ch), a
 		ld	hl, 1C40h
 		set	2, (hl)
@@ -1892,11 +1873,10 @@ cfEA_PlayDAC:				; DATA XREF: RAM:cfPtrTableo
 ; =============== S U B	R O U T	I N E =======================================
 
 
-cfE0_Pan:				; CODE XREF: DoPanAnimation+3Fp
-					; DATA XREF: RAM:cfPtrTableo
+cfE0_Pan:
 		ld	c, 3Fh
 
-loc_AC1:				; CODE XREF: RAM:0AD9j
+loc_AC1:
 		ld	a, (ix+0Ah)
 		and	c
 		ex	de, hl
@@ -1911,7 +1891,7 @@ loc_AC1:				; CODE XREF: RAM:0AD9j
 
 ; ---------------------------------------------------------------------------
 
-cfE9_SetLFO:				; DATA XREF: RAM:cfPtrTableo
+cfE9_SetLFO:
 		ld	c, a
 		ld	a, 22h
 		call	WriteFMI
@@ -1920,22 +1900,22 @@ cfE9_SetLFO:				; DATA XREF: RAM:cfPtrTableo
 		jr	loc_AC1
 ; ---------------------------------------------------------------------------
 
-cfE1_Detune:				; DATA XREF: RAM:cfPtrTableo
+cfE1_Detune:
 		ld	(ix+10h), a
 		ret
 ; ---------------------------------------------------------------------------
 
-cfE2_SetComm:				; DATA XREF: RAM:cfPtrTableo
+cfE2_SetComm:
 		ld	(1C16h), a
 		ret
 ; ---------------------------------------------------------------------------
 
-cfE3_SilenceTrk:			; DATA XREF: RAM:cfPtrTableo
+cfE3_SilenceTrk:
 		call	SilenceFMChn
 		jp	cfF2_StopTrk
 ; ---------------------------------------------------------------------------
 
-cfE4_PanAnim:				; DATA XREF: RAM:cfPtrTableo
+cfE4_PanAnim:
 		push	ix
 		pop	hl
 		ld	bc, 11h
@@ -1950,13 +1930,13 @@ cfE4_PanAnim:				; DATA XREF: RAM:cfPtrTableo
 		ret
 ; ---------------------------------------------------------------------------
 
-cfE5_ChgPFMVol:				; DATA XREF: RAM:cfPtrTableo
+cfE5_ChgPFMVol:
 		inc	de
 		add	a, (ix+6)
 		ld	(ix+6),	a
 		ld	a, (de)
 
-cfE6_ChgFMVol:				; DATA XREF: RAM:cfPtrTableo
+cfE6_ChgFMVol:
 		bit	7, (ix+1)
 		ret	nz
 		add	a, (ix+6)
@@ -1965,15 +1945,14 @@ cfE6_ChgFMVol:				; DATA XREF: RAM:cfPtrTableo
 ; =============== S U B	R O U T	I N E =======================================
 
 
-RefreshVolume:				; CODE XREF: SendFMIns+1Cj
-					; DoFading+51p
+RefreshVolume:
 		push	de
 		ld	de, Volume_Ops
 		ld	l, (ix+1Ch)
 		ld	h, (ix+1Dh)
 		ld	b, 4
 
-loc_B1B:				; CODE XREF: RefreshVolume+2Bj
+loc_B1B:
 		ld	a, (hl)
 		or	a
 		jp	p, loc_B33
@@ -1981,17 +1960,17 @@ loc_B1B:				; CODE XREF: RefreshVolume+2Bj
 		jp	m, loc_B28
 		ld	a, 0FFh
 
-loc_B28:				; CODE XREF: RefreshVolume+14j
+loc_B28:
 		push	hl
 		ld	hl, 1C06h
 		add	a, (hl)
 		jp	m, loc_B32
 		ld	a, 0FFh
 
-loc_B32:				; CODE XREF: RefreshVolume+1Ej
+loc_B32:
 		pop	hl
 
-loc_B33:				; CODE XREF: RefreshVolume+Ej
+loc_B33:
 		and	7Fh
 		ld	c, a
 		ld	a, (de)
@@ -2005,20 +1984,20 @@ loc_B33:				; CODE XREF: RefreshVolume+Ej
 
 ; ---------------------------------------------------------------------------
 
-cfE7_Hold:				; DATA XREF: RAM:cfPtrTableo
+cfE7_Hold:
 		set	1, (ix+0)
 		dec	de
 		ret
 ; ---------------------------------------------------------------------------
 
-cfE8_NoteStop:				; DATA XREF: RAM:cfPtrTableo
+cfE8_NoteStop:
 		call	TickMultiplier
 		ld	(ix+1Eh), a
 		ld	(ix+1Fh), a
 		ret
 ; ---------------------------------------------------------------------------
 
-cfEB_LoopExit:				; DATA XREF: RAM:cfPtrTableo
+cfEB_LoopExit:
 		inc	de
 		add	a, 28h
 		ld	c, a
@@ -2033,13 +2012,13 @@ cfEB_LoopExit:				; DATA XREF: RAM:cfPtrTableo
 		ret
 ; ---------------------------------------------------------------------------
 
-loc_B5F:				; CODE XREF: RAM:0B5Aj
+loc_B5F:
 		xor	a
 		ld	(hl), a
 		jp	cfF6_GoTo
 ; ---------------------------------------------------------------------------
 
-cfEC_ChgPSGVol:				; DATA XREF: RAM:cfPtrTableo
+cfEC_ChgPSGVol:
 		bit	7, (ix+1)
 		ret	z
 		res	4, (ix+0)
@@ -2049,18 +2028,18 @@ cfEC_ChgPSGVol:				; DATA XREF: RAM:cfPtrTableo
 		jp	c, loc_B7A
 		ld	a, 0Fh
 
-loc_B7A:				; CODE XREF: RAM:0B75j
+loc_B7A:
 		ld	(ix+6),	a
 		ret
 ; ---------------------------------------------------------------------------
 
-cfED_FMChnWrite:			; DATA XREF: RAM:cfPtrTableo
+cfED_FMChnWrite:
 		call	ReadFMCommand
 		rst	WriteFMIorII
 		ret
 ; ---------------------------------------------------------------------------
 
-cfEE_FM1Write:				; DATA XREF: RAM:cfPtrTableo
+cfEE_FM1Write:
 		call	ReadFMCommand
 		call	WriteFMI
 		ret
@@ -2068,8 +2047,7 @@ cfEE_FM1Write:				; DATA XREF: RAM:cfPtrTableo
 ; =============== S U B	R O U T	I N E =======================================
 
 
-ReadFMCommand:				; CODE XREF: RAM:cfED_FMChnWritep
-					; RAM:cfEE_FM1Writep
+ReadFMCommand:
 		ex	de, hl
 		ld	a, (hl)
 		inc	hl
@@ -2080,7 +2058,7 @@ ReadFMCommand:				; CODE XREF: RAM:cfED_FMChnWritep
 
 ; ---------------------------------------------------------------------------
 
-cfEF_SetIns:				; DATA XREF: RAM:cfPtrTableo
+cfEF_SetIns:
 		bit	7, (ix+1)
 		jr	nz, loc_BC9
 		call	SetMaxRelRate
@@ -2095,7 +2073,7 @@ cfEF_SetIns:				; DATA XREF: RAM:cfPtrTableo
 ; =============== S U B	R O U T	I N E =======================================
 
 
-SetInsFromSong:				; CODE XREF: PlaySoundID+748p
+SetInsFromSong:
 		push	de
 		ld	a, (ix+0Fh)
 		sub	81h
@@ -2112,12 +2090,12 @@ SetInsFromSong:				; CODE XREF: PlaySoundID+748p
 		jr	loc_BC4
 ; ---------------------------------------------------------------------------
 
-loc_BBF:				; CODE XREF: RAM:0B9Ej
+loc_BBF:
 		push	de
 		ld	b, a
 		call	GetFMInsPtr
 
-loc_BC4:				; CODE XREF: SetInsFromSong+17j
+loc_BC4:
 		call	SendFMIns
 		pop	de
 		ret
@@ -2125,14 +2103,14 @@ loc_BC4:				; CODE XREF: SetInsFromSong+17j
 
 ; ---------------------------------------------------------------------------
 
-loc_BC9:				; CODE XREF: RAM:0B94j
+loc_BC9:
 		or	a
 		ret	p
 		inc	de
 		ret
 ; ---------------------------------------------------------------------------
 
-cfF0_Mods.betup:				; DATA XREF: RAM:cfPtrTableo
+cfF0_Mods.betup:
 		ld	(ix+20h), e
 		ld	(ix+21h), d
 		ld	(ix+7),	80h
@@ -2142,21 +2120,18 @@ cfF0_Mods.betup:				; DATA XREF: RAM:cfPtrTableo
 		ret
 ; ---------------------------------------------------------------------------
 
-cfF1_ModTypePFM:			; DATA XREF: RAM:cfPtrTableo
+cfF1_ModTypePFM:
 		inc	de
 		bit	7, (ix+1)
 		jr	nz, cfF4_ModType
 		ld	a, (de)
 
-cfF4_ModType:				; CODE XREF: RAM:0BE0j
-					; DATA XREF: RAM:cfPtrTableo
+cfF4_ModType:
 		ld	(ix+7),	a
 		ret
 ; ---------------------------------------------------------------------------
-; START	OF FUNCTION CHUNK FOR PlaySoundID
 
-cfF2_StopTrk:				; CODE XREF: PlaySoundID+4Dj RAM:0AE6j
-					; DATA XREF: ...
+cfF2_StopTrk:
 		res	7, (ix+0)
 		ld	a, 1Fh
 		ld	(1C15h), a
@@ -2180,12 +2155,11 @@ cfF2_StopTrk:				; CODE XREF: PlaySoundID+4Dj RAM:0AE6j
 		jr	loc_C22
 ; ---------------------------------------------------------------------------
 
-loc_C1E:				; CODE XREF: PlaySoundID+703j
-					; PlaySoundID+70Bj
+loc_C1E:
 		push	hl
 		ld	hl, (1C37h)
 
-loc_C22:				; CODE XREF: PlaySoundID+715j
+loc_C22:
 		pop	ix
 		res	2, (ix+0)
 		bit	7, (ix+1)
@@ -2200,10 +2174,10 @@ loc_C22:				; CODE XREF: PlaySoundID+715j
 		jr	nz, loc_C45
 		and	0Fh
 
-loc_C45:				; CODE XREF: PlaySoundID+73Aj
+loc_C45:
 		call	SendFM3SpcMode
 
-loc_C48:				; CODE XREF: PlaySoundID+732j
+loc_C48:
 		ld	a, (ix+8)
 		or	a
 		jp	p, loc_C54
@@ -2211,7 +2185,7 @@ loc_C48:				; CODE XREF: PlaySoundID+732j
 		jr	loc_C91
 ; ---------------------------------------------------------------------------
 
-loc_C54:				; CODE XREF: PlaySoundID+745j
+loc_C54:
 		ld	b, a
 		push	hl
 		ld	hl, 1C04h
@@ -2255,18 +2229,17 @@ loc_C54:				; CODE XREF: PlaySoundID+745j
 		ld	e, (ix+19h)
 		ld	d, (ix+1Ah)
 
-loc_C91:				; CODE XREF: PlaySoundID+74Bj
+loc_C91:
 		call	Sends.bSGEG
 
-loc_C94:				; CODE XREF: PlaySoundID+6F8j
-					; PlaySoundID+72Bj ...
+loc_C94:
 		pop	ix
 		pop	hl
 		pop	hl
 		ret
 ; ---------------------------------------------------------------------------
 
-loc_C99:				; CODE XREF: PlaySoundID+725j
+loc_C99:
 		bit	0, (ix+0)
 		jr	z, loc_C94
 		ld	a, (ix+1Ah)
@@ -2274,12 +2247,11 @@ loc_C99:				; CODE XREF: PlaySoundID+725j
 		jp	p, loc_CA9
 		ld	(7F11h), a
 
-loc_CA9:				; CODE XREF: PlaySoundID+79Cj
+loc_CA9:
 		jr	loc_C94
-; END OF FUNCTION CHUNK	FOR PlaySoundID
 ; ---------------------------------------------------------------------------
 
-cfF3_PSGNoise:				; DATA XREF: RAM:cfPtrTableo
+cfF3_PSGNoise:
 		bit	2, (ix+1)
 		ret	nz
 		ld	a, 0DFh
@@ -2292,20 +2264,19 @@ cfF3_PSGNoise:				; DATA XREF: RAM:cfPtrTableo
 		res	0, (ix+0)
 		ld	a, 0FFh
 
-loc_CC6:				; CODE XREF: RAM:0CBEj
+loc_CC6:
 		ld	(7F11h), a
 		ret
 ; ---------------------------------------------------------------------------
 
-cfF5_SetPSGIns:				; DATA XREF: RAM:cfPtrTableo
+cfF5_SetPSGIns:
 		bit	7, (ix+1)
 		ret	z
 		ld	(ix+8),	a
 		ret
 ; ---------------------------------------------------------------------------
 
-cfF6_GoTo:				; CODE XREF: RAM:0B61j	RAM:0CEBj
-					; DATA XREF: ...
+cfF6_GoTo:
 		ex	de, hl
 		ld	e, (hl)
 		inc	hl
@@ -2314,7 +2285,7 @@ cfF6_GoTo:				; CODE XREF: RAM:0B61j	RAM:0CEBj
 		ret
 ; ---------------------------------------------------------------------------
 
-cfF7_Loop:				; DATA XREF: RAM:cfPtrTableo
+cfF7_Loop:
 		inc	de
 		add	a, 28h
 		ld	c, a
@@ -2328,7 +2299,7 @@ cfF7_Loop:				; DATA XREF: RAM:cfPtrTableo
 		ld	a, (de)
 		ld	(hl), a
 
-loc_CE9:				; CODE XREF: RAM:0CE5j
+loc_CE9:
 		inc	de
 		dec	(hl)
 		jp	nz, cfF6_GoTo
@@ -2336,7 +2307,7 @@ loc_CE9:				; CODE XREF: RAM:0CE5j
 		ret
 ; ---------------------------------------------------------------------------
 
-cfF8_GoSub:				; DATA XREF: RAM:cfPtrTableo
+cfF8_GoSub:
 		ld	c, a
 		inc	de
 		ld	a, (de)
@@ -2357,7 +2328,7 @@ cfF8_GoSub:				; DATA XREF: RAM:cfPtrTableo
 		ret
 ; ---------------------------------------------------------------------------
 
-cfF9_Return:				; DATA XREF: RAM:cfPtrTableo
+cfF9_Return:
 		push	ix
 		pop	hl
 		ld	c, (ix+9)
@@ -2371,25 +2342,25 @@ cfF9_Return:				; DATA XREF: RAM:cfPtrTableo
 		ret
 ; ---------------------------------------------------------------------------
 
-cfFA_TickMult:				; DATA XREF: RAM:cfPtrTableo
+cfFA_TickMult:
 		ld	(ix+2),	a
 		ret
 ; ---------------------------------------------------------------------------
 
-cfFB_ChgTransp:				; DATA XREF: RAM:cfPtrTableo
+cfFB_ChgTransp:
 		add	a, (ix+5)
 		ld	(ix+5),	a
 		ret
 ; ---------------------------------------------------------------------------
 
-cfFC_PitchSlide:			; DATA XREF: RAM:cfPtrTableo
+cfFC_PitchSlide:
 		cp	1
 		jr	nz, loc_D31
 		set	5, (ix+0)
 		ret
 ; ---------------------------------------------------------------------------
 
-loc_D31:				; CODE XREF: RAM:0D2Aj
+loc_D31:
 		res	1, (ix+0)
 		res	5, (ix+0)
 		xor	a
@@ -2397,19 +2368,19 @@ loc_D31:				; CODE XREF: RAM:0D2Aj
 		ret
 ; ---------------------------------------------------------------------------
 
-cfFD_RawFrqMode:			; DATA XREF: RAM:cfPtrTableo
+cfFD_RawFrqMode:
 		cp	1
 		jr	nz, loc_D47
 		set	3, (ix+0)
 		ret
 ; ---------------------------------------------------------------------------
 
-loc_D47:				; CODE XREF: RAM:0D40j
+loc_D47:
 		res	3, (ix+0)
 		ret
 ; ---------------------------------------------------------------------------
 
-cfFE_SpcFM3Mode:			; DATA XREF: RAM:cfPtrTableo
+cfFE_SpcFM3Mode:
 		ld	a, (ix+1)
 		cp	2
 		jr	nz, SpcFM3_skip
@@ -2418,7 +2389,7 @@ cfFE_SpcFM3Mode:			; DATA XREF: RAM:cfPtrTableo
 		call	GetFM3FreqPtr
 		ld	b, 4
 
-loc_D5D:				; CODE XREF: RAM:0D6Fj
+loc_D5D:
 		push	bc
 		ld	a, (hl)
 		inc	hl
@@ -2440,7 +2411,7 @@ loc_D5D:				; CODE XREF: RAM:0D6Fj
 ; =============== S U B	R O U T	I N E =======================================
 
 
-SendFM3SpcMode:				; CODE XREF: PlaySoundID:loc_C45p
+SendFM3SpcMode:
 		ld	(1C12h), a
 		ld	c, a
 		ld	a, 27h
@@ -2450,16 +2421,16 @@ SendFM3SpcMode:				; CODE XREF: PlaySoundID:loc_C45p
 
 ; ---------------------------------------------------------------------------
 
-SpcFM3_skip:				; CODE XREF: RAM:0D51j
+SpcFM3_skip:
 		inc	de
 		inc	de
 		inc	de
 		ret
 ; ---------------------------------------------------------------------------
-FM3_FreqVals:	dw 0, 132h, 18Eh, 1E4h,	234h, 27Eh, 2C2h, 2F0h ; DATA XREF: RAM:0D61o
+FM3_FreqVals:	dw 0, 132h, 18Eh, 1E4h,	234h, 27Eh, 2C2h, 2F0h
 ; ---------------------------------------------------------------------------
 
-cfMetaCoordFlag:			; DATA XREF: RAM:cfPtrTableo
+cfMetaCoordFlag:
 		ld	hl, cfMetaPtrTable
 		rst	ReadPtrTable
 		inc	de
@@ -2467,18 +2438,18 @@ cfMetaCoordFlag:			; DATA XREF: RAM:cfPtrTableo
 		jp	(hl)
 ; ---------------------------------------------------------------------------
 
-cf00_SetTempo:				; DATA XREF: RAM:cfMetaPtrTableo
+cf00_SetTempo:
 		ld	(1C14h), a
 		ld	(1C13h), a
 		ret
 ; ---------------------------------------------------------------------------
 
-cf01_PlaySnd:				; DATA XREF: RAM:cfMetaPtrTableo
+cf01_PlaySnd:
 		ld	(1C09h), a
 		ret
 ; ---------------------------------------------------------------------------
 
-cf02_MusPause:				; DATA XREF: RAM:cfMetaPtrTableo
+cf02_MusPause:
 		ld	(1C11h), a
 		or	a
 		jr	z, loc_DC8
@@ -2490,7 +2461,7 @@ loc_DAE:
 		ld	b, 0Ah
 		ld	de, 30h
 
-loc_DB7:				; CODE XREF: RAM:0DC0j
+loc_DB7:
 		res	7, (ix+0)
 		call	SendNoteOff
 		add	ix, de
@@ -2500,14 +2471,14 @@ loc_DB7:				; CODE XREF: RAM:0DC0j
 		jp	SilencePSG
 ; ---------------------------------------------------------------------------
 
-loc_DC8:				; CODE XREF: RAM:0DA9j
+loc_DC8:
 		push	ix
 		push	de
 		ld	ix, 1C40h
 		ld	b, 0Ah
 		ld	de, 30h
 
-loc_DD4:				; CODE XREF: RAM:0DDAj
+loc_DD4:
 		set	7, (ix+0)
 		add	ix, de
 		djnz	loc_DD4
@@ -2516,7 +2487,7 @@ loc_DD4:				; CODE XREF: RAM:0DDAj
 		ret
 ; ---------------------------------------------------------------------------
 
-cf03_CopyMem:				; DATA XREF: RAM:cfMetaPtrTableo
+cf03_CopyMem:
 		ex	de, hl
 		ld	e, (hl)
 		inc	hl
@@ -2531,11 +2502,11 @@ cf03_CopyMem:				; DATA XREF: RAM:cfMetaPtrTableo
 		ret
 ; ---------------------------------------------------------------------------
 
-cf04_TickMulAll:			; DATA XREF: RAM:cfMetaPtrTableo
+cf04_TickMulAll:
 		ld	b, 0Ah
 		ld	hl, 1C42h
 
-loc_DF3:				; CODE XREF: RAM:0DFAj
+loc_DF3:
 		push	bc
 		ld	bc, 30h
 		ld	(hl), a
@@ -2545,7 +2516,7 @@ loc_DF3:				; CODE XREF: RAM:0DFAj
 		ret
 ; ---------------------------------------------------------------------------
 
-cf05_SSGEG:				; DATA XREF: RAM:cfMetaPtrTableo
+cf05_SSGEG:
 		ld	(ix+18h), 80h
 		ld	(ix+19h), e
 		ld	(ix+1Ah), d
@@ -2553,11 +2524,11 @@ cf05_SSGEG:				; DATA XREF: RAM:cfMetaPtrTableo
 ; =============== S U B	R O U T	I N E =======================================
 
 
-Sends.bSGEG:				; CODE XREF: PlaySoundID:loc_C91p
+Sends.bSGEG:
 		ld	hl, SSGEG_Ops
 		ld	b, 4
 
-loc_E0C:				; CODE XREF: Sends.bSGEG+Bj
+loc_E0C:
 		ld	a, (de)
 		inc	de
 		ld	c, a
@@ -2571,16 +2542,15 @@ loc_E0C:				; CODE XREF: Sends.bSGEG+Bj
 
 ; ---------------------------------------------------------------------------
 
-cf06_FMVolEnv:				; DATA XREF: RAM:cfMetaPtrTableo
+cf06_FMVolEnv:
 		ld	(ix+18h), a
 		inc	de
 		ld	a, (de)
 		ld	(ix+19h), a
 		ret
 ; ---------------------------------------------------------------------------
-; START	OF FUNCTION CHUNK FOR UpdateTrack
 
-UpdatePSGTrk:				; CODE XREF: UpdateTrack+4j
+UpdatePSGTrk:
 		call	TrackTimeout
 		jr	nz, loc_E31
 		call	TrkUpdate_Proc
@@ -2590,15 +2560,14 @@ UpdatePSGTrk:				; CODE XREF: UpdateTrack+4j
 		jr	loc_E3D
 ; ---------------------------------------------------------------------------
 
-loc_E31:				; CODE XREF: UpdateTrack+CC4j
+loc_E31:
 		ld	a, (ix+1Eh)
 		or	a
 		jr	z, loc_E3D
 		dec	(ix+1Eh)
 		jp	z, SetRest
 
-loc_E3D:				; CODE XREF: UpdateTrack+CD1j
-					; UpdateTrack+CD7j
+loc_E3D:
 		call	DoPitchSlide
 		call	DoModulation
 		bit	2, (ix+0)
@@ -2626,7 +2595,7 @@ loc_E3D:				; CODE XREF: UpdateTrack+CD1j
 		call	DoPSGVolEnv
 		ld	c, a
 
-loc_E6E:				; CODE XREF: UpdateTrack+D05j
+loc_E6E:
 		bit	4, (ix+0)
 		ret	nz
 		ld	a, (ix+6)
@@ -2635,7 +2604,7 @@ loc_E6E:				; CODE XREF: UpdateTrack+D05j
 		jr	z, loc_E7D
 		ld	a, 0Fh
 
-loc_E7D:				; CODE XREF: UpdateTrack+D1Bj
+loc_E7D:
 		or	(ix+1)
 		add	a, 10h
 		bit	0, (ix+0)
@@ -2644,27 +2613,19 @@ loc_E7D:				; CODE XREF: UpdateTrack+D1Bj
 		ret
 ; ---------------------------------------------------------------------------
 
-loc_E8C:				; CODE XREF: UpdateTrack+D28j
+loc_E8C:
 		add	a, 20h
 		ld	(7F11h), a
 		ret
-; END OF FUNCTION CHUNK	FOR UpdateTrack
 ; ---------------------------------------------------------------------------
-; START	OF FUNCTION CHUNK FOR DoPSGVolEnv
 
-loc_E92:				; CODE XREF: DoPSGVolEnv+1Bj
-					; DoPSGVolEnv+26j
+loc_E92:
 		ld	(ix+17h), a
-; END OF FUNCTION CHUNK	FOR DoPSGVolEnv
 
 ; =============== S U B	R O U T	I N E =======================================
 
 
-DoPSGVolEnv:				; CODE XREF: DoFMVolEnv+Bp
-					; UpdateTrack+D0Cp
-
-; FUNCTION CHUNK AT 0E92 SIZE 00000003 BYTES
-
+DoPSGVolEnv:
 		push	hl
 		ld	c, (ix+17h)
 		ld	b, 0
@@ -2684,24 +2645,24 @@ DoPSGVolEnv:				; CODE XREF: DoFMVolEnv+Bp
 		jr	loc_E92
 ; ---------------------------------------------------------------------------
 
-VolEnv_Off:				; CODE XREF: DoPSGVolEnv+Fj
+VolEnv_Off:
 		set	4, (ix+0)
 		pop	hl
 		jp	SetRest
 ; ---------------------------------------------------------------------------
 
-VolEnv_Reset:				; CODE XREF: DoPSGVolEnv+17j
+VolEnv_Reset:
 		xor	a
 		jr	loc_E92
 ; ---------------------------------------------------------------------------
 
-VolEnv_Hold:				; CODE XREF: DoPSGVolEnv+13j
+VolEnv_Hold:
 		pop	hl
 		set	4, (ix+0)
 		ret
 ; ---------------------------------------------------------------------------
 
-VolEnv_Next:				; CODE XREF: DoPSGVolEnv+Bj
+VolEnv_Next:
 		inc	(ix+17h)
 		ret
 ; End of function DoPSGVolEnv
@@ -2710,8 +2671,7 @@ VolEnv_Next:				; CODE XREF: DoPSGVolEnv+Bj
 ; =============== S U B	R O U T	I N E =======================================
 
 
-SetRest:				; CODE XREF: TrkUpdate_Proc+2Dp
-					; UpdateTrack+CDCj ...
+SetRest:
 		set	4, (ix+0)
 		bit	2, (ix+0)
 		ret	nz
@@ -2721,7 +2681,7 @@ SetRest:				; CODE XREF: TrkUpdate_Proc+2Dp
 ; =============== S U B	R O U T	I N E =======================================
 
 
-SilencePSGChn:				; CODE XREF: GetSFXChnPtrs+Ep
+SilencePSGChn:
 		ld	a, 1Fh
 		add	a, (ix+1)
 		or	a
@@ -2736,24 +2696,23 @@ SilencePSGChn:				; CODE XREF: GetSFXChnPtrs+Ep
 
 ; ---------------------------------------------------------------------------
 
-loc_EE5:				; CODE XREF: RAM:00E6j	RAM:0F61j
+loc_EE5:
 		di
 		ld	a, 2Bh
 		ld	c, 0
 		call	WriteFMI
 
-loc_EED:				; CODE XREF: RAM:0092j	RAM:0EF0j
+loc_EED:
 		ei
 		ld	a, d
 		or	e
 		jr	z, loc_EED
 		ei
 
-DACLoop:				; CODE XREF: RAM:0F55j
-					; DATA XREF: RAM:0062w
+DACLoop:
 		ld	b, 0Ah
 
-loc_EF5:				; CODE XREF: RAM:loc_EF5j
+loc_EF5:
 		djnz	$
 		ld	a, (hl)
 		rlca
@@ -2764,7 +2723,7 @@ loc_EF5:				; CODE XREF: RAM:loc_EF5j
 		ld	(loc_F02+2), a
 		ld	a, c
 
-loc_F02:				; DATA XREF: RAM:0EFEw
+loc_F02:
 		add	a, (iy+0)
 		ld	c, a
 		ld	a, 2Ah
@@ -2774,17 +2733,17 @@ loc_F02:				; DATA XREF: RAM:0EFEw
 		ld	(ym2612_d0), a
 		ei
 
-loc_F11:				; DATA XREF: RAM:0065w
+loc_F11:
 		ld	b, 0Ah
 
-loc_F13:				; CODE XREF: RAM:loc_F13j
+loc_F13:
 		djnz	$
 		ld	a, (hl)
 		and	0Fh
 		ld	(loc_F1C+2), a
 		ld	a, c
 
-loc_F1C:				; DATA XREF: RAM:0F18w
+loc_F1C:
 		add	a, (iy+0)
 		ld	c, a
 		ld	a, 2Ah
@@ -2823,7 +2782,7 @@ loc_F1C:				; DATA XREF: RAM:0F18w
 		exx
 		ei
 
-locb_F52:				; CODE XREF: RAM:0F2Ej
+locb_F52:
 		dec	de
 		ld	a, d
 		or	e
@@ -2834,25 +2793,25 @@ locb_F52:				; CODE XREF: RAM:0F2Ej
 		ld	(1C3Ch), a
 		jp	loc_EE5
 ; ---------------------------------------------------------------------------
-DPCMData:	db    0,   1,	2,   4,	  8, 10h, 20h, 40h ; DATA XREF:	RAM:00E1o
+DPCMData:	db    0,   1,	2,   4,	  8, 10h, 20h, 40h
 		db  80h,0FFh,0FEh,0FCh,0F8h,0F0h,0E0h,0C0h
 VolEnvPtrs:	dw byte_F8C,byte_F8E,byte_F95,byte_F9D,byte_FA9,byte_FB4
 		dw byte_FC3,byte_FCC,byte_FDD,byte_FE8,byte_FFD,byte_1007
-byte_F8C:	db   2,83h		; DATA XREF: RAM:VolEnvPtrso
-byte_F8E:	db   0,	 2,  4,	 6,  8,10h,83h ; DATA XREF: RAM:VolEnvPtrso
-byte_F95:	db   2,	 1,  0,	 0,  1,	 1,  2,81h ; DATA XREF:	RAM:VolEnvPtrso
+byte_F8C:	db   2,83h
+byte_F8E:	db   0,	 2,  4,	 6,  8,10h,83h
+byte_F95:	db   2,	 1,  0,	 0,  1,	 1,  2,81h
 byte_F9D:	db   4,	 3,  2,	 1,  0,	 0,  1,	 1,  2,	 2,  2,81h
-byte_FA9:	db   3,	 0,  1,	 1,  1,	 2,  3,	 4,  4,	 5,81h ; DATA XREF: RAM:VolEnvPtrso
+byte_FA9:	db   3,	 0,  1,	 1,  1,	 2,  3,	 4,  4,	 5,81h
 byte_FB4:	db   0,	 0,  1,	 1,  2,	 3,  4,	 5,  5,	 6,  8,	 7,  7
 		db   6,81h
-byte_FC3:	db   1,0Ch,  3,0Fh,  2,	 7,  3,0Fh,80h ; DATA XREF: RAM:VolEnvPtrso
+byte_FC3:	db   1,0Ch,  3,0Fh,  2,	 7,  3,0Fh,80h
 byte_FCC:	db   0,	 0,  0,	 2,  3,	 3,  4,	 5,  6,	 7,  8,	 9,0Ah
 		db 0Bh,0Eh,0Fh,83h
-byte_FDD:	db   3,	 2,  1,	 1,  0,	 0,  1,	 2,  3,	 4,81h ; DATA XREF: RAM:VolEnvPtrso
+byte_FDD:	db   3,	 2,  1,	 1,  0,	 0,  1,	 2,  3,	 4,81h
 byte_FE8:	db   1,	 0,  0,	 0,  0,	 1,  1,	 1,  2,	 2,  2,	 3,  3
 		db   3,	 3,  4,	 4,  4,	 5,  5,81h
-byte_FFD:	db 10h,20h,30h,40h,30h,20h,10h,	 0,0F0h,80h ; DATA XREF: RAM:VolEnvPtrso
-byte_1007:	db   0,	 0,  1,	 1,  3,	 3,  4,	 5,83h ; DATA XREF: RAM:VolEnvPtrso
+byte_FFD:	db 10h,20h,30h,40h,30h,20h,10h,	 0,0F0h,80h
+byte_1007:	db   0,	 0,  1,	 1,  3,	 3,  4,	 5,83h
 ModEnvPtrs:	dw byte_1024, byte_1030, byte_103D, byte_1049, byte_108B
 		dw byte_10C0, byte_10FD, byte_1117, byte_1131, byte_1139
 byte_1024:	db  40h, 60h, 70h, 60h,	50h, 30h, 10h,-10h,-30h,-50h,-70h
@@ -2890,19 +2849,18 @@ byte_1117:	db   -2,  -1,	0,   0,	  0,   0,   0,	 0,   0,   0,	0
 		db    0,   0,	0,   0,	  0,   0,   0,	 1,   1,   0,	0
 		db   -1,  -1
 		db  82h, 11h
-byte_1131:	db    3,   2,	1,   0,	  0,   0,   1 ;	DATA XREF: RAM:ModEnvPtrso
+byte_1131:	db    3,   2,	1,   0,	  0,   0,   1
 		db  81h
 byte_1139:	db    0,   0,	0,   0,	  1,   1,   1,	 1,   2,   2,	1
 		db    1,   1,	0,   0,	  0
 		db  84h, 01h, 82h, 04h
-MusicBanks:	db 02h,	02h, 02h, 02h, 02h, 02h	; DATA XREF: PlaySoundID+59o
-MusicPtrs:	dw 8000h, 888Ch, 8BDAh,	9210h, 972Bh, 9B10h ; DATA XREF: PlaySoundID+7Co
+MusicBanks:	db 02h,	02h, 02h, 02h, 02h, 02h
+MusicPtrs:	dw 8000h, 888Ch, 8BDAh,	9210h, 972Bh, 9B10h
 SFXPtrs:	dw 0C000h, 0C033h, 0C09Ah, 0C0C7h, 0C0EFh, 0C124h, 0C165h
 		dw 0C193h, 0C1E4h, 0C23Fh, 0C269h, 0C28Dh, 0C2B1h, 0C2D5h
 		dw 0C2F9h, 0C31Dh
-SpcSFXPtrs:	dw 0C000h, 0C033h, 0C0C7h ; DATA XREF: PlaySoundID+12Eo
+SpcSFXPtrs:	dw 0C000h, 0C033h, 0C0C7h
 SndPriorities:	db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
-					; DATA XREF: DoSoundQueue+17o
 		db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
@@ -2914,16 +2872,16 @@ SndPriorities:	db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 DACTablePtrs:	dw stru_11EC, stru_11F2, stru_11F8, stru_11FE, stru_1204
 		dw stru_120A, stru_1210
 stru_11EC:	db 30h, 4
-		dw 1D4h, 8000h ; DATA XREF: RAM:DACTablePtrso
+		dw 1D4h, 8000h
 stru_11F2:	db 0Ah, 4
-		dw 0DDEh, 81D4h	; DATA XREF: RAM:DACTablePtrso
+		dw 0DDEh, 81D4h
 stru_11F8:	db 0Ah, 4
-		dw 6C0h, 8FB2h ; DATA XREF: RAM:DACTablePtrso
+		dw 6C0h, 8FB2h
 stru_11FE:	db 0Eh, 4
-		dw 6C0h, 8FB2h ; DATA XREF: RAM:DACTablePtrso
+		dw 6C0h, 8FB2h
 stru_1204:	db 10h, 4
-		dw 6C0h, 8FB2h ; DATA XREF: RAM:DACTablePtrso
+		dw 6C0h, 8FB2h
 stru_120A:	db 0Ah, 4
-		dw 157Ch, 9672h	; DATA XREF: RAM:DACTablePtrso
+		dw 157Ch, 9672h
 stru_1210:	db 0Ah, 4
-		dw 18B4h, 0ABEEh ; DATA	XREF: RAM:DACTablePtrso
+		dw 18B4h, 0ABEEh
