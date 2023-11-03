@@ -309,23 +309,23 @@ ErrorTrap:
 ; ---------------------------------------------------------------------------
 VDPSetupArray:	dc.w $8004
 		dc.w $8104	; Display mode
-		dc.w $8230      ; FG Scroll
+		dc.w $8230	; FG Scroll
 		dc.w $832C	; Window
-		dc.w $8407      ; BG Scroll
+		dc.w $8407	; BG Scroll
 		dc.w $8578	; Sprite Table
 		dc.w $8600
 		dc.w $8730	; Background Colour (Backdrop)
 		dc.w $8800
 		dc.w $8900
-		dc.w $8A00      ; Horizontal Interupt
+		dc.w $8A00	; Horizontal Interupt
 		dc.w $8B00	; Scroll type
-		dc.w $8C81      ; 40 Cell Display
+		dc.w $8C81	; 40 Cell Display
 		dc.w $8D34	; Horizontal Scroll
 		dc.w $8E00
 		dc.w $8F02	; VDP Increment on
-		dc.w $9001      ; 64 Cell Display (Out of screen extended)
+		dc.w $9001	; 64 Cell Display (Out of screen extended)
 		dc.w $9100	; Window horizontal position
-		dc.w $9200      ; Window vertical position
+		dc.w $9200	; Window vertical position
 		dc.w 0
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -4014,7 +4014,7 @@ loc_5144:				; CODE XREF: ROM:00005146j
 		movem.l	(sp)+,d2-d6/a0-a1
 		rts
 ; ---------------------------------------------------------------------------
-loc_5152:	dc.b $27 ; "            ; DATA XREF: ROM:loc_50FCo
+loc_5152:	dc.b $27
 		dc.b $10
 		dc.b   3
 		dc.b $E8 ; è
