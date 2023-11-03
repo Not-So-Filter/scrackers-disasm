@@ -295,10 +295,10 @@ MAINPROGLOOP:
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 UnknownRout000:
-		rte						; return
+		rte
 ; ---------------------------------------------------------------------------
 UnknownRout001:
-		rts						; return
+		rts
 ; ---------------------------------------------------------------------------
 ErrorTrap:
 		nop						; Delay
@@ -361,7 +361,7 @@ VDPClr_SetDMA:
 		startZ80
 		move.l	#$C0000000,(vdp_control_port).l			; set VDP in CRam write mode
 		move.w	($FFFFD3E4).w,-4(a0)			; move colour value in ram to VDP
-		rts						; return
+		rts
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -423,7 +423,7 @@ loc_542:
 		move.w	d1,(a4)
 		startZ80
 		clr.w	($FFFFD4F8).w
-		rts						; return
+		rts
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -2813,7 +2813,7 @@ W1C6A_loc00:
 		move.w	d7,d1
 		andi.w	#$F,d1
 		sub.w	d1,d0
-		subq.w  #1,d0
+		subq.w	#1,d0
 		bpl.s	loc_1C24
 		rts
 ; ---------------------------------------------------------------------------
@@ -4068,44 +4068,44 @@ UR002Return:
 ; subroutine to load the Z80
 ; ---------------------------------------------------------------------------
 
-Z80Load:
-		move	#$2700,sr				; set the stack register (Stopping VBlank)
+SoundDriverLoad:
+		move	#$2700,sr	; set the stack register (Stopping VBlank)
 		stopZ80
 		waitZ80
-		move.w	#$100,(z80_reset).l			; reset the Z80
-		lea	Z80_Driver(pc),a0				; load Z80 location on Rom to a0
-		lea	(z80_ram).l,a1				; load current Z80 Ram
+		move.w	#$100,(z80_reset).l
+		lea	Z80_Driver(pc),a0	; load Z80 location on Rom to a0
+		lea	(z80_ram).l,a1		; load current Z80 Ram
 		move.w	#(Z80_Driver_end-Z80_Driver)-1,d0	; set repeat times
 
-Z80DumpRep:
-		move.b	(a0)+,(a1)+				; dump Z80 to Z80 Ram
-		dbf	d0,Z80DumpRep				; repeat til Z80 is dumped
+.dumpRAM:
+		move.b	(a0)+,(a1)+	; dump Z80 to Z80 Ram
+		dbf	d0,.dumpRAM	; repeat til Z80 is dumped
 
-Z80WaitEnd:
-		move.b	#0,(a1)+				; clear the remaining Z80 space
-		cmpa.l	#z80_ram_end,a1				; has the end of Z80 been reached?
-		bne.s	Z80WaitEnd				; if not, loop til it has
+.wait:
+		move.b	#0,(a1)+	; clear the remaining Z80 space
+		cmpa.l	#z80_ram_end,a1	; has the end of Z80 been reached?
+		bne.s	.wait	; if not, loop til it has
 		move.w	#0,(z80_reset).l
-		moveq	#$7F,d0					; set repeat times
+		moveq	#$7F,d0		; set repeat times
 
-Z80Lag:
-		dbf	d0,Z80Lag				; loop? (I think this simply lags the system for a short while)
+.lagSystem:
+		dbf	d0,.lagSystem	; this lags the Z80
 		startZ80
-		move.w	#$100,(z80_reset).l			; reset the Z80
-		move	#$2300,sr				; set the stack register (Starting VBlank)
-		rts						; return
+		move.w	#$100,(z80_reset).l
+		move	#$2300,sr	; set the stack register (Starting VBlank)
+		rts
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 Z80_Driver:
 		save
-		phase	0
-		cpu z80
-		listing purecode
-		include	"sound\Z80.asm"				; Zilog	Z80 ROM
+		phase	0	; set Z80 location to 0
+		cpu z80		; use Z80 cpu
+		listing purecode	; add to listing file
+		include	"sound\Z80.asm"
 		restore
 		padding	off
-		dephase
+		dephase		; reset to 68K location
 Z80_Driver_end:	even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -4116,10 +4116,9 @@ Z80_Driver_end:	even
 PlayMusic:
 		stopZ80
 		waitZ80
-		move.b	d0,(z80_soundqueue0).l				; save BGM number to Z80
+		move.b	d0,(z80_soundqueue0).l	; save BGM number to Z80
 		startZ80
-		rts						; return
-
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sega Screen (Mode: 00)
@@ -4130,7 +4129,7 @@ SegaScreen:
 		lea	loc_6EB4(pc),a0
 		move.l	a0,($FFFFC832).w
 		movem.l	(sp)+,a0
-		jsr	(Z80Load).l				; load the Z80
+		jsr	(SoundDriverLoad).l	; load the Z80 Sound Driver
 		lea	loc_6442(pc),a0
 		jsr	(sub_8D0).w
 		bra.s	SegaContin
@@ -4272,7 +4271,7 @@ loc_654E:				; CODE XREF: ROM:00006546j
 		move.w	($FFFFD3E8).w,($FFFFFAC6).w		; save first colour to storage
 		move.w	#$EEE,($FFFFD3E8).w			; save white to colour palette
 		addq.w	#4,($FFFFD824).w			; increase sub mode
-		rts						; return
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sega Screen palette cycling routine
@@ -4296,7 +4295,7 @@ loc_6594:
 		bne.w	MultiReturn				; if not, branch to return
 		move.w	#$40,($FFFFFAC4).w			; set colour number to 40
 		addq.w	#4,($FFFFD824).w			; increase sub mode
-		rts						; return
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ;
@@ -4340,7 +4339,7 @@ sub_6612:
 		rol.b	#2,d0					; roll left 2 bits
 		andi.w	#2,d0					; get only the original 1st bit that was in version number
 		move.w	loc_6626(pc,d0.w),($FFFFD402).w		; save correct routine (depending on version number) to routine location storage
-		rts						; return
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ;
@@ -4348,7 +4347,7 @@ sub_6612:
 
 loc_6626:
 ;		ori.w	#$EE,d0 ; makes the "TM" on the Sega screen white
-		dc.b    $00, $00, $0E, $EE
+		dc.b	$00, $00, $0E, $EE
 
 loc_662A:
 		lea	(vdp_data_port).l,a3
@@ -5540,16 +5539,16 @@ sub_75BC:				; CODE XREF: ROM:00007594p
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ARTNEM_MainMenusText:
-		binclude  "artnem\Main Menu Text.bin"
+		binclude	"artnem\Main Menu Text.bin"
 		even
 MAPUNC_TitleMenu_1:
-		binclude  "Uncompressed\MapuncTitleMenu01.bin"		; Uncompressed mappings	for the	title screen banner
+		binclude	"Uncompressed\MapuncTitleMenu01.bin"		; Uncompressed mappings	for the	title screen banner
 		even
 MAPUNC_TitleMenu_2:
-		binclude  "Uncompressed\MapuncTitleMenu02.bin"		; Uncompressed mappings	for the	title menu selection
+		binclude	"Uncompressed\MapuncTitleMenu02.bin"		; Uncompressed mappings	for the	title menu selection
 		even
 MAPUNC_TitleMenu_3:
-		binclude  "Uncompressed\MapuncTitleMenu03.bin"		; Uncompressed mappings	for the	title menu (1ST	ROM 19940401)
+		binclude	"Uncompressed\MapuncTitleMenu03.bin"		; Uncompressed mappings	for the	title menu (1ST	ROM 19940401)
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -6120,7 +6119,7 @@ PALCY_ElectricField_1:dc.w $CE0
 		dc.w $AC2
 		dc.w $880
 		dc.w $642
-        	dc.w $EAE
+		dc.w $EAE
 		dc.w $A8E
 		dc.w $86A
 		dc.w $626
@@ -6679,7 +6678,8 @@ loc_896C:
 		jsr	(sub_F94A).l
 		bra.w	loc_89E0
 ; ---------------------------------------------------------------------------
-PAL_PrimaryColours:binclude  "Palettes\PalPrimaryColours.bin" ; DATA XREF: ROM:000088C8o
+PAL_PrimaryColours:
+		binclude	"Palettes\PalPrimaryColours.bin" ; DATA XREF: ROM:000088C8o
 		even
 loc_89C8:	dc.w $8230		; DATA XREF: ROM:000088A4o
 		dc.w $832C
@@ -7254,22 +7254,22 @@ sub_9098:				; CODE XREF: ROM:00009070p
 
 ; ---------------------------------------------------------------------------
 ARTNEM_MenuSelectorBorder:
-		binclude  "artnem\Menu Select Border.bin"	; Selector Art for Select Menu screen
+		binclude	"artnem\Menu Select Border.bin"	; Selector Art for Select Menu screen
 		even
 MAPUNC_SelectMenu_1:
-		binclude  "Uncompressed\MapuncSelectMenu01.bin"		; Uncompressed mappings	for the	select menu (Top W? numbers that scroll)
+		binclude	"Uncompressed\MapuncSelectMenu01.bin"		; Uncompressed mappings	for the	select menu (Top W? numbers that scroll)
 		even
 MAPUNC_SelectMenu_2:
-		binclude  "Uncompressed\MapuncSelectMenu02.bin"		; Uncompressed mappings for the select menu (World ? words)
+		binclude	"Uncompressed\MapuncSelectMenu02.bin"		; Uncompressed mappings for the select menu (World ? words)
 		even
 MAPUNC_SelectMenu_3:
-		binclude  "Uncompressed\MapuncSelectMenu03.bin"		; Uncompressed mappings	for the	select menu (Attraction	LV.? words)
+		binclude	"Uncompressed\MapuncSelectMenu03.bin"		; Uncompressed mappings	for the	select menu (Attraction	LV.? words)
 		even
 MAPUNC_SelectMenu_4:
-		binclude  "Uncompressed\MapuncSelectMenu04.bin"		; Uncompressed mappings	for the	select menu (Field/Attraction words)
+		binclude	"Uncompressed\MapuncSelectMenu04.bin"		; Uncompressed mappings	for the	select menu (Field/Attraction words)
 		even
 MAPUNC_SelectMenu_5:
-		binclude  "Uncompressed\MapuncSelectMenu05.bin"		; Uncompressed mappings	for the	select menu (Special Stage word)
+		binclude	"Uncompressed\MapuncSelectMenu05.bin"		; Uncompressed mappings	for the	select menu (Special Stage word)
 		even
 ; ---------------------------------------------------------------------------
 
@@ -8232,7 +8232,8 @@ loc_9C4A:	dc.b   0		; DATA XREF: ROM:000096C8o
 SSZ_MapBGLocs:	dc.l MAPENI_SSZ16x16_BG	; DATA XREF: ROM:000096E0o
 		dc.l MAPENI_SSZ128x128_BG
 		dc.l MAPENI_SSZLayout_BG
-PAL_SpeedSliderZone:binclude  "Palettes\PalSpeedSliderZone.bin" ; DATA XREF: ROM:0000968Ao
+PAL_SpeedSliderZone:
+		binclude	"Palettes\PalSpeedSliderZone.bin" ; DATA XREF: ROM:0000968Ao
 		even
 TTZ_ArtLocs:	dc.l ARTNEM_TTZ8x8_FG	; DATA XREF: ROM:000098BAo
 		dc.l ARTNEM_TTZ8x8_BG
@@ -8279,7 +8280,8 @@ loc_9CD2:	dc.b   0		; DATA XREF: ROM:000098DEo
 TTZ_MapBGLocs:	dc.l MAPENI_TTZ16x16_BG	; DATA XREF: ROM:000098F6o
 		dc.l MAPENI_TTZ128x128_BG
 		dc.l MAPENI_TTZLayout_BG
-PAL_TechnoTowerZoneUnused:binclude  "Palettes\PalTechnoTowerZoneUnused.bin"
+PAL_TechnoTowerZoneUnused:
+		binclude	"Palettes\PalTechnoTowerZoneUnused.bin"
 		even
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -11832,8 +11834,8 @@ loc_BC8A:
 		ori.w	#$80,4(a6)
 
 sub_BC90:
-		move.w  $2A(a6),d0
-		addi.w  #$20,d0
+		move.w	$2A(a6),d0
+		addi.w	#$20,d0
 		cmpi.w	#$500,d0
 		bcs.s	loc_BCA0
 		moveq	#0,d0
@@ -11892,9 +11894,9 @@ loc_BCF0:
 		rts
 ; ---------------------------------------------------------------------------
 word_BD36:	dc.w $FFDC
-           	dc.w $FFF8
-           	dc.w 0
-           	dc.w 0
+		dc.w $FFF8
+		dc.w 0
+		dc.w 0
 		dc.w 7
 		dc.w 7
 		dc.w $48
@@ -19253,7 +19255,7 @@ ARTUNC_HUD:
 	even
 ; ---------------------------------------------------------------------------
 ARTNEM_RingTetherStarsUnused:
-	binclude  "artnem\Unused - Ring Tether Stars.bin"	; unused Ring tether stars
+	binclude	"artnem\Unused - Ring Tether Stars.bin"	; unused Ring tether stars
 	even
 ; ---------------------------------------------------------------------------
 ARTNEM_SSZ8x8_FG:
@@ -19261,15 +19263,15 @@ ARTNEM_SSZ8x8_FG:
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_SSZ16x16_FG:
-	binclude  "map16\SSZ FG.bin"		; 16x16 blocks for SSZ FG
+	binclude	"map16\SSZ FG.bin"		; 16x16 blocks for SSZ FG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_SSZ128x128_FG:
-	binclude  "map128\SSZ FG.bin"		; 128x128 chunks for SSZ FG
+	binclude	"map128\SSZ FG.bin"		; 128x128 chunks for SSZ FG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_SSZLayout_FG:
-	binclude  "levels\SSZ FG.bin"		; Layout for SSZ FG
+	binclude	"levels\SSZ FG.bin"		; Layout for SSZ FG
 	even
 ; ---------------------------------------------------------------------------
 COL_SSZPrimary:
@@ -19277,7 +19279,7 @@ COL_SSZPrimary:
 	even
 ; ---------------------------------------------------------------------------
 COL_SSZSecondary:
-	binclude	"collide\ColSSZSecondary.bin"               	; Secondary Collisions for SSZ
+	binclude	"collide\ColSSZSecondary.bin"			; Secondary Collisions for SSZ
 	even
 ; ---------------------------------------------------------------------------
 ARTNEM_SSZ8x8_BG:
@@ -19285,15 +19287,15 @@ ARTNEM_SSZ8x8_BG:
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_SSZ16x16_BG:
-	binclude  "map16\SSZ BG.bin"		; 16x16 blocks for SSZ BG
+	binclude	"map16\SSZ BG.bin"		; 16x16 blocks for SSZ BG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_SSZ128x128_BG:
-	binclude  "map128\SSZ BG.bin"		; 128x128 chunks for SSZ BG
+	binclude	"map128\SSZ BG.bin"		; 128x128 chunks for SSZ BG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_SSZLayout_BG:
-	binclude  "levels\SSZ BG.bin"		; Layout for SSZ BG
+	binclude	"levels\SSZ BG.bin"		; Layout for SSZ BG
 	even
 ; ---------------------------------------------------------------------------
 ARTNEM_TTZ8x8_FG:
@@ -19301,15 +19303,15 @@ ARTNEM_TTZ8x8_FG:
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_TTZ16x16_FG:
-	binclude  "map16\TTZ FG.bin"		; 16x16 blocks for TTZ FG
+	binclude	"map16\TTZ FG.bin"		; 16x16 blocks for TTZ FG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_TTZ128x128_FG:
-	binclude  "map128\TTZ FG.bin"		; 128x128 chunks for TTZ FG
+	binclude	"map128\TTZ FG.bin"		; 128x128 chunks for TTZ FG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_TTZLayout_FG:
-	binclude  "levels\TTZ FG.bin"		; Layout for TTZ FG
+	binclude	"levels\TTZ FG.bin"		; Layout for TTZ FG
 	even
 ; ---------------------------------------------------------------------------
 COL_TTZPrimary:
@@ -19325,15 +19327,15 @@ ARTNEM_TTZ8x8_BG:
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_TTZ16x16_BG:
-	binclude  "map16\TTZ BG.bin"		; 16x16 blocks for TTZ BG
+	binclude	"map16\TTZ BG.bin"		; 16x16 blocks for TTZ BG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_TTZ128x128_BG:
-	binclude  "map128\TTZ BG.bin"		; 128x128 chunks for TTZ BG
+	binclude	"map128\TTZ BG.bin"		; 128x128 chunks for TTZ BG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_TTZLayout_BG:
-	binclude  "levels\TTZ BG.bin"		; Layout for TTZ BG
+	binclude	"levels\TTZ BG.bin"		; Layout for TTZ BG
 	even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19563,31 +19565,31 @@ ARTUNC_TTZAnimatedFanFG2:
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG1:
-	binclude  "Uncompressed\ArtuncTTZAnimatedTurbineBG1.bin"	; Turbine tiles 1
+	binclude	"Uncompressed\ArtuncTTZAnimatedTurbineBG1.bin"	; Turbine tiles 1
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG2:
-	binclude  "Uncompressed\ArtuncTTZAnimatedTurbineBG2.bin"	; Turbine tiles 2
+	binclude	"Uncompressed\ArtuncTTZAnimatedTurbineBG2.bin"	; Turbine tiles 2
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG3:
-	binclude  "Uncompressed\ArtuncTTZAnimatedTurbineBG3.bin"	; Turbine tiles 3
+	binclude	"Uncompressed\ArtuncTTZAnimatedTurbineBG3.bin"	; Turbine tiles 3
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG4:
-	binclude  "Uncompressed\ArtuncTTZAnimatedTurbineBG4.bin"	; Turbine tiles 4
+	binclude	"Uncompressed\ArtuncTTZAnimatedTurbineBG4.bin"	; Turbine tiles 4
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG5:
-	binclude  "Uncompressed\ArtuncTTZAnimatedTurbineBG5.bin"	; Turbine tiles 5
+	binclude	"Uncompressed\ArtuncTTZAnimatedTurbineBG5.bin"	; Turbine tiles 5
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG6:
-	binclude  "Uncompressed\ArtuncTTZAnimatedTurbineBG6.bin"	; Turbine tiles 6
+	binclude	"Uncompressed\ArtuncTTZAnimatedTurbineBG6.bin"	; Turbine tiles 6
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG7:
-	binclude  "Uncompressed\ArtuncTTZAnimatedTurbineBG7.bin"	; Turbine tiles 7
+	binclude	"Uncompressed\ArtuncTTZAnimatedTurbineBG7.bin"	; Turbine tiles 7
 	even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19626,25 +19628,25 @@ PAL_RainbowField:
 	binclude	"Palettes\PalRainbowField.bin"			; Palettes for Rainbow Field
 	even
 ARTCRA_RainbowField8x8:
-	binclude  "artcra\Rainbow Field.bin"		; 8x8 tiles for Rainbow Field
+	binclude	"artcra\Rainbow Field.bin"		; 8x8 tiles for Rainbow Field
 	even
 MAPUNC_RainbowFieldFG:
-	binclude  "Uncompressed\MapuncRainbowFieldFG.bin"		; Screen Map Codes for Rainbow Field FG
+	binclude	"Uncompressed\MapuncRainbowFieldFG.bin"		; Screen Map Codes for Rainbow Field FG
 	even
 MAPUNC_RainbowFieldBG:
-	binclude  "Uncompressed\MapuncRainbowFieldBG.bin"		; Screen Map Codes for Rainbow Field BG
+	binclude	"Uncompressed\MapuncRainbowFieldBG.bin"		; Screen Map Codes for Rainbow Field BG
 	even
 PAL_ElectricField:
-	binclude  "Palettes\PalElectricField.bin"			; Palettes for Electric Field
+	binclude	"Palettes\PalElectricField.bin"			; Palettes for Electric Field
 	even
 ARTCRA_ElectricField8x8:
 	binclude	"artcra\Electric Field.bin"		; 8x8 tiles for Electric Field
 	even
 MAPUNC_ElectricFieldFG:
-	binclude  "Uncompressed\MapuncElectricFieldFG.bin"	; Screen Map Codes for Electric Field FG
+	binclude	"Uncompressed\MapuncElectricFieldFG.bin"	; Screen Map Codes for Electric Field FG
 	even
 MAPUNC_ElectricFieldBG:
-	binclude  "Uncompressed\MapuncElectricFieldBG.bin"	; Screen Map Codes for Electric Field BG
+	binclude	"Uncompressed\MapuncElectricFieldBG.bin"	; Screen Map Codes for Electric Field BG
 	even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19867,7 +19869,7 @@ ARTUNC_Sonic:	binclude	"Uncompressed\ArtuncSonic.bin"
 AU06_B:		align $90000			; Aligned
 ; ---------------------------------------------------------------------------
 ARTUNC_SonicField:
-		binclude  "Uncompressed\ArtuncSonicField.bin"
+		binclude	"Uncompressed\ArtuncSonicField.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19936,7 +19938,7 @@ AU09:		align $AC000			; Aligned
 AU0A:		align $B0000			; Aligned
 ; ---------------------------------------------------------------------------
 ARTUNC_TailsField:
-		binclude  "Uncompressed\ArtuncTailsField.bin"
+		binclude	"Uncompressed\ArtuncTailsField.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
