@@ -32,8 +32,7 @@ loc_0:
 ; =============== S U B	R O U T	I N E =======================================
 
 
-ReadPtrTable:				; CODE XREF: RAM:005Ep
-					; TrkUpdate_Proc+39p ...
+ReadPtrTable:
 		ld	c, a
 		ld	b, 0
 		add	hl, bc
@@ -51,11 +50,7 @@ ReadPtrTable:				; CODE XREF: RAM:005Ep
 ; =============== S U B	R O U T	I N E =======================================
 
 
-WriteFMIorII:				; CODE XREF: SendFMFreq+Fp
-					; SendFMFreq+13p ...
-
-; FUNCTION CHUNK AT 002E SIZE 00000002 BYTES
-
+WriteFMIorII:
 		bit	2, (ix+0)
 		ret	nz
 		add	a, (ix+1)
@@ -67,7 +62,7 @@ WriteFMIorII:				; CODE XREF: SendFMFreq+Fp
 ; =============== S U B	R O U T	I N E =======================================
 
 
-WriteFMI:				; CODE XREF: RAM:0051p	SendFMFreq+37p	...
+WriteFMI:
 		ld	(ym2612_a0), a
 		ld	a, c
 		ld	(ym2612_d0), a
@@ -75,16 +70,14 @@ WriteFMI:				; CODE XREF: RAM:0051p	SendFMFreq+37p	...
 ; End of function WriteFMI
 
 ; ---------------------------------------------------------------------------
-; START	OF FUNCTION CHUNK FOR WriteFMIorII
 
-WriteFMIIPart:				; CODE XREF: WriteFMIorII+Cj
+WriteFMIIPart:
 		sub	4
-; END OF FUNCTION CHUNK	FOR WriteFMIorII
 
 ; =============== S U B	R O U T	I N E =======================================
 
 
-WriteFMII:				; CODE XREF: DoPause+139p
+WriteFMII:
 		ld	(ym2612_a1), a
 		ld	a, c
 		ld	(ym2612_d1), a
@@ -155,7 +148,7 @@ VInt:
 		jp	loc_EED
 ; ---------------------------------------------------------------------------
 
-loc_95:					; CODE XREF: RAM:004Aj
+loc_95:
 		ld	hl, 1C05h
 		ld	a, (hl)
 		ld	hl, 6000h
@@ -175,7 +168,7 @@ loc_95:					; CODE XREF: RAM:004Aj
 		ld	(hl), a
 		ld	(hl), a
 
-loc_AB:					; CODE XREF: RAM:0047j
+loc_AB:
 		exx
 		pop	iy
 		pop	af
@@ -183,14 +176,14 @@ loc_AB:					; CODE XREF: RAM:0047j
 		ret
 ; ---------------------------------------------------------------------------
 
-InitDriver:				; CODE XREF: RAM:0004j
+InitDriver:
 		ld	sp, 2000h
 		ld	c, 0
 
-loc_B7:					; CODE XREF: RAM:00BCj
+loc_B7:
 		ld	b, 0
 
-loc_B9:					; CODE XREF: RAM:loc_B9j
+loc_B9:
 		djnz	$
 		dec	c
 		jr	nz, loc_B7
@@ -224,7 +217,7 @@ loc_B9:					; CODE XREF: RAM:loc_B9j
 ; =============== S U B	R O U T	I N E =======================================
 
 
-UpdateAll:				; CODE XREF: RAM:0040p
+UpdateAll:
 		call	DoPause
 		call	DoTempo
 		call	DoFading
@@ -262,7 +255,7 @@ UpdateAll:				; CODE XREF: RAM:0040p
 ; =============== S U B	R O U T	I N E =======================================
 
 
-UpdateSFXTracks:			; CODE XREF: UpdateAll+Cp
+UpdateSFXTracks:
 		ld	a, 1
 		ld	(1C19h), a	; 01 - SFX Mode
 		ld	hl, 6000h	; switch to Bank 018000
@@ -290,8 +283,7 @@ UpdateSFXTracks:			; CODE XREF: UpdateAll+Cp
 ; =============== S U B	R O U T	I N E =======================================
 
 
-TrkUpdateLoop:				; CODE XREF: UpdateAll+3Aj
-					; UpdateSFXTracks+1Ap ...
+TrkUpdateLoop:
 		push	bc
 		bit	7, (ix+0)
 		call	nz, UpdateTrack
@@ -306,11 +298,7 @@ TrkUpdateLoop:				; CODE XREF: UpdateAll+3Aj
 ; =============== S U B	R O U T	I N E =======================================
 
 
-UpdateTrack:				; CODE XREF: TrkUpdateLoop+5p
-
-; FUNCTION CHUNK AT 02D7 SIZE 00000019 BYTES
-; FUNCTION CHUNK AT 0E1F SIZE 00000073 BYTES
-
+UpdateTrack:
 		bit	7, (ix+1)
 		jp	nz, UpdatePSGTrk
 		call	TrackTimeout
@@ -325,7 +313,7 @@ UpdateTrack:				; CODE XREF: TrkUpdateLoop+5p
 		jp	DoNoteOn
 ; ---------------------------------------------------------------------------
 
-loc_181:				; CODE XREF: UpdateTrack+Aj
+loc_181:
 		call	ExecPanAnim
 		bit	4, (ix+0)
 		ret	nz
@@ -336,7 +324,7 @@ loc_181:				; CODE XREF: UpdateTrack+Aj
 		dec	(ix+1Eh)
 		jp	z, DoNoteOff
 
-loc_198:				; CODE XREF: UpdateTrack+32j
+loc_198:
 		call	DoPitchSlide
 		bit	6, (ix+0)
 		ret	nz
@@ -347,13 +335,13 @@ loc_198:				; CODE XREF: UpdateTrack+32j
 ; =============== S U B	R O U T	I N E =======================================
 
 
-SendFMFreq:				; CODE XREF: UpdateTrack+1Dp
+SendFMFreq:
 		bit	2, (ix+0)
 		ret	nz
 		bit	0, (ix+0)
 		jp	nz, loc_1B8
 
-loc_1AF:				; CODE XREF: SendFMFreq+1Aj
+loc_1AF:
 		ld	a, 0A4h
 		ld	c, h
 		rst	WriteFMIorII
@@ -363,7 +351,7 @@ loc_1AF:				; CODE XREF: SendFMFreq+1Aj
 		ret
 ; ---------------------------------------------------------------------------
 
-loc_1B8:				; CODE XREF: SendFMFreq+9j
+loc_1B8:
 		ld	a, (ix+1)
 		cp	2
 		jr	nz, loc_1AF
@@ -371,7 +359,7 @@ loc_1B8:				; CODE XREF: SendFMFreq+9j
 		ld	b, 4
 		ld	hl, SpcFM3Regs
 
-loc_1C7:				; CODE XREF: SendFMFreq+43j
+loc_1C7:
 		push	bc
 		ld	a, (hl)
 		inc	hl
@@ -399,12 +387,12 @@ loc_1C7:				; CODE XREF: SendFMFreq+43j
 ; End of function SendFMFreq
 
 ; ---------------------------------------------------------------------------
-SpcFM3Regs:	db 0ADh, 0AEh, 0ACh, 0A6h ; DATA XREF: SendFMFreq+21o
+SpcFM3Regs:	db 0ADh, 0AEh, 0ACh, 0A6h
 
 ; =============== S U B	R O U T	I N E =======================================
 
 
-GetFM3FreqPtr:				; CODE XREF: SendFMFreq+1Cp RAM:0D58p
+GetFM3FreqPtr:
 		ld	de, 1C2Ah
 		ld	a, (1C19h)
 		or	a
@@ -419,14 +407,13 @@ GetFM3FreqPtr:				; CODE XREF: SendFMFreq+1Cp RAM:0D58p
 ; =============== S U B	R O U T	I N E =======================================
 
 
-TrkUpdate_Proc:				; CODE XREF: UpdateTrack+Cp
-					; UpdateTrack+CC6p
+TrkUpdate_Proc:
 		ld	e, (ix+3)
 		ld	d, (ix+4)
 		res	1, (ix+0)
 		res	4, (ix+0)
 
-loc_20B:				; CODE XREF: RAM:0A65j
+loc_20B:
 		ld	a, (de)
 		inc	de
 		cp	0E0h
@@ -445,7 +432,7 @@ loc_20B:				; CODE XREF: RAM:0A65j
 		jr	loc_25D
 ; ---------------------------------------------------------------------------
 
-GetNote:				; CODE XREF: TrkUpdate_Proc+2Aj
+GetNote:
 		add	a, (ix+5)
 		ld	hl, PSGFreqs
 		push	af
@@ -459,7 +446,7 @@ GetNote:				; CODE XREF: TrkUpdate_Proc+2Aj
 		ex	af, af'
 		xor	a
 
-loc_245:				; CODE XREF: TrkUpdate_Proc+4Ej
+loc_245:
 		ex	af, af'
 		sub	e
 		jr	c, loc_24E
@@ -469,7 +456,7 @@ loc_245:				; CODE XREF: TrkUpdate_Proc+4Ej
 ; ---------------------------------------------------------------------------
 		ex	af, af'
 
-loc_24E:				; CODE XREF: TrkUpdate_Proc+4Aj
+loc_24E:
 		add	a, e
 		ld	hl, FMFreqs
 		rst	ReadPtrTable
@@ -478,11 +465,11 @@ loc_24E:				; CODE XREF: TrkUpdate_Proc+4Aj
 		ld	h, a
 		pop	de
 
-loc_257:				; CODE XREF: TrkUpdate_Proc+3Fj
+loc_257:
 		ld	(ix+0Dh), l
 		ld	(ix+0Eh), h
 
-loc_25D:				; CODE XREF: TrkUpdate_Proc+30j
+loc_25D:
 		bit	5, (ix+0)
 		jr	nz, loc_270
 		ld	a, (de)
@@ -493,14 +480,14 @@ loc_25D:				; CODE XREF: TrkUpdate_Proc+30j
 		jr	loc_2A3
 ; ---------------------------------------------------------------------------
 
-loc_270:				; CODE XREF: TrkUpdate_Proc+64j
+loc_270:
 		ld	a, (de)
 		inc	de
 		ld	(ix+10h), a
 		jr	loc_29B
 ; ---------------------------------------------------------------------------
 
-DoRawFreqMode:				; CODE XREF: TrkUpdate_Proc+21j
+DoRawFreqMode:
 		ld	h, a
 		ld	a, (de)
 		inc	de
@@ -513,11 +500,11 @@ DoRawFreqMode:				; CODE XREF: TrkUpdate_Proc+21j
 		jp	p, loc_288
 		dec	b
 
-loc_288:				; CODE XREF: TrkUpdate_Proc+87j
+loc_288:
 		ld	c, a
 		add	hl, bc
 
-loc_28A:				; CODE XREF: TrkUpdate_Proc+7Fj
+loc_28A:
 		ld	(ix+0Dh), l
 		ld	(ix+0Eh), h
 		bit	5, (ix+0)
@@ -526,20 +513,17 @@ loc_28A:				; CODE XREF: TrkUpdate_Proc+7Fj
 		inc	de
 		ld	(ix+10h), a
 
-loc_29B:				; CODE XREF: TrkUpdate_Proc+78j
-					; TrkUpdate_Proc+97j
+loc_29B:
 		ld	a, (de)
 
-loc_29C:				; CODE XREF: TrkUpdate_Proc+68j
+loc_29C:
 		inc	de
 
-SetDuration:				; CODE XREF: TrkUpdate_Proc+25j
-					; DrumUpdate_Proc+40j
+SetDuration:
 		call	TickMultiplier
 		ld	(ix+0Ch), a
 
-loc_2A3:				; CODE XREF: TrkUpdate_Proc+71j
-					; DrumUpdate_Proc+4Aj
+loc_2A3:
 		ld	(ix+3),	e
 		ld	(ix+4),	d
 		ld	a, (ix+0Ch)
@@ -559,14 +543,13 @@ loc_2A3:				; CODE XREF: TrkUpdate_Proc+71j
 ; =============== S U B	R O U T	I N E =======================================
 
 
-TickMultiplier:				; CODE XREF: TrkUpdate_Proc:SetDurationp
-					; RAM:cfE8_NoteStopp
+TickMultiplier:
 		ld	b, (ix+2)
 		dec	b
 		ret	z
 		ld	c, a
 
-loc_2CB:				; CODE XREF: TickMultiplier+7j
+loc_2CB:
 		add	a, c
 		djnz	loc_2CB
 		ret
@@ -576,8 +559,7 @@ loc_2CB:				; CODE XREF: TickMultiplier+7j
 ; =============== S U B	R O U T	I N E =======================================
 
 
-TrackTimeout:				; CODE XREF: UpdateTrack+7p
-					; DrumUpdateTrackp ...
+TrackTimeout:
 		ld	a, (ix+0Bh)
 		dec	a
 		ld	(ix+0Bh), a
@@ -585,9 +567,8 @@ TrackTimeout:				; CODE XREF: UpdateTrack+7p
 ; End of function TrackTimeout
 
 ; ---------------------------------------------------------------------------
-; START	OF FUNCTION CHUNK FOR UpdateTrack
 
-DoNoteOn:				; CODE XREF: UpdateTrack+20j
+DoNoteOn:
 		ld	a, (ix+0Dh)
 		or	(ix+0Eh)
 		ret	z
@@ -600,36 +581,31 @@ DoNoteOn:				; CODE XREF: UpdateTrack+20j
 		ld	a, 28h
 		call	WriteFMI
 		ret
-; END OF FUNCTION CHUNK	FOR UpdateTrack
 
 ; =============== S U B	R O U T	I N E =======================================
 
 
-DoNoteOff:				; CODE XREF: UpdateTrack+37j
-					; TrkUpdate_Proc+16p ...
+DoNoteOff:
 		ld	a, (ix+0)
 		and	6
 		ret	nz
 
-SendNoteOff:				; CODE XREF: RAM:0DBBp
+SendNoteOff:
 		ld	c, (ix+1)
 		bit	7, c
 		ret	nz
 ; End of function DoNoteOff
 
-; START	OF FUNCTION CHUNK FOR SilenceFMChn
-
-FMNoteOff:				; CODE XREF: SilenceFMChn+Dj
+FMNoteOff:
 		ld	a, 28h
 		call	WriteFMI
 		res	6, (ix+0)
 		ret
-; END OF FUNCTION CHUNK	FOR SilenceFMChn
 
 ; =============== S U B	R O U T	I N E =======================================
 
 
-DoPanAnimation:				; CODE XREF: TrkUpdate_Proc+19p
+DoPanAnimation:
 		ld	a, (ix+11h)
 		dec	a
 		ret	m
@@ -637,7 +613,7 @@ DoPanAnimation:				; CODE XREF: TrkUpdate_Proc+19p
 		bit	1, (ix+0)
 		ret	nz
 
-loc_312:				; CODE XREF: ExecPanAnim+6j
+loc_312:
 		dec	(ix+16h)
 		ret	nz
 		push	bc
@@ -2861,43 +2837,32 @@ locb_F52:				; CODE XREF: RAM:0F2Ej
 DPCMData:	db    0,   1,	2,   4,	  8, 10h, 20h, 40h ; DATA XREF:	RAM:00E1o
 		db  80h,0FFh,0FEh,0FCh,0F8h,0F0h,0E0h,0C0h
 VolEnvPtrs:	dw byte_F8C,byte_F8E,byte_F95,byte_F9D,byte_FA9,byte_FB4
-					; DATA XREF: DoFMVolEnv+7o
-					; UpdateTrack+D08o
 		dw byte_FC3,byte_FCC,byte_FDD,byte_FE8,byte_FFD,byte_1007
 byte_F8C:	db   2,83h		; DATA XREF: RAM:VolEnvPtrso
 byte_F8E:	db   0,	 2,  4,	 6,  8,10h,83h ; DATA XREF: RAM:VolEnvPtrso
 byte_F95:	db   2,	 1,  0,	 0,  1,	 1,  2,81h ; DATA XREF:	RAM:VolEnvPtrso
 byte_F9D:	db   4,	 3,  2,	 1,  0,	 0,  1,	 1,  2,	 2,  2,81h
-					; DATA XREF: RAM:VolEnvPtrso
 byte_FA9:	db   3,	 0,  1,	 1,  1,	 2,  3,	 4,  4,	 5,81h ; DATA XREF: RAM:VolEnvPtrso
 byte_FB4:	db   0,	 0,  1,	 1,  2,	 3,  4,	 5,  5,	 6,  8,	 7,  7
-					; DATA XREF: RAM:VolEnvPtrso
 		db   6,81h
 byte_FC3:	db   1,0Ch,  3,0Fh,  2,	 7,  3,0Fh,80h ; DATA XREF: RAM:VolEnvPtrso
 byte_FCC:	db   0,	 0,  0,	 2,  3,	 3,  4,	 5,  6,	 7,  8,	 9,0Ah
-					; DATA XREF: RAM:VolEnvPtrso
 		db 0Bh,0Eh,0Fh,83h
 byte_FDD:	db   3,	 2,  1,	 1,  0,	 0,  1,	 2,  3,	 4,81h ; DATA XREF: RAM:VolEnvPtrso
 byte_FE8:	db   1,	 0,  0,	 0,  0,	 1,  1,	 1,  2,	 2,  2,	 3,  3
-					; DATA XREF: RAM:VolEnvPtrso
 		db   3,	 3,  4,	 4,  4,	 5,  5,81h
 byte_FFD:	db 10h,20h,30h,40h,30h,20h,10h,	 0,0F0h,80h ; DATA XREF: RAM:VolEnvPtrso
 byte_1007:	db   0,	 0,  1,	 1,  3,	 3,  4,	 5,83h ; DATA XREF: RAM:VolEnvPtrso
 ModEnvPtrs:	dw byte_1024, byte_1030, byte_103D, byte_1049, byte_108B
-					; DATA XREF: DoModulation+53o
 		dw byte_10C0, byte_10FD, byte_1117, byte_1131, byte_1139
 byte_1024:	db  40h, 60h, 70h, 60h,	50h, 30h, 10h,-10h,-30h,-50h,-70h
-					; DATA XREF: RAM:ModEnvPtrso
 		db  83h
 byte_1030:	db    0,   2,	4,   6,	  8, 0Ah, 0Ch, 0Eh, 10h, 12h, 14h
-					; DATA XREF: RAM:ModEnvPtrso
 		db  18h
 		db  81h
 byte_103D:	db    0,   0,	1,   3,	  1,   0,  -1,	-3,  -1,   0
-					; DATA XREF: RAM:ModEnvPtrso
 		db  82h, 02h
 byte_1049:	db    0,   0,	0,   0,	  0,   0,   0,	 0,   0,   0,	0
-					; DATA XREF: RAM:ModEnvPtrso
 		db    0,   0,	0,   0,	  0,   0,   0,	 0,   0,   0,	0
 		db    0,   0,	0,   0,	  0,   0,   0,	 0,   0,   0,	0
 		db    0,   0,	0,   0,	  0,   0,   0,	 2,   4,   6,	8
@@ -2905,14 +2870,12 @@ byte_1049:	db    0,   0,	0,   0,	  0,   0,   0,	 0,   0,   0,	0
 		db   -8,-0Ah,-0Ch,-0Ah,	 -8,  -6,  -4,	-2,   0
 		db  82h, 29h
 byte_108B:	db    0,   0,	0,   0,	  0,   0,   0,	 0,   0,   0,	0
-					; DATA XREF: RAM:ModEnvPtrso
 		db    0,   0,	0,   0,	  0,   0,   0,	 0,   0,   0,	0
 		db    0,   0,	0,   0,	  0,   0,   2,	 4,   6,   8, 0Ah
 		db  0Ch, 0Ah,	8,   6,	  4,   2,   0,	-2,  -4,  -6,  -8
 		db -0Ah,-0Ch,-0Ah,  -8,	 -6,  -4,  -2
 		db  82h, 1Bh
 byte_10C0:	db    0,   0,	0,   0,	  0,   0,   0,	 0,   0,   0,	0
-					; DATA XREF: RAM:ModEnvPtrso
 		db    0,   0,	0,   0,	  0,   0,   0,	 0,   0,   0,	0
 		db    0,   0,	0,   0,	  0,   0,   0,	 0,   0,   0,	0
 		db    0,   0,	0,   0,	  0,   0,   0,	 0,   0,   0,	0
@@ -2920,26 +2883,21 @@ byte_10C0:	db    0,   0,	0,   0,	  0,   0,   0,	 0,   0,   0,	0
 		db   -6,  -6,  -3,   0
 		db  82h, 33h
 byte_10FD:	db    0,   0,	0,   0,	  0,   0,   0,	 0,   0,   0,	0
-					; DATA XREF: RAM:ModEnvPtrso
 		db    0,   0,	0,   0,	  0,   2,   4,	 2,   0,  -2,  -4
 		db   -2,   0
 		db  82h, 11h
 byte_1117:	db   -2,  -1,	0,   0,	  0,   0,   0,	 0,   0,   0,	0
-					; DATA XREF: RAM:ModEnvPtrso
 		db    0,   0,	0,   0,	  0,   0,   0,	 1,   1,   0,	0
 		db   -1,  -1
 		db  82h, 11h
 byte_1131:	db    3,   2,	1,   0,	  0,   0,   1 ;	DATA XREF: RAM:ModEnvPtrso
 		db  81h
 byte_1139:	db    0,   0,	0,   0,	  1,   1,   1,	 1,   2,   2,	1
-					; DATA XREF: RAM:ModEnvPtrso
 		db    1,   1,	0,   0,	  0
 		db  84h, 01h, 82h, 04h
 MusicBanks:	db 02h,	02h, 02h, 02h, 02h, 02h	; DATA XREF: PlaySoundID+59o
 MusicPtrs:	dw 8000h, 888Ch, 8BDAh,	9210h, 972Bh, 9B10h ; DATA XREF: PlaySoundID+7Co
-					; SetInsFromSong+6o
 SFXPtrs:	dw 0C000h, 0C033h, 0C09Ah, 0C0C7h, 0C0EFh, 0C124h, 0C165h
-					; DATA XREF: PlaySoundID+148o
 		dw 0C193h, 0C1E4h, 0C23Fh, 0C269h, 0C28Dh, 0C2B1h, 0C2D5h
 		dw 0C2F9h, 0C31Dh
 SpcSFXPtrs:	dw 0C000h, 0C033h, 0C0C7h ; DATA XREF: PlaySoundID+12Eo
@@ -2954,7 +2912,6 @@ SndPriorities:	db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh
 DACTablePtrs:	dw stru_11EC, stru_11F2, stru_11F8, stru_11FE, stru_1204
-					; DATA XREF: RAM:005Bo
 		dw stru_120A, stru_1210
 stru_11EC:	db 30h, 4
 		dw 1D4h, 8000h ; DATA XREF: RAM:DACTablePtrso

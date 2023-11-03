@@ -670,7 +670,7 @@ sub_76E:
 		lea	($FFFFD3E4).w,a0
 		lea	($FFFFD464).w,a1
 		move.w	($FFFFD4EA).w,d2
-		move.w	#$3F,d7	; "?"
+		move.w	#$3F,d7
 
 loc_77E:
 		move.w	(a1)+,d0
@@ -830,7 +830,7 @@ loc_894:
 ; ---------------------------------------------------------------------------
 
 MapScreen:
-		lea	(vdp_data_port).l,a0			; load VDP data port to a0
+		lea	(vdp_data_port).l,a0		; load VDP data port to a0
 		moveq	#0,d6				; clear d6
 		move.w	($FFFFD820).w,d6		; load number of tiles to increase to for each set of columns to d6
 		swap	d6				; swap words (Sets it to left for long-word amount)
@@ -847,7 +847,7 @@ loc_8B6:
 		add.l	d6,d0				; increase VRam location for next set of columns
 		dbf	d2,loc_8B0			; repeat til all rows are dumped
 		cmp.w	d0,d0				; ?? Probably left in by accident
-		rts					; return
+		rts
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -927,7 +927,7 @@ ControlInit_Unused:
 		move.b	d0,($A1000B).l			; ...Control Port B
 		move.b	d0,($A1000D).l			; ...and Extra port
 		startZ80
-		rts					; return
+		rts
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -3237,7 +3237,7 @@ word_3F2A:	dc.w $0000,$0192,$0323,$04B5,$0645,$07D5,$0964,$0AF1,$0C7C,$0E05,$0F8
 		dc.w $3FFB
 ; ===========================================================================
 
-sub_41AA:				; CODE XREF: sub_CCCA+56p
+sub_41AA:
 		movem.l	d1-d5,-(sp)
 		sub.w	d1,d3
 		beq.s	loc_4204
@@ -3245,22 +3245,22 @@ sub_41AA:				; CODE XREF: sub_CCCA+56p
 		bpl.s	loc_41B8
 		neg.w	d3
 
-loc_41B8:				; CODE XREF: sub_41AA+Aj
+loc_41B8:
 		sub.w	d2,d4
 		beq.s	loc_4216
 		smi	d5
 		bpl.s	loc_41C2
 		neg.w	d4
 
-loc_41C2:				; CODE XREF: sub_41AA+14j
+loc_41C2:
 		ext.l	d4
 		asl.l	#8,d4
 		divu.w	d3,d4
 		moveq	#0,d1
-		moveq	#$3F,d2	; "?"
+		moveq	#$3F,d2
 		swap	d5
 
-loc_41CE:				; CODE XREF: sub_41AA+3Ej
+loc_41CE:
 		move.w	d2,d3
 		add.w	d1,d3
 		lsr.w	#1,d3
@@ -3427,7 +3427,7 @@ loc_42EE:				; CODE XREF: sub_42CE+1Cj
 		asl.l	#8,d4
 		divu.w	d3,d4
 		moveq	#0,d1
-		moveq	#$3F,d2	; "?"
+		moveq	#$3F,d2
 		swap	d5
 
 loc_42FA:				; CODE XREF: sub_42CE+46j
@@ -3903,7 +3903,7 @@ GameModeArray:
 ; ---------------------------------------------------------------------------
 
 GMAReturn:
-		rts					; return
+		rts
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -4257,13 +4257,13 @@ SegaPaletteStart:				; CODE XREF: ROM:00006514j
 loc_654E:				; CODE XREF: ROM:00006546j
 		subq.w	#1,($FFFFFAC4).w
 		bne.s	MultiReturn
-		moveq	#$3F,d0	; "?"
-		moveq	#$3F,d1	; "?"
+		moveq	#$3F,d0
+		moveq	#$3F,d1
 		moveq	#0,d2
 		move.w	($FFFFD816).w,d3
 		jsr	(sub_86E).w
-		moveq	#$3F,d0	; "?"
-		moveq	#$3F,d1	; "?"
+		moveq	#$3F,d0
+		moveq	#$3F,d1
 		moveq	#0,d2
 		move.w	($FFFFD818).w,d3
 		jsr	(sub_86E).w
@@ -5124,13 +5124,13 @@ loc_6D38:				; CODE XREF: ROM:00006D4Ej
 loc_6D6E:				; CODE XREF: ROM:00006C38j
 		bsr.w	sub_6612
 		move	#$2700,sr
-		moveq	#$3F,d0	; "?"
-		moveq	#$3F,d1	; "?"
+		moveq	#$3F,d0
+		moveq	#$3F,d1
 		moveq	#0,d2
 		move.w	($FFFFD816).w,d3
 		jsr	(sub_86E).w
-		moveq	#$3F,d0	; "?"
-		moveq	#$3F,d1	; "?"
+		moveq	#$3F,d0
+		moveq	#$3F,d1
 		moveq	#0,d2
 		move.w	($FFFFD818).w,d3
 		jsr	(sub_86E).w
@@ -5306,7 +5306,7 @@ SegatoVDPRep:
 		move.l	(a0)+,(a5)			; ""
 		move.l	(a0)+,(a5)			; ""
 		dbf	d7,SegatoVDPRep			; repeat
-		rte					; return
+		rte
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 PAL_Segalogo:	binclude	"Palettes\PalSegaLogo.bin"	; palettes used in the Sega logo
@@ -5377,8 +5377,8 @@ loc_739A:
 		move.l	#0,(vdp_data_port).l
 		move.l	#$40000010,(vdp_control_port).l
 		move.l	#0,(vdp_data_port).l
-		moveq	#$3F,d0	; "?"
-		moveq	#$3F,d1	; "?"
+		moveq	#$3F,d0
+		moveq	#$3F,d1
 		moveq	#0,d2
 		move.w	#$C000,d3
 		jsr	(sub_86E).w
@@ -7034,7 +7034,7 @@ loc_8E1C:				; CODE XREF: ROM:loc_8E14j
 		movem.l	(sp)+,a0
 		move	#$2700,sr
 		moveq	#$3F,d0
-		moveq	#$3F,d1	; "?"
+		moveq	#$3F,d1
 		moveq	#0,d2
 		move.w	#$C000,d3
 		jsr	(sub_86E).w
@@ -7294,8 +7294,8 @@ loc_93DC:				; CODE XREF: ROM:loc_93D4j
 		move.l	a0,($FFFFC832).w
 		movem.l	(sp)+,a0
 		move	#$2700,sr
-		moveq	#$3F,d0	; "?"
-		moveq	#$3F,d1	; "?"
+		moveq	#$3F,d0
+		moveq	#$3F,d1
 		moveq	#0,d2
 		move.w	#$C000,d3
 		jsr	(sub_86E).w
@@ -17256,7 +17256,7 @@ loc_EC62:				; CODE XREF: ROM:0000EC18j
 		add.b	d6,d6
 		move.w	d6,($FFFFDA1E).w
 		move.w	d7,d0
-		andi.w	#$3F,d0	; "?"
+		andi.w	#$3F,d0
 		move.b	unk_ECE6(pc,d0.w),d0
 		move.b	d0,d6
 		lsr.b	#4,d6
@@ -17773,7 +17773,7 @@ loc_F0DE:				; CODE XREF: sub_EFD4+6j
 		jsr	(sub_5E8).w
 		move.l	#$7F000003,(vdp_control_port).l
 		move.l	#$DDDDDDDD,d0
-		moveq	#$3F,d1	; "?"
+		moveq	#$3F,d1
 
 loc_F106:				; CODE XREF: sub_EFD4+138j
 		move.l	d0,(vdp_data_port).l
@@ -18867,7 +18867,7 @@ loc_FA4C:
 		jsr	(sub_5E8).w			; dump art
 		movem.l	(sp)+,d7-a0			; reload art from stack
 		dbf	d7,loc_FA4C			; repeat til all uncompressed art is loaded to their respected locations
-		rts					; return
+		rts
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
