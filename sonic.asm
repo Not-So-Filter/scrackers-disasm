@@ -19125,6 +19125,7 @@ Sound0F:	binclude	"Sound\SFX\Sound0F.bin"
 ; ---------------------------------------------------------------------------
 AL04:		align $20000			; Aligned
 ; ---------------------------------------------------------------------------
+DAC_Index:
 DAC_Sample1:	binclude	"Sound\DAC\Kick.dpcm"		; DAC 81 (Beat Sample)
 DAC_Sample1_End:even
 DAC_Sample2:	binclude	"Sound\DAC\Snare.dpcm"		; DAC 82 (Snare Sample)

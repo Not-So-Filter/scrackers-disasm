@@ -2813,28 +2813,28 @@ DACTablePtrs:	dw stru_11EC
 stru_11EC:	db 30h
 		db 4
 		dw DAC_Sample1_End-DAC_Sample1
-		dw 8000h
+		dw 8000h+DAC_Sample1-DAC_Index
 stru_11F2:	db 0Ah
 		db 4
 		dw DAC_Sample2_End-DAC_Sample2
-		dw 81D4h
+		dw 8000h+DAC_Sample2-DAC_Index
 stru_11F8:	db 0Ah
 		db 4
 		dw DAC_Sample3_End-DAC_Sample3
-		dw 8FB2h
+		dw 8000h+DAC_Sample3-DAC_Index
 stru_11FE:	db 0Eh
 		db 4
 		dw DAC_Sample3_End-DAC_Sample3
-		dw 8FB2h
+		dw 8000h+DAC_Sample3-DAC_Index
 stru_1204:	db 10h
 		db 4
 		dw DAC_Sample3_End-DAC_Sample3
-		dw 8FB2h
+		dw 8000h+DAC_Sample3-DAC_Index
 stru_120A:	db 0Ah
 		db 4
 		dw DAC_Sample4_End-DAC_Sample4
-		dw 9672h
+		dw 8000h+DAC_Sample4-DAC_Index
 stru_1210:	db 0Ah
 		db 4
 		dw DAC_Sample5_End-DAC_Sample5
-		dw 0ABEEh
+		dw 8000h+DAC_Sample5-DAC_Index
