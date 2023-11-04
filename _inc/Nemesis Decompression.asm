@@ -11,7 +11,7 @@
 ; Nemesis decompression to VRAM
 NemDec:
 		lea	NemPCD_WriteRowToVDP(pc),a3	; write all data to the same location
-		lea	($C00000).l,a4	; specifically, to the VDP data port
+		lea	(vdp_data_port).l,a4	; specifically, to the VDP data port
 		bra.s	NemDecMain
 
 ; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
@@ -24,7 +24,7 @@ NemDecToRAM:
 		lea	NemPCD_WriteRowToRAM(pc),a3 ; advance to the next location after each write
 
 NemDecMain:
-		lea	($FFFFD59A).w,a1
+		lea	(v_ngfx_buffer).w,a1
 		move.w	(a0)+,d2	; get number of patterns
 		lsl.w	#1,d2
 		bcc.s	loc_DE6	; branch if the sign bit isn't set

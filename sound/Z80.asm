@@ -19,6 +19,19 @@
 
 ; ===========================================================================
 
+BankRegister	=	6000h
+
+bankswitch macro
+		ld	hl, BankRegister
+		ld	(hl), a
+		rept 5
+			rra
+			ld	(hl), a
+		endm
+		xor	a
+		ld	(hl), a
+    endm
+
 ; Segment type:	Regular
 
 loc_0:
@@ -125,20 +138,7 @@ VInt:
 		exx
 		ld	hl, 1C05h
 		ld	a, (hl)
-		ld	hl, 6000h
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		xor	a
-		ld	(hl), a
+		bankswitch
 		ld	(hl), a
 		ld	(hl), a
 		exx
@@ -151,20 +151,7 @@ VInt:
 loc_95:
 		ld	hl, 1C05h
 		ld	a, (hl)
-		ld	hl, 6000h
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		xor	a
-		ld	(hl), a
+		bankswitch
 		ld	(hl), a
 		ld	(hl), a
 
@@ -194,20 +181,7 @@ loc_B9:
 		ld	(1C05h), a
 		ld	hl, 1C05h
 		ld	a, (hl)
-		ld	hl, 6000h
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		xor	a
-		ld	(hl), a
+		bankswitch
 		ld	(hl), a
 		ld	(hl), a
 		ld	iy, DPCMData
@@ -227,20 +201,7 @@ UpdateAll:
 		ld	(1C19h), a	; 00 - Music Mode
 		ld	hl, 1C04h
 		ld	a, (hl)
-		ld	hl, 6000h
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		xor	a
-		ld	(hl), a
+		bankswitch
 		ld	(hl), a
 		ld	(hl), a
 		ld	ix, 1C40h
@@ -258,7 +219,7 @@ UpdateAll:
 UpdateSFXTracks:
 		ld	a, 1
 		ld	(1C19h), a	; 01 - SFX Mode
-		ld	hl, 6000h	; switch to Bank 018000
+		ld	hl, BankRegister	; switch to Bank 018000
 		xor	a		; Bank bits written: 003h
 		ld	e, 1
 		ld	(hl), e
@@ -1053,20 +1014,7 @@ zPlayMusic:
 		ld	(1C04h), a
 		ld	hl, 1C04h
 		ld	a, (hl)
-		ld	hl, 6000h
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		xor	a
-		ld	(hl), a
+		bankswitch
 		ld	(hl), a
 		ld	(hl), a
 		pop	af
@@ -1155,7 +1103,7 @@ PSGInitBytes:	db  80h, 80h
 
 PlaySpcSFX:
 		ex	af, af'
-		ld	hl, 6000h	; switch to Bank 018000
+		ld	hl, BankRegister	; switch to Bank 018000
 		xor	a		; Bank bits written: 003h
 		ld	e, 1
 		ld	(hl), e
@@ -1177,7 +1125,7 @@ PlaySpcSFX:
 
 PlaySFX:
 		ex	af, af'
-		ld	hl, 6000h	; switch to Bank 018000
+		ld	hl, BankRegister	; switch to Bank 018000
 		xor	a		; Bank bits written: 003h
 		ld	e, 1
 		ld	(hl), e
@@ -1468,20 +1416,7 @@ loc_7EE:
 		jr	z, StopAllSound
 		ld	hl, 1C04h
 		ld	a, (hl)
-		ld	hl, 6000h
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		xor	a
-		ld	(hl), a
+		bankswitch
 		ld	(hl), a
 		ld	(hl), a
 		ld	hl, 1C06h
@@ -2190,27 +2125,14 @@ loc_C54:
 		push	hl
 		ld	hl, 1C04h
 		ld	a, (hl)
-		ld	hl, 6000h
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		xor	a
-		ld	(hl), a
+		bankswitch
 		ld	(hl), a
 		ld	(hl), a
 		pop	hl
 		call	JumpToInsData
 		call	SendFMIns
 		push	hl
-		ld	hl, 6000h	; switch to Bank 018000
+		ld	hl, BankRegister	; switch to Bank 018000
 		xor	a		; Bank bits written: 003h
 		ld	e, 1
 		ld	(hl), e
@@ -2763,20 +2685,7 @@ loc_F1C:
 		inc	(hl)
 		ld	hl, 1C05h
 		ld	a, (hl)
-		ld	hl, 6000h
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		rra
-		ld	(hl), a
-		xor	a
-		ld	(hl), a
+		bankswitch
 		ld	(hl), a
 		ld	(hl), a
 		exx
@@ -2854,12 +2763,37 @@ byte_1131:	db    3,   2,	1,   0,	  0,   0,   1
 byte_1139:	db    0,   0,	0,   0,	  1,   1,   1,	 1,   2,   2,	1
 		db    1,   1,	0,   0,	  0
 		db  84h, 01h, 82h, 04h
-MusicBanks:	db 02h,	02h, 02h, 02h, 02h, 02h
-MusicPtrs:	dw 8000h, 888Ch, 8BDAh,	9210h, 972Bh, 9B10h
-SFXPtrs:	dw 0C000h, 0C033h, 0C09Ah, 0C0C7h, 0C0EFh, 0C124h, 0C165h
-		dw 0C193h, 0C1E4h, 0C23Fh, 0C269h, 0C28Dh, 0C2B1h, 0C2D5h
-		dw 0C2F9h, 0C31Dh
-SpcSFXPtrs:	dw 0C000h, 0C033h, 0C0C7h
+MusicBanks:	db 02h
+		db 02h
+		db 02h
+		db 02h
+		db 02h
+		db 02h
+MusicPtrs:	dw 8000h+Music81-MusicIndex
+		dw 8000h+Music82-MusicIndex
+		dw 8000h+Music83-MusicIndex
+		dw 8000h+Music84-MusicIndex
+		dw 8000h+Music85-MusicIndex
+		dw 8000h+Music86-MusicIndex
+SFXPtrs:	dw 0C000h+Sound00-SoundIndex
+		dw 0C000h+Sound01-SoundIndex
+		dw 0C000h+Sound02-SoundIndex
+		dw 0C000h+Sound03-SoundIndex
+		dw 0C000h+Sound04-SoundIndex
+		dw 0C000h+Sound05-SoundIndex
+		dw 0C000h+Sound06-SoundIndex
+		dw 0C000h+Sound07-SoundIndex
+		dw 0C000h+Sound08-SoundIndex
+		dw 0C000h+Sound09-SoundIndex
+		dw 0C000h+Sound0A-SoundIndex
+		dw 0C000h+Sound0B-SoundIndex
+		dw 0C000h+Sound0C-SoundIndex
+		dw 0C000h+Sound0D-SoundIndex
+		dw 0C000h+Sound0E-SoundIndex
+		dw 0C000h+Sound0F-SoundIndex
+SpcSFXPtrs:	dw 0C000h+Sound00-SoundIndex
+		dw 0C000h+Sound01-SoundIndex
+		dw 0C000h+Sound03-SoundIndex
 SndPriorities:	db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
@@ -2869,19 +2803,38 @@ SndPriorities:	db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh
-DACTablePtrs:	dw stru_11EC, stru_11F2, stru_11F8, stru_11FE, stru_1204
-		dw stru_120A, stru_1210
-stru_11EC:	db 30h, 4
-		dw 1D4h, 8000h
-stru_11F2:	db 0Ah, 4
-		dw 0DDEh, 81D4h
-stru_11F8:	db 0Ah, 4
-		dw 6C0h, 8FB2h
-stru_11FE:	db 0Eh, 4
-		dw 6C0h, 8FB2h
-stru_1204:	db 10h, 4
-		dw 6C0h, 8FB2h
-stru_120A:	db 0Ah, 4
-		dw 157Ch, 9672h
-stru_1210:	db 0Ah, 4
-		dw 18B4h, 0ABEEh
+DACTablePtrs:	dw stru_11EC
+		dw stru_11F2
+		dw stru_11F8
+		dw stru_11FE
+		dw stru_1204
+		dw stru_120A
+		dw stru_1210
+stru_11EC:	db 30h
+		db 4
+		dw DAC_Sample1_End-DAC_Sample1
+		dw 8000h
+stru_11F2:	db 0Ah
+		db 4
+		dw DAC_Sample2_End-DAC_Sample2
+		dw 81D4h
+stru_11F8:	db 0Ah
+		db 4
+		dw DAC_Sample3_End-DAC_Sample3
+		dw 8FB2h
+stru_11FE:	db 0Eh
+		db 4
+		dw DAC_Sample3_End-DAC_Sample3
+		dw 8FB2h
+stru_1204:	db 10h
+		db 4
+		dw DAC_Sample3_End-DAC_Sample3
+		dw 8FB2h
+stru_120A:	db 0Ah
+		db 4
+		dw DAC_Sample4_End-DAC_Sample4
+		dw 9672h
+stru_1210:	db 0Ah
+		db 4
+		dw DAC_Sample5_End-DAC_Sample5
+		dw 0ABEEh
