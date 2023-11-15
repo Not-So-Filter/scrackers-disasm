@@ -22,3 +22,4 @@ z80_bus_request:	equ $A11100
 z80_reset:		equ $A11200
 
 v_ngfx_buffer:		equ $FFFFD59A
+v_gamemode:		equ $FFFFD822	; (2 bytes)
