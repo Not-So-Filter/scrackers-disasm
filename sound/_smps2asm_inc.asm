@@ -316,9 +316,7 @@ smpsDetune macro val
 
 ; E2xx - Useless
 smpsNop macro val
-	if SonicDriverVer<3
 		dc.b	$E2,val
-	endif
 	endm
 
 ; Return (used after smpsCall)
@@ -327,25 +325,6 @@ smpsReturn macro val
 		dc.b	$F9
 	else
 		dc.b	$E3
-	endif
-	endm
-
-; Fade in previous song (ie. 1-Up)
-smpsFade macro val
-	if SonicDriverVer>=3
-		dc.b	$E2
-		if ("val"<>"")
-			dc.b	val
-		else
-			dc.b	$FF
-		endif
-		if SourceDriver<3
-			smpsStop
-		endif
-	elseif (SourceDriver>=3) && ("val"<>"") && ("val"<>"$FF")
-		; This is one of those weird S3+ "fades" that we don't need
-	else
-		dc.b	$E4
 	endif
 	endm
 

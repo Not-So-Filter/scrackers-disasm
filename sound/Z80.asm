@@ -2775,25 +2775,25 @@ MusicPtrs:	dw 8000h+Music81-MusicIndex
 		dw 8000h+Music84-MusicIndex
 		dw 8000h+Music85-MusicIndex
 		dw 8000h+Music86-MusicIndex
-SFXPtrs:	dw 0C000h+Sound00-SoundIndex
-		dw 0C000h+Sound01-SoundIndex
-		dw 0C000h+Sound02-SoundIndex
-		dw 0C000h+Sound03-SoundIndex
-		dw 0C000h+Sound04-SoundIndex
-		dw 0C000h+Sound05-SoundIndex
-		dw 0C000h+Sound06-SoundIndex
-		dw 0C000h+Sound07-SoundIndex
-		dw 0C000h+Sound08-SoundIndex
-		dw 0C000h+Sound09-SoundIndex
-		dw 0C000h+Sound0A-SoundIndex
-		dw 0C000h+Sound0B-SoundIndex
-		dw 0C000h+Sound0C-SoundIndex
-		dw 0C000h+Sound0D-SoundIndex
-		dw 0C000h+Sound0E-SoundIndex
-		dw 0C000h+Sound0F-SoundIndex
-SpcSFXPtrs:	dw 0C000h+Sound00-SoundIndex
-		dw 0C000h+Sound01-SoundIndex
-		dw 0C000h+Sound03-SoundIndex
+SFXPtrs:	dw 8000h+4000h+Sound00-SoundIndex
+		dw 8000h+4000h+Sound01-SoundIndex
+		dw 8000h+4000h+Sound02-SoundIndex
+		dw 8000h+4000h+Sound03-SoundIndex
+		dw 8000h+4000h+Sound04-SoundIndex
+		dw 8000h+4000h+Sound05-SoundIndex
+		dw 8000h+4000h+Sound06-SoundIndex
+		dw 8000h+4000h+Sound07-SoundIndex
+		dw 8000h+4000h+Sound08-SoundIndex
+		dw 8000h+4000h+Sound09-SoundIndex
+		dw 8000h+4000h+Sound0A-SoundIndex
+		dw 8000h+4000h+Sound0B-SoundIndex
+		dw 8000h+4000h+Sound0C-SoundIndex
+		dw 8000h+4000h+Sound0D-SoundIndex
+		dw 8000h+4000h+Sound0E-SoundIndex
+		dw 8000h+4000h+Sound0F-SoundIndex
+SpcSFXPtrs:	dw 8000h+4000h+Sound00-SoundIndex
+		dw 8000h+4000h+Sound01-SoundIndex
+		dw 8000h+4000h+Sound03-SoundIndex
 SndPriorities:	db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh

@@ -44,7 +44,7 @@ Game_Over_FM3:
 ; FM4 Data
 Game_Over_FM4:
 	smpsSetvoice        $02
-	smpsFade            $01
+	smpsNop             $01
 	dc.b	nA3, $0C, nRst, nA3, nRst, nE3, nRst, nE3, nRst, nG3, $2A, nFs3
 	dc.b	$18, nG3, $06, nFs3, $18, nA3, $0C, nRst, nA3, nRst, nE3, nRst
 	dc.b	nE3, nRst, nD4, $2A, nCs4, $18, nD4, $06, nCs4, $18, nA3, $08
