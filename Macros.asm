@@ -20,3 +20,6 @@ waitZ80:	macro
 .wait:		btst	#0,(z80_bus_request).l
 		bne.s	.wait
 		endm
+		
+; function to make a little-endian 16-bit pointer for the Z80 sound driver
+z80_ptr function x,(x)<<8&$FF00|(x)>>8&$7F|$80

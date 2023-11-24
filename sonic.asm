@@ -16,10 +16,13 @@
 ; -> Malevolence (for the SST Object defining/labling)
 
 	cpu 68000
-	
+
 zeroOffsetOptimization = 0
 ;	| If 1, makes a handful of zero-offset instructions smaller
-	include "MacroSetup.asm"
+; Include SMPS2ASM, for expressing SMPS bytecode in a portable and human-readable form.
+SonicDriverVer = 3 ; Tell SMPS2ASM that we are targetting Sonic 3's sound driver
+	include "sound/_smps2asm_inc.asm"
+        include "MacroSetup.asm"
 	include "Macros.asm"
 	include "Variables.asm"
 
@@ -4648,7 +4651,7 @@ loc_6864:
 		move	#$2300,sr				; set the stack register
 		lea	ARTCRA_SegaLogo(pc),a0			; load Crackers compressed Sega logo art address to a0
 		lea	($FF0200).l,a1				; load Ram address to dump, to a1
-		jsr	(CracDec).l					; decompress the art and dump
+		jsr	(CracDec).l				; decompress the art and dump
 ; ---------------------------------------------------------------------------
 ; this part virtually copies the Sega art to a second location
 ; first location for Large SEGA letters, second location for small letters
@@ -4840,7 +4843,7 @@ loc_6A54:				; CODE XREF: ROM:00006A3Cj
 		move.w	#$FFA0,($FFFFCA60).w
 		move.w	#$18,($FFFFCDDE).w
 		move.w	#$14,($FFFFCDE0).w
-		lea	($00000020).w,a4
+		lea	($20).w,a4
 		move.w	#$80,d4
 		moveq	#3,d6
 		moveq	#$1F,d7
@@ -4965,7 +4968,7 @@ loc_6B9E:				; CODE XREF: ROM:00006B7Aj
 		move.w	#$A0,($FFFFCA60).w ; " "
 		move.w	#$118,($FFFFCDDE).w
 		move.w	#$114,($FFFFCDE0).w
-		move.w	#$D8,(a0)+ ; "Ø"
+		move.w	#$D8,(a0)+
 		addq.l	#2,a0
 		move.l	d7,(a0)
 		lea	($FFFFD164).w,a0
@@ -5047,9 +5050,9 @@ loc_6C70:				; CODE XREF: ROM:00006C86j
 		move	#$2300,sr
 		addq.w	#4,($FFFFFAC4).w
 		move.w	#$20,($FFFFFAC6).w ; " "
-		move.w	#$F8,($FFFFCA5E).w ; "ø"
+		move.w	#$F8,($FFFFCA5E).w
 		move.w	#$18,($FFFFCDDE).w
-		move.w	#$F8,($FFFFCA60).w ; "ø"
+		move.w	#$F8,($FFFFCA60).w
 		move.w	#$18,($FFFFCDE0).w
 		lea	($FF0200).l,a0
 		movea.w	($FFFFD816).w,a6
@@ -6107,7 +6110,7 @@ loc_83C8:				; CODE XREF: sub_82B2+112j
 		move.l	PALCY_ElectricField_1(pc,d0.w),($FFFFD44A).w
 		move.l	PALCY_ElectricField_1+4(pc,d0.w),($FFFFD44E).w
 		move.l	PALCY_ElectricField_1+8(pc,d0.w),($FFFFD452).w
-		move.l	PALCY_ElectricField_1+12(pc,d0.w),($FFFFD456).w
+		move.l	PALCY_ElectricField_1+$C(pc,d0.w),($FFFFD456).w
 
 loc_83E4:				; CODE XREF: sub_82B2+FCj
 		addq.w	#1,($FFFFFAF0).w
@@ -18960,12 +18963,13 @@ UnkData:	dc.w $0000						; VRam location
 AL01:		align $10000			; Aligned for Z80
 ; ---------------------------------------------------------------------------
 MusicIndex:
-Music81:	binclude	"Sound\Music\Mus81 - Electoria.bin"
-Music82:	binclude	"Sound\Music\Mus82 - Walkin'.bin"
-Music83:	binclude	"Sound\Music\Mus83 - Hyper-Hyper.bin"
-Music84:	binclude	"Sound\Music\Mus84 - Evening Star.bin"
-Music85:	binclude	"Sound\Music\Mus85 - Moonrise.bin"
-Music86:	binclude	"Sound\Music\Mus86 - Game Over.bin"
+Music81:	include	"Sound\Music\Mus81 - Electoria.asm"
+Music82:	include	"Sound\Music\Mus82 - Walkin'.asm"
+Music83:	include	"Sound\Music\Mus83 - Hyper-Hyper.asm"
+Music84:	include	"Sound\Music\Mus84 - Evening Star.asm"
+Music85:	include	"Sound\Music\Mus85 - Moonrise.asm"
+Music86:	include	"Sound\Music\Mus86 - Game Over.asm"
+		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
