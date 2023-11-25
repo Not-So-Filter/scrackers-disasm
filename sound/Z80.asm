@@ -20,6 +20,7 @@
 ; ===========================================================================
 
 BankRegister	=	6000h
+zROMWindow	=	8000h
 
 bankswitch macro
 		ld	hl, BankRegister
@@ -31,6 +32,12 @@ bankswitch macro
 		xor	a
 		ld	(hl), a
     endm
+    
+; function to turn a 68k address into a word the Z80 can use to access it
+zmake68kPtr function addr,zROMWindow+(addr&7FFFh)
+
+; function to turn a 68k address into a bank byte
+zmake68kBank function addr,(((addr&3F8000h)/zROMWindow))
 
 ; Segment type:	Regular
 
@@ -175,9 +182,13 @@ loc_B9:
 		dec	c
 		jr	nz, loc_B7
 		call	StopAllSound
-		ld	a, 2
+		ld	a, zmake68kBank(MusicIndex)
 		ld	(1C04h), a
-		ld	a, 4
+		; DANGER!
+		; This is bugged, it adds 1 to the bank, which makes it point
+		; to the DAC Index instead of the Sound Index.
+		; To fix this, remove the +1.
+		ld	a, zmake68kBank(SoundIndex)+1
 		ld	(1C05h), a
 		ld	hl, 1C05h
 		ld	a, (hl)
@@ -2763,37 +2774,43 @@ byte_1131:	db    3,   2,	1,   0,	  0,   0,   1
 byte_1139:	db    0,   0,	0,   0,	  1,   1,   1,	 1,   2,   2,	1
 		db    1,   1,	0,   0,	  0
 		db  84h, 01h, 82h, 04h
-MusicBanks:	db 02h
-		db 02h
-		db 02h
-		db 02h
-		db 02h
-		db 02h
-MusicPtrs:	dw 8000h+Music81-MusicIndex
-		dw 8000h+Music82-MusicIndex
-		dw 8000h+Music83-MusicIndex
-		dw 8000h+Music84-MusicIndex
-		dw 8000h+Music85-MusicIndex
-		dw 8000h+Music86-MusicIndex
-SFXPtrs:	dw 8000h+4000h+Sound00-SoundIndex
-		dw 8000h+4000h+Sound01-SoundIndex
-		dw 8000h+4000h+Sound02-SoundIndex
-		dw 8000h+4000h+Sound03-SoundIndex
-		dw 8000h+4000h+Sound04-SoundIndex
-		dw 8000h+4000h+Sound05-SoundIndex
-		dw 8000h+4000h+Sound06-SoundIndex
-		dw 8000h+4000h+Sound07-SoundIndex
-		dw 8000h+4000h+Sound08-SoundIndex
-		dw 8000h+4000h+Sound09-SoundIndex
-		dw 8000h+4000h+Sound0A-SoundIndex
-		dw 8000h+4000h+Sound0B-SoundIndex
-		dw 8000h+4000h+Sound0C-SoundIndex
-		dw 8000h+4000h+Sound0D-SoundIndex
-		dw 8000h+4000h+Sound0E-SoundIndex
-		dw 8000h+4000h+Sound0F-SoundIndex
-SpcSFXPtrs:	dw 8000h+4000h+Sound00-SoundIndex
-		dw 8000h+4000h+Sound01-SoundIndex
-		dw 8000h+4000h+Sound03-SoundIndex
+MusicBanks:	db zmake68kBank(MusicIndex)
+		db zmake68kBank(MusicIndex)
+		db zmake68kBank(MusicIndex)
+		db zmake68kBank(MusicIndex)
+		db zmake68kBank(MusicIndex)
+		db zmake68kBank(MusicIndex)
+MusicPtrs:	dw zmake68kPtr(Music81)
+		dw zmake68kPtr(Music82)
+		dw zmake68kPtr(Music83)
+		dw zmake68kPtr(Music84)
+		dw zmake68kPtr(Music85)
+		dw zmake68kPtr(Music86)
+SFXPtrs:	
+		; DANGER!
+		; These pointers along with the pointers inside of the SFX are
+		; all half a bank too long!
+		; To fix this, remove the +4000h and +$4000 from both the pointers
+		; here and in the SMPS data itself.
+                dw zmake68kPtr(Sound00)+4000h
+		dw zmake68kPtr(Sound01)+4000h
+		dw zmake68kPtr(Sound02)+4000h
+		dw zmake68kPtr(Sound03)+4000h
+		dw zmake68kPtr(Sound04)+4000h
+		dw zmake68kPtr(Sound05)+4000h
+		dw zmake68kPtr(Sound06)+4000h
+		dw zmake68kPtr(Sound07)+4000h
+		dw zmake68kPtr(Sound08)+4000h
+		dw zmake68kPtr(Sound09)+4000h
+		dw zmake68kPtr(Sound0A)+4000h
+		dw zmake68kPtr(Sound0B)+4000h
+		dw zmake68kPtr(Sound0C)+4000h
+		dw zmake68kPtr(Sound0D)+4000h
+		dw zmake68kPtr(Sound0E)+4000h
+		dw zmake68kPtr(Sound0F)+4000h
+SpcSFXPtrs:	dw zmake68kPtr(Sound00)+4000h
+		dw zmake68kPtr(Sound01)+4000h
+		dw zmake68kPtr(Sound03)+4000h
 SndPriorities:	db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
@@ -2811,30 +2828,30 @@ DACTablePtrs:	dw stru_11EC
 		dw stru_120A
 		dw stru_1210
 stru_11EC:	db 30h
-		db 4
+		db zmake68kBank(DAC_Index)
 		dw DAC_Sample1_End-DAC_Sample1
-		dw 8000h+DAC_Sample1-DAC_Index
+		dw zmake68kPtr(DAC_Sample1)
 stru_11F2:	db 0Ah
-		db 4
+		db zmake68kBank(DAC_Index)
 		dw DAC_Sample2_End-DAC_Sample2
-		dw 8000h+DAC_Sample2-DAC_Index
+		dw zmake68kPtr(DAC_Sample2)
 stru_11F8:	db 0Ah
-		db 4
+		db zmake68kBank(DAC_Index)
 		dw DAC_Sample3_End-DAC_Sample3
-		dw 8000h+DAC_Sample3-DAC_Index
+		dw zmake68kPtr(DAC_Sample3)
 stru_11FE:	db 0Eh
-		db 4
+		db zmake68kBank(DAC_Index)
 		dw DAC_Sample3_End-DAC_Sample3
-		dw 8000h+DAC_Sample3-DAC_Index
+		dw zmake68kPtr(DAC_Sample3)
 stru_1204:	db 10h
-		db 4
+		db zmake68kBank(DAC_Index)
 		dw DAC_Sample3_End-DAC_Sample3
-		dw 8000h+DAC_Sample3-DAC_Index
+		dw zmake68kPtr(DAC_Sample3)
 stru_120A:	db 0Ah
-		db 4
+		db zmake68kBank(DAC_Index)
 		dw DAC_Sample4_End-DAC_Sample4
-		dw 8000h+DAC_Sample4-DAC_Index
+		dw zmake68kPtr(DAC_Sample4)
 stru_1210:	db 0Ah
-		db 4
+		db zmake68kBank(DAC_Index)
 		dw DAC_Sample5_End-DAC_Sample5
-		dw 8000h+DAC_Sample5-DAC_Index
+		dw zmake68kPtr(DAC_Sample5)
