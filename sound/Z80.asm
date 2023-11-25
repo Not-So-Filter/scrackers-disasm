@@ -19,11 +19,12 @@
 
 ; ===========================================================================
 
-BankRegister	=	6000h
+zBankRegister	=	6000h
 zROMWindow	=	8000h
+zPSG		=	7F11h
 
 bankswitch macro
-		ld	hl, BankRegister
+		ld	hl, zBankRegister
 		ld	(hl), a
 		rept 5
 			rra
@@ -230,7 +231,7 @@ UpdateAll:
 UpdateSFXTracks:
 		ld	a, 1
 		ld	(1C19h), a	; 01 - SFX Mode
-		ld	hl, BankRegister	; switch to Bank 018000
+		ld	hl, zBankRegister	; switch to Bank 018000
 		xor	a		; Bank bits written: 003h
 		ld	e, 1
 		ld	(hl), e
@@ -1114,7 +1115,7 @@ PSGInitBytes:	db  80h, 80h
 
 PlaySpcSFX:
 		ex	af, af'
-		ld	hl, BankRegister	; switch to Bank 018000
+		ld	hl, zBankRegister	; switch to Bank 018000
 		xor	a		; Bank bits written: 003h
 		ld	e, 1
 		ld	(hl), e
@@ -1136,7 +1137,7 @@ PlaySpcSFX:
 
 PlaySFX:
 		ex	af, af'
-		ld	hl, BankRegister	; switch to Bank 018000
+		ld	hl, zBankRegister	; switch to Bank 018000
 		xor	a		; Bank bits written: 003h
 		ld	e, 1
 		ld	(hl), e
@@ -1248,7 +1249,7 @@ loc_6E3:
 		ld	a, 1Fh
 		call	SilencePSGChn
 		ld	a, 0FFh
-		ld	(7F11h), a
+		ld	(zPSG), a
 		ld	a, c
 		srl	a
 		srl	a
@@ -1548,7 +1549,7 @@ SilencePSG:
 		ld	a, 9Fh
 
 loc_8B5:
-		ld	(7F11h), a
+		ld	(zPSG), a
 		add	a, 20h
 		djnz	loc_8B5
 		pop	bc
@@ -2143,7 +2144,7 @@ loc_C54:
 		call	JumpToInsData
 		call	SendFMIns
 		push	hl
-		ld	hl, BankRegister	; switch to Bank 018000
+		ld	hl, zBankRegister	; switch to Bank 018000
 		xor	a		; Bank bits written: 003h
 		ld	e, 1
 		ld	(hl), e
@@ -2178,7 +2179,7 @@ loc_C99:
 		ld	a, (ix+1Ah)
 		or	a
 		jp	p, loc_CA9
-		ld	(7F11h), a
+		ld	(zPSG), a
 
 loc_CA9:
 		jr	loc_C94
@@ -2188,7 +2189,7 @@ cfF3_PSGNoise:
 		bit	2, (ix+1)
 		ret	nz
 		ld	a, 0DFh
-		ld	(7F11h), a
+		ld	(zPSG), a
 		ld	a, (de)
 		ld	(ix+1Ah), a
 		set	0, (ix+0)
@@ -2198,7 +2199,7 @@ cfF3_PSGNoise:
 		ld	a, 0FFh
 
 loc_CC6:
-		ld	(7F11h), a
+		ld	(zPSG), a
 		ret
 ; ---------------------------------------------------------------------------
 
@@ -2509,7 +2510,7 @@ loc_E3D:
 		ld	a, l
 		and	0Fh
 		or	c
-		ld	(7F11h), a
+		ld	(zPSG), a
 		ld	a, l
 		and	0F0h
 		or	h
@@ -2517,7 +2518,7 @@ loc_E3D:
 		rrca
 		rrca
 		rrca
-		ld	(7F11h), a
+		ld	(zPSG), a
 		ld	a, (ix+8)
 		or	a
 		ld	c, 0
@@ -2542,13 +2543,13 @@ loc_E7D:
 		add	a, 10h
 		bit	0, (ix+0)
 		jr	nz, loc_E8C
-		ld	(7F11h), a
+		ld	(zPSG), a
 		ret
 ; ---------------------------------------------------------------------------
 
 loc_E8C:
 		add	a, 20h
-		ld	(7F11h), a
+		ld	(zPSG), a
 		ret
 ; ---------------------------------------------------------------------------
 
@@ -2619,11 +2620,11 @@ SilencePSGChn:
 		add	a, (ix+1)
 		or	a
 		ret	p
-		ld	(7F11h), a
+		ld	(zPSG), a
 		bit	0, (ix+0)
 		ret	z
 		ld	a, 0FFh
-		ld	(7F11h), a
+		ld	(zPSG), a
 		ret
 ; End of function SilencePSGChn
 
@@ -2792,25 +2793,25 @@ SFXPtrs:
 		; all half a bank too long!
 		; To fix this, remove the +4000h and +$4000 from both the pointers
 		; here and in the SMPS data itself.
-                dw zmake68kPtr(Sound00)+4000h
-		dw zmake68kPtr(Sound01)+4000h
-		dw zmake68kPtr(Sound02)+4000h
-		dw zmake68kPtr(Sound03)+4000h
-		dw zmake68kPtr(Sound04)+4000h
-		dw zmake68kPtr(Sound05)+4000h
-		dw zmake68kPtr(Sound06)+4000h
-		dw zmake68kPtr(Sound07)+4000h
-		dw zmake68kPtr(Sound08)+4000h
-		dw zmake68kPtr(Sound09)+4000h
-		dw zmake68kPtr(Sound0A)+4000h
-		dw zmake68kPtr(Sound0B)+4000h
-		dw zmake68kPtr(Sound0C)+4000h
-		dw zmake68kPtr(Sound0D)+4000h
-		dw zmake68kPtr(Sound0E)+4000h
-		dw zmake68kPtr(Sound0F)+4000h
-SpcSFXPtrs:	dw zmake68kPtr(Sound00)+4000h
-		dw zmake68kPtr(Sound01)+4000h
-		dw zmake68kPtr(Sound03)+4000h
+                dw zmake68kPtr(SoundA0)+4000h
+		dw zmake68kPtr(SoundA1)+4000h
+		dw zmake68kPtr(SoundA2)+4000h
+		dw zmake68kPtr(SoundA3)+4000h
+		dw zmake68kPtr(SoundA4)+4000h
+		dw zmake68kPtr(SoundA5)+4000h
+		dw zmake68kPtr(SoundA6)+4000h
+		dw zmake68kPtr(SoundA7)+4000h
+		dw zmake68kPtr(SoundA8)+4000h
+		dw zmake68kPtr(SoundA9)+4000h
+		dw zmake68kPtr(SoundAA)+4000h
+		dw zmake68kPtr(SoundAB)+4000h
+		dw zmake68kPtr(SoundAC)+4000h
+		dw zmake68kPtr(SoundAD)+4000h
+		dw zmake68kPtr(SoundAE)+4000h
+		dw zmake68kPtr(SoundAF)+4000h
+SpcSFXPtrs:	dw zmake68kPtr(SoundA0)+4000h
+		dw zmake68kPtr(SoundA1)+4000h
+		dw zmake68kPtr(SoundA3)+4000h
 SndPriorities:	db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh

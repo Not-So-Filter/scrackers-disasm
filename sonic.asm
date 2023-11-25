@@ -19043,28 +19043,28 @@ Music86:	include	"Sound\Music\Mus86 - Game Over.asm"
 	align $18000			; Aligned
 ; ---------------------------------------------------------------------------
 SoundIndex:
-Sound00:	include	"Sound\SFX\Snd00 - Jump.asm"		; Jump SFX (Same as Sonic CD FM NO.02)
-Sound01:	include	"Sound\SFX\Snd01 - Cash Register.asm"		; Cash Machine SFX (Same as Sonic 1 SFX C5)
-Sound02:	include	"Sound\SFX\Snd02.asm"		; strange noise (it has modulation of "01 01 28 00", which the "00" makes the modulation do nothing) (this MAY be a "get hit by spikes" SFX unfinished)
-Sound03:	include	"Sound\SFX\Snd03 - Bomb.asm"		; Bomb explode SFX (Same as Sonic 1 SFX C4)
-Sound04:	include	"Sound\SFX\Snd04 - Skid.asm"		; Skidding SFX (Same as Sonic 1 SFX A4)
-Sound05:	include	"Sound\SFX\Snd05 - Ring Loss.asm"		; Ring Loss SFX (Same as Sonic 1 SFX C6)
-Sound06:	include	"Sound\SFX\Snd06 - Ring.asm"		; Ring Collect SFX (Same as Sonic 1 SFX B5) (Plays on Right Speaker, may very well be the "right to left to right" speaker thing)
-Sound07:	include	"Sound\SFX\Snd07.asm"		; Destroy Badnik/Monitor SFX (Same a Sonic 3 SFX 3D)
-Sound08:	include	"Sound\SFX\Snd08.asm"		; Spring SFX (Same as Sonic 3 SFX B1)
-Sound09:	include	"Sound\SFX\Snd09.asm"		; Check Point SFX (Same as Sonic 1 SFX A1)
+SoundA0:	include	"Sound\SFX\SndA0 - Jump.asm"		; Jump SFX (Same as Sonic CD FM NO.02)
+SoundA1:	include	"Sound\SFX\SndA1 - Cash Register.asm"		; Cash Machine SFX (Same as Sonic 1 SFX C5)
+SoundA2:	include	"Sound\SFX\SndA2.asm"		; strange noise (it has modulation of "01 01 28 00", which the "00" makes the modulation do nothing) (this MAY be a "get hit by spikes" SFX unfinished)
+SoundA3:	include	"Sound\SFX\SndA3 - Bomb.asm"		; Bomb explode SFX (Same as Sonic 1 SFX C4)
+SoundA4:	include	"Sound\SFX\SndA4 - Skid.asm"		; Skidding SFX (Same as Sonic 1 SFX A4)
+SoundA5:	include	"Sound\SFX\SndA5 - Ring Loss.asm"	; Ring Loss SFX (Same as Sonic 1 SFX C6)
+SoundA6:	include	"Sound\SFX\SndA6 - Ring.asm"		; Ring Collect SFX (Same as Sonic 1 SFX B5) (Plays on Right Speaker, may very well be the "right to left to right" speaker thing)
+SoundA7:	include	"Sound\SFX\SndA7 - Break Item.asm"	; Destroy Badnik/Monitor SFX (Same a Sonic 3 SFX 3D)
+SoundA8:	include	"Sound\SFX\SndA8 - Spring.asm"		; Spring SFX (Same as Sonic 3 SFX B1)
+SoundA9:	include	"Sound\SFX\SndA9 - Lamppost.asm"	; Check Point SFX (Same as Sonic 1 SFX A1)
 ; ---------------------------------------------------------------------------
 ; these SFX below play Nothing (this plays F2 strait away and does nothing)
 ; however they have the same SMPS Instrument in each of them ("blurrr.. (buzzer) noise with static")
 ; I"m asuming these are just simply blank SFX slots ready to be used when the sound
 ; programmers needed them.
 ; ---------------------------------------------------------------------------
-Sound0A:	include	"Sound\SFX\Snd0A.asm"
-Sound0B:	include	"Sound\SFX\Snd0B.asm"
-Sound0C:	include	"Sound\SFX\Snd0C.asm"
-Sound0D:	include	"Sound\SFX\Snd0D.asm"
-Sound0E:	include	"Sound\SFX\Snd0E.asm"
-Sound0F:	include	"Sound\SFX\Snd0F.asm"
+SoundAA:	include	"Sound\SFX\SndAA.asm"
+SoundAB:	include	"Sound\SFX\SndAB.asm"
+SoundAC:	include	"Sound\SFX\SndAC.asm"
+SoundAD:	include	"Sound\SFX\SndAD.asm"
+SoundAE:	include	"Sound\SFX\SndAE.asm"
+SoundAF:	include	"Sound\SFX\SndAF.asm"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
