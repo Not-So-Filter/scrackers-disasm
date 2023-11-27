@@ -2821,23 +2821,20 @@ locb_F52:
 ; ---------------------------------------------------------------------------
 DPCMData:	db    0,   1,	2,   4,	  8, 10h, 20h, 40h
 		db  80h,0FFh,0FEh,0FCh,0F8h,0F0h,0E0h,0C0h
-VolEnvPtrs:	dw byte_F8C,byte_F8E,byte_F95,byte_F9D,byte_FA9,byte_FB4
-		dw byte_FC3,byte_FCC,byte_FDD,byte_FE8,byte_FFD,byte_1007
-byte_F8C:	db   2,83h
-byte_F8E:	db   0,	 2,  4,	 6,  8,10h,83h
-byte_F95:	db   2,	 1,  0,	 0,  1,	 1,  2,81h
-byte_F9D:	db   4,	 3,  2,	 1,  0,	 0,  1,	 1,  2,	 2,  2,81h
-byte_FA9:	db   3,	 0,  1,	 1,  1,	 2,  3,	 4,  4,	 5,81h
-byte_FB4:	db   0,	 0,  1,	 1,  2,	 3,  4,	 5,  5,	 6,  8,	 7,  7
-		db   6,81h
-byte_FC3:	db   1,0Ch,  3,0Fh,  2,	 7,  3,0Fh,80h
-byte_FCC:	db   0,	 0,  0,	 2,  3,	 3,  4,	 5,  6,	 7,  8,	 9,0Ah
-		db 0Bh,0Eh,0Fh,83h
-byte_FDD:	db   3,	 2,  1,	 1,  0,	 0,  1,	 2,  3,	 4,81h
-byte_FE8:	db   1,	 0,  0,	 0,  0,	 1,  1,	 1,  2,	 2,  2,	 3,  3
-		db   3,	 3,  4,	 4,  4,	 5,  5,81h
-byte_FFD:	db 10h,20h,30h,40h,30h,20h,10h,	 0,0F0h,80h
-byte_1007:	db   0,	 0,  1,	 1,  3,	 3,  4,	 5,83h
+VolEnvPtrs:	dw PSG1,PSG2,PSG3,PSG4,PSG5,PSG6
+		dw PSG7,PSG8,PSG9,PSGA,PSGB,PSGC
+PSG1:		binclude "PSG/PSG 1.bin"
+PSG2:		binclude "PSG/PSG 2.bin"
+PSG3:		binclude "PSG/PSG 3.bin"
+PSG4:		binclude "PSG/PSG 4.bin"
+PSG5:		binclude "PSG/PSG 5.bin"
+PSG6:		binclude "PSG/PSG 6.bin"
+PSG7:		binclude "PSG/PSG 7.bin"
+PSG8:		binclude "PSG/PSG 8.bin"
+PSG9:		binclude "PSG/PSG 9.bin"
+PSGA:		binclude "PSG/PSG A.bin"
+PSGB:		binclude "PSG/PSG B.bin"
+PSGC:		binclude "PSG/PSG C.bin"
 ModEnvPtrs:	dw byte_1024, byte_1030, byte_103D, byte_1049, byte_108B
 		dw byte_10C0, byte_10FD, byte_1117, byte_1131, byte_1139
 byte_1024:	db  40h, 60h, 70h, 60h,	50h, 30h, 10h,-10h,-30h,-50h,-70h
