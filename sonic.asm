@@ -4103,15 +4103,11 @@ SoundDriverLoad:
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 Z80_Driver:
-		save
-		phase	0	; set Z80 location to 0
-		cpu z80		; use Z80 cpu
-		listing purecode	; add to listing file
 		include	"sound\Z80.asm"
 		restore
 		padding	off
 		dephase		; reset to 68K location
-Z80_Driver_end:	even
+Z80_Driver_end:
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -4121,7 +4117,7 @@ Z80_Driver_end:	even
 PlayMusic:
 		stopZ80
 		waitZ80
-		move.b	d0,(z80_soundqueue0).l	; save BGM number to Z80
+		move.b	d0,(z80_ram+zSoundQueue1).l	; save BGM number to Z80
 		startZ80
 		rts
 ; ===========================================================================

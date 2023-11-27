@@ -19,9 +19,94 @@
 
 ; ===========================================================================
 
+DurationTimeout	=	$B
+zTrack	=	$30
+
+	phase $1C04
+zMusicBank	ds.b 1
+zSoundBank	ds.b 1
+zUnk_1C06	ds.b 1
+	ds.b 1
+	ds.b 1
+zSoundQueueStart
+zSoundQueue0	ds.b 1
+zSoundQueue1	ds.b 1
+zSoundQueue2	ds.b 1
+zSoundQueue3	ds.b 1
+zSoundQueueEnd
+zFadeOutTimeout	ds.b 1
+zFadeDelay	ds.b 1
+zFadeDelayTimeout	ds.b 1
+zPauseFlag	ds.b 1
+zHaltFlag	ds.b 1
+zFM3Settings	ds.b 1
+zTempoAccumulator	ds.b 1
+zCurrentTempo	ds.b 1
+zUnk_1C15	ds.b 1
+zCommunicationByte	ds.b 1
+zUnk_1C17	ds.b 1
+zUnk_1C18	ds.b 1
+zUpdateSound	ds.b 1
+zSpecSFXMode	ds.l 2
+zSFXMode	ds.l 2
+zMusicMode	ds.l 2
+zSFXSaveIndex	ds.b 1
+zSongPosition	ds.w 1
+zTrackInitPos	ds.w 1
+zVoiceTblPtr	ds.w 1
+zSFXVoiceTblPtr	ds.w 1
+zSFXTempoDivider	ds.b 1
+zDACIndex	ds.b 1
+	ds.b 1
+	ds.b 1
+	ds.b 1
+
+; Now starts song and SFX z80 RAM
+; Max number of music channels: 6 FM + 3 PSG or 1 DAC + 5 FM + 3 PSG
+zTracksStart
+	ds.b	zTrack
+zSongFM1	ds.b	zTrack
+zSongFM2	ds.b	zTrack
+zSongFM3	ds.b	zTrack
+zSongFM4	ds.b	zTrack
+zSongFM5	ds.b	zTrack
+zSongFM6_DAC	ds.b	zTrack
+zSongPSG1	ds.b	zTrack
+zSongPSG2	ds.b	zTrack
+zSongPSG3	ds.b	zTrack
+zTracksEnd
+; This is RAM for backup of songs (when 1-up jingle is playing)
+; and for SFX channels. Note these two overlap.
+; Max number of SFX channels: 4 FM + 3 PSG
+zTracksSFXStart
+zSFX_FM3	ds.b	zTrack
+zSFX_FM4	ds.b	zTrack
+zSFX_FM5	ds.b	zTrack
+zSFX_FM6	ds.b	zTrack
+zSFX_PSG1	ds.b	zTrack
+zSFX_PSG2	ds.b	zTrack
+zSFX_PSG3	ds.b	zTrack
+zTracksSFXEnd
+
+zTracksSpecSFXStart
+zSpecSFX_FM3	ds.b	zTrack
+zTracksSpecSFXEnd
+	dephase
+	!org	Z80_Driver
+
+		save
+		phase	0	; set Z80 location to 0
+		cpu z80		; use Z80 cpu
+		listing purecode	; add to listing file
+
+zStack		=	2000h
+zYM2612_A0	=	4000h
+zYM2612_D0	=	4001h
+zYM2612_A1	=	4002h
+zYM2612_D1	=	4003h
 zBankRegister	=	6000h
-zROMWindow	=	8000h
 zPSG		=	7F11h
+zROMWindow	=	8000h
 
 bankswitch macro
 		ld	hl, zBankRegister
@@ -31,9 +116,21 @@ bankswitch macro
 			ld	(hl), a
 		endm
 		xor	a
+		rept 3
 		ld	(hl), a
-    endm
-    
+		endm
+	endm
+
+; macro to make a certain error message clearer should you happen to get it...
+rsttarget macro {INTLABEL}
+	if ($&7)||($>38h)
+		fatal "Function __LABEL__ is at 0\{$}h, but must be at a multiple of 8 bytes <= 38h to be used with the rst instruction."
+	endif
+	if "__LABEL__"<>""
+__LABEL__ label $
+	endif
+	endm
+
 ; function to turn a 68k address into a word the Z80 can use to access it
 zmake68kPtr function addr,zROMWindow+(addr&7FFFh)
 
@@ -53,7 +150,7 @@ loc_0:
 ; =============== S U B	R O U T	I N E =======================================
 
 
-ReadPtrTable:
+ReadPtrTable:	rsttarget
 		ld	c, a
 		ld	b, 0
 		add	hl, bc
@@ -71,7 +168,7 @@ ReadPtrTable:
 ; =============== S U B	R O U T	I N E =======================================
 
 
-WriteFMIorII:
+WriteFMIorII:	rsttarget
 		bit	2, (ix+0)
 		ret	nz
 		add	a, (ix+1)
@@ -84,9 +181,9 @@ WriteFMIorII:
 
 
 WriteFMI:
-		ld	(ym2612_a0), a
+		ld	(zYM2612_A0), a
 		ld	a, c
-		ld	(ym2612_d0), a
+		ld	(zYM2612_D0), a
 		ret
 ; End of function WriteFMI
 
@@ -98,30 +195,30 @@ WriteFMIIPart:
 ; =============== S U B	R O U T	I N E =======================================
 
 
-WriteFMII:
-		ld	(ym2612_a1), a
+WriteFMII:	rsttarget
+		ld	(zYM2612_A1), a
 		ld	a, c
-		ld	(ym2612_d1), a
+		ld	(zYM2612_D1), a
 		ret
 ; End of function WriteFMII
 
 ; ---------------------------------------------------------------------------
 
-VInt:
+VInt:		rsttarget
 		di
 		push	af
 		push	iy
 		exx
 		call	DoSoundQueue
 		call	UpdateAll
-		ld	a, (1C3Ch)
+		ld	a, (zDACIndex)
 		or	a
 		jp	z, loc_AB
 		jp	m, loc_95
 		ld	a, 2Bh
 		ld	c, 80h
 		call	WriteFMI
-		ld	hl, 1C3Ch
+		ld	hl, zDACIndex
 		ld	a, (hl)
 		dec	a
 		set	7, (hl)
@@ -133,7 +230,7 @@ VInt:
 		ld	(loc_F11+1), a
 		inc	hl
 		ld	a, (hl)
-		ld	(1C05h), a
+		ld	(zSoundBank), a
 		inc	hl
 		ld	e, (hl)
 		inc	hl
@@ -144,11 +241,9 @@ VInt:
 		ld	h, (hl)
 		ld	l, a
 		exx
-		ld	hl, 1C05h
+		ld	hl, zSoundBank
 		ld	a, (hl)
 		bankswitch
-		ld	(hl), a
-		ld	(hl), a
 		exx
 		pop	iy
 		pop	af
@@ -157,11 +252,9 @@ VInt:
 ; ---------------------------------------------------------------------------
 
 loc_95:
-		ld	hl, 1C05h
+		ld	hl, zSoundBank
 		ld	a, (hl)
 		bankswitch
-		ld	(hl), a
-		ld	(hl), a
 
 loc_AB:
 		exx
@@ -172,7 +265,7 @@ loc_AB:
 ; ---------------------------------------------------------------------------
 
 InitDriver:
-		ld	sp, 2000h
+		ld	sp, zStack
 		ld	c, 0
 
 loc_B7:
@@ -184,18 +277,16 @@ loc_B9:
 		jr	nz, loc_B7
 		call	StopAllSound
 		ld	a, zmake68kBank(MusicIndex)
-		ld	(1C04h), a
+		ld	(zMusicBank), a
 		; DANGER!
 		; This is bugged, it adds 1 to the bank, which makes it point
 		; to the DAC Index instead of the Sound Index.
 		; To fix this, remove the +1.
 		ld	a, zmake68kBank(SoundIndex)+1
-		ld	(1C05h), a
-		ld	hl, 1C05h
+		ld	(zSoundBank), a
+		ld	hl, zSoundBank
 		ld	a, (hl)
 		bankswitch
-		ld	(hl), a
-		ld	(hl), a
 		ld	iy, DPCMData
 		ei
 		jp	loc_EE5
@@ -210,17 +301,15 @@ UpdateAll:
 		call	PlaySoundID
 		call	UpdateSFXTracks
 		xor	a
-		ld	(1C19h), a	; 00 - Music Mode
-		ld	hl, 1C04h
+		ld	(zUpdateSound), a	; 00 - Music Mode
+		ld	hl, zMusicBank
 		ld	a, (hl)
 		bankswitch
-		ld	(hl), a
-		ld	(hl), a
-		ld	ix, 1C40h
+		ld	ix, zTracksStart
 		bit	7, (ix+0)
 		call	nz, DrumUpdateTrack
 		ld	b, 9
-		ld	ix, 1C70h
+		ld	ix, zSongFM1
 		jr	TrkUpdateLoop
 ; End of function UpdateAll
 
@@ -230,7 +319,7 @@ UpdateAll:
 
 UpdateSFXTracks:
 		ld	a, 1
-		ld	(1C19h), a	; 01 - SFX Mode
+		ld	(zUpdateSound), a	; 01 - SFX Mode
 		ld	hl, zBankRegister	; switch to Bank 018000
 		xor	a		; Bank bits written: 003h
 		ld	e, 1
@@ -243,13 +332,13 @@ UpdateSFXTracks:
 		ld	(hl), a
 		ld	(hl), a
 		ld	(hl), a
-		ld	ix, 1E20h
+		ld	ix, zTracksSFXStart
 		ld	b, 7
 		call	TrkUpdateLoop
 		ld	a, 80h
-		ld	(1C19h), a	; 80 - Special SFX Mode
+		ld	(zUpdateSound), a	; 80 - Special SFX Mode
 		ld	b, 1
-		ld	ix, 1F70h
+		ld	ix, zTracksSpecSFXStart
 ; End of function UpdateSFXTracks
 
 
@@ -260,7 +349,7 @@ TrkUpdateLoop:
 		push	bc
 		bit	7, (ix+0)
 		call	nz, UpdateTrack
-		ld	de, 30h
+		ld	de, zTrack
 		add	ix, de
 		pop	bc
 		djnz	TrkUpdateLoop
@@ -366,13 +455,13 @@ SpcFM3Regs:	db 0ADh, 0AEh, 0ACh, 0A6h
 
 
 GetFM3FreqPtr:
-		ld	de, 1C2Ah
-		ld	a, (1C19h)
+		ld	de, zMusicMode
+		ld	a, (zUpdateSound)
 		or	a
 		ret	z		; Music	Mode (00) - 1C2A
-		ld	de, 1C1Ah
+		ld	de, zSpecSFXMode
 		ret	p		; Special SFX Mode (80)	- 1C1A
-		ld	de, 1C22h
+		ld	de, zSFXMode
 		ret			; SFX Mode (01)	- 1C22
 ; End of function GetFM3FreqPtr
 
@@ -888,8 +977,8 @@ loc_4A0:
 
 
 GetFMInsPtr:
-		ld	hl, (1C37h)
-		ld	a, (1C19h)
+		ld	hl, (zVoiceTblPtr)
+		ld	a, (zUpdateSound)
 		or	a
 		jr	z, JumpToInsData ; Mode	00 (Music Mode)	- jump
 		ld	l, (ix+2Ah)	; load SFX track Instrument Pointer (Trk+2A/2B)
@@ -960,7 +1049,7 @@ WriteInsReg:
 
 
 PlaySoundID:
-		ld	a, (1C09h)
+		ld	a, (zSoundQueue0)
 		bit	7, a
 		jp	z, StopAllSound	; 00-7F	- Stop All
 		cp	0A0h
@@ -977,7 +1066,7 @@ PlaySnd_Command:
 		ld	hl, CmdPtrTable
 		rst	ReadPtrTable
 		xor	a
-		ld	(1C18h), a
+		ld	(zUnk_1C18), a
 		jp	(hl)
 ; ---------------------------------------------------------------------------
 CmdPtrTable:	dw FadeOutMusic
@@ -990,13 +1079,13 @@ FadeInMusic:
 		ld	ix, 1F70h
 		ld	b, 2
 		ld	a, 80h
-		ld	(1C19h), a
+		ld	(zUpdateSound), a
 
 loc_541:
 		push	bc
 		bit	7, (ix+0)
 		call	nz, loc_552
-		ld	de, 30h
+		ld	de, zTrack
 		add	ix, de
 		pop	bc
 		djnz	loc_541
@@ -1023,12 +1112,10 @@ zPlayMusic:
 		sub	l
 		ld	h, a
 		ld	a, (hl)
-		ld	(1C04h), a
-		ld	hl, 1C04h
+		ld	(zMusicBank), a
+		ld	hl, zMusicBank
 		ld	a, (hl)
 		bankswitch
-		ld	(hl), a
-		ld	(hl), a
 		pop	af
 		ld	hl, MusicPtrs
 		rst	ReadPtrTable
@@ -1038,35 +1125,35 @@ zPlayMusic:
 		inc	hl
 		ld	h, (hl)
 		ld	l, a
-		ld	(1C37h), hl
+		ld	(zVoiceTblPtr), hl
 		pop	hl
 		pop	iy
 		ld	a, (iy+5)
-		ld	(1C13h), a
-		ld	(1C14h), a
+		ld	(zTempoAccumulator), a
+		ld	(zCurrentTempo), a
 		ld	de, 6
 		add	hl, de
-		ld	(1C33h), hl
+		ld	(zSongPosition), hl
 		ld	hl, FMInitBytes
-		ld	(1C35h), hl
-		ld	de, 1C40h
+		ld	(zTrackInitPos), hl
+		ld	de, zTracksStart
 		ld	b, (iy+2)
 		ld	a, (iy+4)
 
 loc_5B2:
 		push	bc
-		ld	hl, (1C35h)
+		ld	hl, (zTrackInitPos)
 		ldi
 		ldi
 		ld	(de), a
 		inc	de
-		ld	(1C35h), hl
-		ld	hl, (1C33h)
+		ld	(zTrackInitPos), hl
+		ld	hl, (zSongPosition)
 		ldi
 		ldi
 		ldi
 		ldi
-		ld	(1C33h), hl
+		ld	(zSongPosition), hl
 		call	FinishFMTrkInit
 		pop	bc
 		djnz	loc_5B2
@@ -1075,22 +1162,22 @@ loc_5B2:
 		jp	z, ClearSoundID
 		ld	b, a
 		ld	hl, PSGInitBytes
-		ld	(1C35h), hl
+		ld	(zTrackInitPos), hl
 		ld	de, 1D90h
 		ld	a, (iy+4)
 
 loc_5E7:
 		push	bc
-		ld	hl, (1C35h)
+		ld	hl, (zTrackInitPos)
 		ldi
 		ldi
 		ld	(de), a
 		inc	de
-		ld	(1C35h), hl
-		ld	hl, (1C33h)
+		ld	(zTrackInitPos), hl
+		ld	hl, (zSongPosition)
 		ld	bc, 6
 		ldir
-		ld	(1C33h), hl
+		ld	(zSongPosition), hl
 		call	FinishTrkInit
 		pop	bc
 		djnz	loc_5E7
@@ -1098,7 +1185,7 @@ loc_5E7:
 
 ClearSoundID:
 		ld	a, 80h
-		ld	(1C09h), a
+		ld	(zSoundQueue0), a
 		ret
 ; ---------------------------------------------------------------------------
 FMInitBytes:	db  80h,   6
@@ -1156,7 +1243,7 @@ PlaySFX:
 		ld	hl, SFXPtrs
 
 loc_652:
-		ld	(1C19h), a
+		ld	(zUpdateSound), a
 		ex	af, af'
 		rst	ReadPtrTable
 		push	hl
@@ -1164,14 +1251,14 @@ loc_652:
 		inc	hl
 		ld	h, (hl)
 		ld	l, a
-		ld	(1C39h), hl
+		ld	(zSFXVoiceTblPtr), hl
 		xor	a
-		ld	(1C15h), a
+		ld	(zUnk_1C15), a
 		pop	hl
 		push	hl
 		pop	iy
 		ld	a, (iy+2)
-		ld	(1C3Bh), a
+		ld	(zSFXTempoDivider), a
 		ld	de, 4
 		add	hl, de
 		ld	b, (iy+3)
@@ -1184,7 +1271,7 @@ loc_674:
 		call	GetSFXChnPtrs
 		set	2, (hl)
 		push	ix
-		ld	a, (1C19h)
+		ld	a, (zUpdateSound)
 		or	a
 		jr	z, loc_688
 		pop	hl
@@ -1198,7 +1285,7 @@ loc_688:
 		cp	2
 		call	z, ResetSpcFM3Mode
 		ldi
-		ld	a, (1C3Bh)
+		ld	a, (zSFXTempoDivider)
 		ld	(de), a
 		inc	de
 		ldi
@@ -1215,8 +1302,8 @@ loc_688:
 
 loc_6B6:
 		push	hl
-		ld	hl, (1C39h)
-		ld	a, (1C19h)
+		ld	hl, (zSFXVoiceTblPtr)
+		ld	a, (zUpdateSound)
 		or	a
 		jr	z, loc_6C4
 		push	iy
@@ -1260,7 +1347,7 @@ loc_6E3:
 
 loc_6FA:
 		sub	2
-		ld	(1C32h), a
+		ld	(zSFXSaveIndex), a
 		push	af
 		ld	hl, SFXChnPtrs
 		rst	ReadPtrTable
@@ -1298,7 +1385,7 @@ FinishFMTrkInit:
 
 FinishTrkInit:
 		ex	de, hl
-		ld	(hl), 30h
+		ld	(hl), zTrack
 		inc	hl
 		ld	(hl), 0C0h
 		inc	hl
@@ -1315,15 +1402,39 @@ loc_728:
 ; End of function FinishTrkInit
 
 ; ---------------------------------------------------------------------------
-SpcSFXChnPtrs:	dw  1F70h, 1F70h, 1F70h, 1F70h,	1F70h, 1F70h, 1F70h, 1F70h
-SFXChnPtrs:	dw  1E20h, 1E50h, 1E80h, 1EB0h,	1EE0h, 1F10h, 1F40h, 1F40h
-BGMChnPtrs:	dw  1CD0h, 1D00h, 1D30h, 1D60h,	1D90h, 1DC0h, 1DF0h, 1DF0h
+SpcSFXChnPtrs:
+		dw  zSpecSFX_FM3
+		dw  zSpecSFX_FM3
+		dw  zSpecSFX_FM3
+		dw  zSpecSFX_FM3
+		dw  zSpecSFX_FM3
+		dw  zSpecSFX_FM3
+		dw  zSpecSFX_FM3
+		dw  zSpecSFX_FM3
+SFXChnPtrs:
+		dw  zSFX_FM3
+		dw  zSFX_FM4
+		dw  zSFX_FM5
+		dw  zSFX_FM6
+		dw  zSFX_PSG1
+		dw  zSFX_PSG2
+		dw  zSFX_PSG3
+		dw  zSFX_PSG3
+BGMChnPtrs:
+		dw  zSongFM3
+		dw  zSongFM4
+		dw  zSongFM5
+		dw  zSongFM6_DAC
+		dw  zSongPSG1
+		dw  zSongPSG2
+		dw  zSongPSG3
+		dw  zSongPSG3
 
 ; =============== S U B	R O U T	I N E =======================================
 
 
 DoPause:
-		ld	hl, 1C10h
+		ld	hl, zPauseFlag
 		ld	a, (hl)
 		or	a
 		ret	z
@@ -1338,14 +1449,14 @@ DoPause:
 UnpauseMusic:
 		xor	a
 		ld	(hl), a
-		ld	a, (1C0Dh)
+		ld	a, (zFadeOutTimeout)
 		or	a
 		jp	nz, StopAllSound
-		ld	ix, 1C40h
+		ld	ix, zTracksStart
 		ld	b, 7
 
 loc_780:
-		ld	a, (1C11h)
+		ld	a, (zHaltFlag)
 		or	a
 		jr	nz, locb_78C
 		bit	7, (ix+0)
@@ -1357,7 +1468,7 @@ locb_78C:
 		rst	WriteFMIorII
 
 loc_792:
-		ld	de, 30h
+		ld	de, zTrack
 		add	ix, de
 		djnz	loc_780
 		ld	ix, 1E20h
@@ -1373,7 +1484,7 @@ loc_79F:
 		rst	WriteFMIorII
 
 loc_7B1:
-		ld	de, 30h
+		ld	de, zTrack
 		add	ix, de
 		djnz	loc_79F
 		ret
@@ -1383,17 +1494,17 @@ loc_7B1:
 
 FadeOutMusic:
 		ld	a, 28h
-		ld	(1C0Dh), a
+		ld	(zFadeOutTimeout), a
 		ld	a, 6
-		ld	(1C0Fh), a
-		ld	(1C0Eh), a
+		ld	(zFadeDelayTimeout), a
+		ld	(zFadeDelay), a
 
 ; =============== S U B	R O U T	I N E =======================================
 
 
 StopDrumPSG:
 		xor	a
-		ld	(1C40h), a
+		ld	(zTracksStart), a
 		ld	(1D60h), a
 		ld	(1DF0h), a
 		ld	(1D90h), a
@@ -1406,34 +1517,32 @@ StopDrumPSG:
 
 
 DoFading:
-		ld	hl, 1C0Dh
+		ld	hl, zFadeOutTimeout
 		ld	a, (hl)
 		or	a
 		ret	z
 		call	m, StopDrumPSG
 		res	7, (hl)
-		ld	a, (1C0Fh)
+		ld	a, (zFadeDelayTimeout)
 		dec	a
 		jr	z, loc_7EE
-		ld	(1C0Fh), a
+		ld	(zFadeDelayTimeout), a
 		ret
 ; ---------------------------------------------------------------------------
 
 loc_7EE:
-		ld	a, (1C0Eh)
-		ld	(1C0Fh), a
-		ld	a, (1C0Dh)
+		ld	a, (zFadeDelay)
+		ld	(zFadeDelayTimeout), a
+		ld	a, (zFadeOutTimeout)
 		dec	a
-		ld	(1C0Dh), a
+		ld	(zFadeOutTimeout), a
 		jr	z, StopAllSound
-		ld	hl, 1C04h
+		ld	hl, zMusicBank
 		ld	a, (hl)
 		bankswitch
-		ld	(hl), a
-		ld	(hl), a
-		ld	hl, 1C06h
+		ld	hl, zUnk_1C06
 		inc	(hl)
-		ld	ix, 1C40h
+		ld	ix, zTracksStart
 		ld	b, 6
 
 loc_81D:
@@ -1446,7 +1555,7 @@ loc_81D:
 		pop	bc
 
 loc_82E:
-		ld	de, 30h
+		ld	de, zTrack
 		add	ix, de
 		djnz	loc_81D
 		ret
@@ -1457,8 +1566,8 @@ loc_82E:
 
 
 StopAllSound:
-		ld	hl, 1C09h
-		ld	de, soundqueue0
+		ld	hl, zSoundQueue0
+		ld	de, zSoundQueue1
 		ld	bc, 396h
 		ld	(hl), 0
 		ldir
@@ -1475,9 +1584,9 @@ loc_849:
 		djnz	loc_849
 		ld	b, 7
 		xor	a
-		ld	(1C06h), a
-		ld	(1C3Ch), a
-		ld	(1C0Dh), a
+		ld	(zUnk_1C06), a
+		ld	(zDACIndex), a
+		ld	(zFadeOutTimeout), a
 		call	SilencePSG
 		ld	c, 0
 		ld	a, 2Bh
@@ -1485,7 +1594,7 @@ loc_849:
 
 ResetSpcFM3Mode:
 		xor	a
-		ld	(1C12h), a
+		ld	(zFM3Settings), a
 		ld	c, a
 		ld	a, 27h
 		call	WriteFMI
@@ -1561,14 +1670,14 @@ loc_8B5:
 
 
 DoTempo:
-		ld	a, (1C14h)
-		ld	hl, 1C13h
+		ld	a, (zCurrentTempo)
+		ld	hl, zTempoAccumulator
 		add	a, (hl)
 		ld	(hl), a
 		ret	nc
-		ld	hl, 1C4Bh
-		ld	de, 30h
-		ld	b, 0Ah
+		ld	hl, zTracksStart+DurationTimeout
+		ld	de, zTrack
+		ld	b, 0Ah	; number of tracks
 
 loc_8D1:
 		inc	(hl)
@@ -1583,9 +1692,9 @@ loc_8D1:
 
 DoSoundQueue:
 		ld	a, r
-		ld	(1C17h), a
-		ld	de, soundqueue0
-		ld	b, 3
+		ld	(zUnk_1C17), a
+		ld	de, zSoundQueue1
+		ld	b, zSoundQueueEnd-zSoundQueueStart-1
 
 loc_8E0:
 		ld	a, (de)
@@ -1601,16 +1710,16 @@ loc_8E0:
 		adc	a, h
 		sub	l
 		ld	h, a
-		ld	a, (1C18h)
+		ld	a, (zUnk_1C18)
 		cp	(hl)
 		jr	z, loc_8FD
 		jr	nc, loc_905
 
 loc_8FD:
 		ld	a, c
-		ld	(1C09h), a
+		ld	(zSoundQueue0), a
 		ld	a, (hl)
-		ld	(1C18h), a
+		ld	(zUnk_1C18), a
 
 loc_905:
 		xor	a
@@ -1622,10 +1731,10 @@ loc_905:
 
 loc_90B:
 		ld	a, c
-		ld	(1C09h), a
+		ld	(zSoundQueue0), a
 		xor	a
-		ld	(1C18h), a
-		ld	de, soundqueue0
+		ld	(zUnk_1C18), a
+		ld	de, zSoundQueue1
 		ld	(de), a
 		inc	de
 		ld	(de), a
@@ -1721,10 +1830,10 @@ loc_A16:
 		ex	af, af'
 		call	DoNoteOff
 		ex	af, af'
-		ld	hl, 1C40h
+		ld	hl, zTracksStart
 		bit	2, (hl)
 		jp	nz, loc_A38
-		ld	(1C3Ch), a
+		ld	(zDACIndex), a
 
 loc_A38:
 		pop	de
@@ -1812,8 +1921,8 @@ cfMetaPtrTable:	dw cf00_SetTempo
 ; ---------------------------------------------------------------------------
 
 cfEA_PlayDAC:
-		ld	(1C3Ch), a
-		ld	hl, 1C40h
+		ld	(zDACIndex), a
+		ld	hl, zTracksStart
 		set	2, (hl)
 		ret
 
@@ -1853,7 +1962,7 @@ cfE1_Detune:
 ; ---------------------------------------------------------------------------
 
 cfE2_SetComm:
-		ld	(1C16h), a
+		ld	(zCommunicationByte), a
 		ret
 ; ---------------------------------------------------------------------------
 
@@ -1909,7 +2018,7 @@ loc_B1B:
 
 loc_B28:
 		push	hl
-		ld	hl, 1C06h
+		ld	hl, zUnk_1C06
 		add	a, (hl)
 		jp	m, loc_B32
 		ld	a, 0FFh
@@ -2081,16 +2190,16 @@ cfF4_ModType:
 cfF2_StopTrk:
 		res	7, (ix+0)
 		ld	a, 1Fh
-		ld	(1C15h), a
+		ld	(zUnk_1C15), a
 		call	DoNoteOff
 		ld	c, (ix+1)
 		push	ix
 		call	GetSFXChnPtrs
-		ld	a, (1C19h)
+		ld	a, (zUpdateSound)
 		or	a
 		jp	z, loc_C94
 		xor	a
-		ld	(1C18h), a
+		ld	(zUnk_1C18), a
 		bit	7, (iy+0)
 		jr	z, loc_C1E
 		ld	a, (ix+1)
@@ -2104,7 +2213,7 @@ cfF2_StopTrk:
 
 loc_C1E:
 		push	hl
-		ld	hl, (1C37h)
+		ld	hl, (zVoiceTblPtr)
 
 loc_C22:
 		pop	ix
@@ -2135,11 +2244,9 @@ loc_C48:
 loc_C54:
 		ld	b, a
 		push	hl
-		ld	hl, 1C04h
+		ld	hl, zMusicBank
 		ld	a, (hl)
 		bankswitch
-		ld	(hl), a
-		ld	(hl), a
 		pop	hl
 		call	JumpToInsData
 		call	SendFMIns
@@ -2346,7 +2453,7 @@ loc_D5D:
 
 
 SendFM3SpcMode:
-		ld	(1C12h), a
+		ld	(zFM3Settings), a
 		ld	c, a
 		ld	a, 27h
 		call	WriteFMI
@@ -2373,27 +2480,27 @@ cfMetaCoordFlag:
 ; ---------------------------------------------------------------------------
 
 cf00_SetTempo:
-		ld	(1C14h), a
-		ld	(1C13h), a
+		ld	(zCurrentTempo), a
+		ld	(zTempoAccumulator), a
 		ret
 ; ---------------------------------------------------------------------------
 
 cf01_PlaySnd:
-		ld	(1C09h), a
+		ld	(zSoundQueue0), a
 		ret
 ; ---------------------------------------------------------------------------
 
 cf02_MusPause:
-		ld	(1C11h), a
+		ld	(zHaltFlag), a
 		or	a
 		jr	z, loc_DC8
 		push	ix
 		push	de
 
 loc_DAE:
-		ld	ix, 1C40h
+		ld	ix, zTracksStart
 		ld	b, 0Ah
-		ld	de, 30h
+		ld	de, zTrack
 
 loc_DB7:
 		res	7, (ix+0)
@@ -2408,9 +2515,9 @@ loc_DB7:
 loc_DC8:
 		push	ix
 		push	de
-		ld	ix, 1C40h
+		ld	ix, zTracksStart
 		ld	b, 0Ah
-		ld	de, 30h
+		ld	de, zTrack
 
 loc_DD4:
 		set	7, (ix+0)
@@ -2442,7 +2549,7 @@ cf04_TickMulAll:
 
 loc_DF3:
 		push	bc
-		ld	bc, 30h
+		ld	bc, zTrack
 		ld	(hl), a
 		add	hl, bc
 		pop	bc
@@ -2662,9 +2769,9 @@ loc_F02:
 		ld	c, a
 		ld	a, 2Ah
 		di
-		ld	(ym2612_a0), a
+		ld	(zYM2612_A0), a
 		ld	a, c
-		ld	(ym2612_d0), a
+		ld	(zYM2612_D0), a
 		ei
 
 loc_F11:
@@ -2682,9 +2789,9 @@ loc_F1C:
 		ld	c, a
 		ld	a, 2Ah
 		di
-		ld	(ym2612_a0), a
+		ld	(zYM2612_A0), a
 		ld	a, c
-		ld	(ym2612_d0), a
+		ld	(zYM2612_D0), a
 		ei
 		inc	hl
 		ld	a, h
@@ -2693,13 +2800,11 @@ loc_F1C:
 		ld	hl, 8000h
 		di
 		exx
-		ld	hl, 1C05h
+		ld	hl, zSoundBank
 		inc	(hl)
-		ld	hl, 1C05h
+		ld	hl, zSoundBank
 		ld	a, (hl)
 		bankswitch
-		ld	(hl), a
-		ld	(hl), a
 		exx
 		ei
 
@@ -2708,10 +2813,10 @@ locb_F52:
 		ld	a, d
 		or	e
 		jp	nz, DACLoop
-		ld	hl, 1C40h
+		ld	hl, zTracksStart
 		res	2, (hl)
 		xor	a
-		ld	(1C3Ch), a
+		ld	(zDACIndex), a
 		jp	loc_EE5
 ; ---------------------------------------------------------------------------
 DPCMData:	db    0,   1,	2,   4,	  8, 10h, 20h, 40h
