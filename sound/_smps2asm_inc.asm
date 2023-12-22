@@ -49,34 +49,11 @@ nMaxPSG2			EQU nB6
 	endif
 ; ---------------------------------------------------------------------------
 ; PSG volume envelope equates
-	switch SonicDriverVer
-		case 1
-			enum		fTone_01=$01,fTone_02,fTone_03,fTone_04,fTone_05,fTone_06
-			nextenum	fTone_07,fTone_08,fTone_09
-		case 2
-			enum		fTone_01=$01,fTone_02,fTone_03,fTone_04,fTone_05,fTone_06
-			nextenum	fTone_07,fTone_08,fTone_09,fTone_0A,fTone_0B,fTone_0C
-			nextenum	fTone_0D
-		elsecase;SonicDriverVer>=3
-			enum		sTone_01=$01,sTone_02,sTone_03,sTone_04,sTone_05,sTone_06
-			nextenum	sTone_07,sTone_08,sTone_09,sTone_0A,sTone_0B,sTone_0C
-			nextenum	sTone_0D,sTone_0E,sTone_0F,sTone_10,sTone_11,sTone_12
-			nextenum	sTone_13,sTone_14,sTone_15,sTone_16,sTone_17,sTone_18
-			nextenum	sTone_19,sTone_1A,sTone_1B,sTone_1C,sTone_1D,sTone_1E
-			nextenum	sTone_1F,sTone_20,sTone_21,sTone_22,sTone_23,sTone_24
-			nextenum	sTone_25,sTone_26,sTone_27
-			; For conversions:
-			if SonicDriverVer>=5
-				nextenum	fTone_01,fTone_02,fTone_03,fTone_04,fTone_05,fTone_06
-				nextenum	fTone_07,fTone_08,fTone_09,fTone_0A,fTone_0B,fTone_0C
-				nextenum	fTone_0D
-			endif
-	endcase
+	enum		sTone_01=$01,sTone_02,sTone_03,sTone_04,sTone_05,sTone_06
+	nextenum	sTone_07,sTone_08,sTone_09,sTone_0A,sTone_0B,sTone_0C
 ; ---------------------------------------------------------------------------
 ; DAC Equates
-;	switch SonicDriverVer
-			enum		dKick=$81,dSnare,dHighTom,dMidTom,dLowTom,dLetsGo,dHey
-;	endcase
+	enum		dKick=$81,dSnare,dHighTom,dMidTom,dLowTom,dLetsGo,dHey
 ; ---------------------------------------------------------------------------
 ; Channel IDs for SFX
 cPSG1				EQU $80

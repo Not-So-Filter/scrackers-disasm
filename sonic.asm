@@ -3012,13 +3012,13 @@ loc_1E0C:
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 CollisionArrayNorm:
-		binclude	"collide\CollisionArray_Normal.bin"
+		binclude	"collide\Collision Array (Normal).bin"
 		even
 CollisionArrayRota:
-		binclude	"collide\CollisionArray_Rotated.bin"
+		binclude	"collide\Collision Array (Rotated).bin"
 		even
 CurveResistMappings:
-		binclude	"collide\CurveAndResistanceMappings.bin"
+		binclude	"collide\Angle Map.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -4078,12 +4078,12 @@ SoundDriverLoad:
 		stopZ80
 		waitZ80
 		move.w	#$100,(z80_reset).l
-		lea	Z80_Driver(pc),a0	; load Z80 location on Rom to a0
-		lea	(z80_ram).l,a1		; load current Z80 Ram
+		lea	Z80_Driver(pc),a0	; load Z80 location on ROM to a0
+		lea	(z80_ram).l,a1		; load current Z80 RAM
 		move.w	#(Z80_Driver_end-Z80_Driver)-1,d0	; set repeat times
 
 .dumpRAM:
-		move.b	(a0)+,(a1)+	; dump Z80 to Z80 Ram
+		move.b	(a0)+,(a1)+	; dump Z80 to Z80 RAM
 		dbf	d0,.dumpRAM	; repeat til Z80 is dumped
 
 .wait:
@@ -7596,7 +7596,7 @@ loc_967C:				; CODE XREF: ROM:loc_9670j
 		move	#$2700,sr
 		lea	($FFFFC9DE).w,a1
 		move.w	#$104,$1E(a1)
-		lea	PAL_SpeedSliderZone(pc),a0 ; "\b\x02\x02\f(\bˆ\x0Eî\x02äî\x0Eà€\fÌ\x0EÂŽ\x0E\x02\b\x04\f\b\x0Eîà@\x02\x0E`\x0E@\f \n\x04"...
+		lea	PAL_SpeedSliderZone(pc),a0
 		lea	($FFFFD424).w,a2
 		bsr.w	sub_9E6E
 		lea	loc_9C28(pc),a0
@@ -19205,7 +19205,7 @@ DAC_Sample5_End:even
 	align $30000			; Aligned
 ; ---------------------------------------------------------------------------
 ArtUnc_HUD:
-	binclude	"Uncompressed\ArtuncHud.bin"			; Hud Patterns
+	binclude	"artunc\Hud.bin"			; Hud Patterns
 	even
 ; ---------------------------------------------------------------------------
 ARTNEM_RingTetherStarsUnused:
@@ -19312,69 +19312,69 @@ MAPENI_TTZLayout_BG:
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ARTUNC_TitleCardBGAndPause:
-		dc.w $0020				; 20 Bytes (1 tile)
-		dc.l $00000006				; jump forward 6 bytes to art
-		binclude "Uncompressed\Artunc_TCBG1.bin"	; Yellow Pause Bar
+		dc.w $20				; 20 Bytes (1 tile)
+		dc.l 6				; jump forward 6 bytes to art
+		binclude "artunc\TCBG1.bin"	; Yellow Pause Bar
 ; ---------------------------------------------------------------------------
 TCBG_Tile2:
-		dc.w $0020				; 20 Bytes (1 tile)
-		dc.l $00000006				; jump forward 6 bytes to art
-		binclude "Uncompressed\Artunc_TCBG2.bin"	; Title Card - Black tiles that appear to hide the level design before the title card appears
+		dc.w $20				; 20 Bytes (1 tile)
+		dc.l 6				; jump forward 6 bytes to art
+		binclude "artunc\TCBG2.bin"	; Title Card - Black tiles that appear to hide the level design before the title card appears
 ; ---------------------------------------------------------------------------
 TCBG_Tile3:
-		dc.w $0020				; 20 Bytes (1 tile)
-		dc.l $00000006				; jump forward 6 bytes to art
-		binclude "Uncompressed\Artunc_TCBG3.bin"	; Title Card - Dark Gray/Blue Bar that comes down first
+		dc.w $20				; 20 Bytes (1 tile)
+		dc.l 6				; jump forward 6 bytes to art
+		binclude "artunc\TCBG3.bin"	; Title Card - Dark Gray/Blue Bar that comes down first
 ; ---------------------------------------------------------------------------
 TCBG_Tile4:
-		dc.w $0020				; 20 Bytes (1 tile)
-		dc.l $00000006				; jump forward 6 bytes to art
-		binclude "Uncompressed\Artunc_TCBG4.bin"	; Title Card - Light Gray/Blue Bar that appears from top right
+		dc.w $20				; 20 Bytes (1 tile)
+		dc.l 6				; jump forward 6 bytes to art
+		binclude "artunc\TCBG4.bin"	; Title Card - Light Gray/Blue Bar that appears from top right
 ; ---------------------------------------------------------------------------
 TCBG_Tile5:
-		dc.w $0020				; 20 Bytes (1 tile)
-		dc.l $00000006				; jump forward 6 bytes to art
-		binclude "Uncompressed\Artunc_TCBG5.bin"	; Title Card - Pure White tiles that appear from the left
+		dc.w $20				; 20 Bytes (1 tile)
+		dc.l 6				; jump forward 6 bytes to art
+		binclude "artunc\TCBG5.bin"	; Title Card - Pure White tiles that appear from the left
 ; ---------------------------------------------------------------------------
 TCBG_Tile6:
-		dc.w $0020				; 20 Bytes (1 tile)
-		dc.l $00000006				; jump forward 6 bytes to art
-		binclude "Uncompressed\Artunc_TCBG6.bin"	; Title Card - Faded Blue tiles that appear from the bottom that move over the Pure White tiles
+		dc.w $20				; 20 Bytes (1 tile)
+		dc.l 6				; jump forward 6 bytes to art
+		binclude "artunc\TCBG6.bin"	; Title Card - Faded Blue tiles that appear from the bottom that move over the Pure White tiles
 ; ---------------------------------------------------------------------------
 TCBG_Tile7:
-		dc.w $0020				; 20 Bytes (1 tile)
-		dc.l $00000006				; jump forward 6 bytes to art
-		binclude "Uncompressed\Artunc_TCBG7.bin"	; ??? (Unused)
+		dc.w $20				; 20 Bytes (1 tile)
+		dc.l 6				; jump forward 6 bytes to art
+		binclude "artunc\TCBG7.bin"	; ??? (Unused)
 ; ---------------------------------------------------------------------------
 TCBG_Tile8:
-		dc.w $0020				; 20 Bytes (1 tile)
-		dc.l $00000006				; jump forward 6 bytes to art
-		binclude "Uncompressed\Artunc_TCBG8.bin"	; Title Card - Dark Blue tiles on bottom right
+		dc.w $20				; 20 Bytes (1 tile)
+		dc.l 6				; jump forward 6 bytes to art
+		binclude "artunc\TCBG8.bin"	; Title Card - Dark Blue tiles on bottom right
 ; ---------------------------------------------------------------------------
 TCBG_Tile9:
-		dc.w $0020				; 20 Bytes (1 tile)
-		dc.l $00000006				; jump forward 6 bytes to art
-		binclude "Uncompressed\Artunc_TCBG9.bin"	; Title Card - Light blue tiles that appear on the bottom and right
+		dc.w $20				; 20 Bytes (1 tile)
+		dc.l 6				; jump forward 6 bytes to art
+		binclude "artunc\TCBG9.bin"	; Title Card - Light blue tiles that appear on the bottom and right
 ; ---------------------------------------------------------------------------
 TCBG_TileA:
-		dc.w $0020				; 20 Bytes (1 tile)
-		dc.l $00000006				; jump forward 6 bytes to art
-		binclude "Uncompressed\Artunc_TCBGA.bin"	; Title Card - Red thin bar that appears from the right
+		dc.w $20				; 20 Bytes (1 tile)
+		dc.l 6				; jump forward 6 bytes to art
+		binclude "artunc\TCBGA.bin"	; Title Card - Red thin bar that appears from the right
 ; ---------------------------------------------------------------------------
 TCBG_TileB:
-		dc.w $0040				; 40 Bytes (2 tiles)
-		dc.l $00000006				; jump forward 6 bytes to art
-		binclude "Uncompressed\Artunc_TCBGB.bin"	; Title Card - White Zig-Zag tiles that appear overlapping the light Gray/Blue Bar that appears from top right
+		dc.w $40				; 40 Bytes (2 tiles)
+		dc.l 6				; jump forward 6 bytes to art
+		binclude "artunc\TCBGB.bin"	; Title Card - White Zig-Zag tiles that appear overlapping the light Gray/Blue Bar that appears from top right
 ; ---------------------------------------------------------------------------
 TCBG_TileC:
-		dc.w $0040				; 40 Bytes (2 tiles)
-		dc.l $00000006				; jump forward 6 bytes to art
-		binclude "Uncompressed\Artunc_TCBGC.bin"	; Title Card - White Zig-Zag tiles that appear overlapping middle section
+		dc.w $40				; 40 Bytes (2 tiles)
+		dc.l 6				; jump forward 6 bytes to art
+		binclude "artunc\TCBGC.bin"	; Title Card - White Zig-Zag tiles that appear overlapping middle section
 ; ---------------------------------------------------------------------------
 TCBG_TileD:
-		dc.w $0040				; 40 Bytes (2 tiles)
-		dc.l $00000006				; jump forward 6 bytes to art
-		binclude "Uncompressed\Artunc_TCBGD.bin"	; Title Card - Light blue Zig-Zag tiles (The Light blue tiles overlapping the white Zig-Zag tiles basically)
+		dc.w $40				; 40 Bytes (2 tiles)
+		dc.l 6				; jump forward 6 bytes to art
+		binclude "artunc\TCBGD.bin"	; Title Card - Light blue Zig-Zag tiles (The Light blue tiles overlapping the white Zig-Zag tiles basically)
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19511,39 +19511,39 @@ Objpos_TTZ:
 ; uncompressed Art (Used for Animating)
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedFanFG1:
-	binclude	"Uncompressed\ArtuncTTZAnimatedFanFG1.bin"	; Fan tiles 1
+	binclude	"artunc\TTZAnimatedFanFG1.bin"	; Fan tiles 1
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedFanFG2:
-	binclude	"Uncompressed\ArtuncTTZAnimatedFanFG2.bin"	; Fan tiles 2
+	binclude	"artunc\TTZAnimatedFanFG2.bin"	; Fan tiles 2
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG1:
-	binclude	"Uncompressed\ArtuncTTZAnimatedTurbineBG1.bin"	; Turbine tiles 1
+	binclude	"artunc\TTZAnimatedTurbineBG1.bin"	; Turbine tiles 1
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG2:
-	binclude	"Uncompressed\ArtuncTTZAnimatedTurbineBG2.bin"	; Turbine tiles 2
+	binclude	"artunc\TTZAnimatedTurbineBG2.bin"	; Turbine tiles 2
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG3:
-	binclude	"Uncompressed\ArtuncTTZAnimatedTurbineBG3.bin"	; Turbine tiles 3
+	binclude	"artunc\TTZAnimatedTurbineBG3.bin"	; Turbine tiles 3
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG4:
-	binclude	"Uncompressed\ArtuncTTZAnimatedTurbineBG4.bin"	; Turbine tiles 4
+	binclude	"artunc\TTZAnimatedTurbineBG4.bin"	; Turbine tiles 4
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG5:
-	binclude	"Uncompressed\ArtuncTTZAnimatedTurbineBG5.bin"	; Turbine tiles 5
+	binclude	"artunc\TTZAnimatedTurbineBG5.bin"	; Turbine tiles 5
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG6:
-	binclude	"Uncompressed\ArtuncTTZAnimatedTurbineBG6.bin"	; Turbine tiles 6
+	binclude	"artunc\TTZAnimatedTurbineBG6.bin"	; Turbine tiles 6
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG7:
-	binclude	"Uncompressed\ArtuncTTZAnimatedTurbineBG7.bin"	; Turbine tiles 7
+	binclude	"artunc\TTZAnimatedTurbineBG7.bin"	; Turbine tiles 7
 	even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19551,27 +19551,27 @@ ARTUNC_TTZAnimatedTurbineBG7:
 ; Multiple Uncompressed Art (some of these are unused)
 ; ---------------------------------------------------------------------------
 AniArt_Combi:							; "COMBI" (Unused)
-	binclude	"Uncompressed\Artunc_Combi_Un.bin"
+	binclude	"artunc\Combi_Un.bin"
 AniArt_Limits:							; "LIMITS" (Unused)
-	binclude	"Uncompressed\Artunc_Limits_Un.bin"
+	binclude	"artunc\Limits_Un.bin"
 AniArt_StripBlock:						; Striped Block (Unused)
-	binclude	"Uncompressed\Artunc_StripBlock_Un.bin"
+	binclude	"artunc\StripBlock_Un.bin"
 AniArt_Score:							; "SCORE" (Unused)
-	binclude	"Uncompressed\Artunc_Score_Un.bin"
+	binclude	"artunc\Score_Un.bin"
 AniArt_Rings:							; "RINGS" (Unused)
-	binclude	"Uncompressed\Artunc_Rings_Un.bin"
+	binclude	"artunc\Rings_Un.bin"
 AniArt_SLTime:							; "/TIME" (Unused)
-	binclude	"Uncompressed\Artunc_SLTime_Un.bin"
+	binclude	"artunc\SLTime_Un.bin"
 AniArt_Hud1to9_Sym:						; "0" to "9" Hud (Exclaimation Mark, and Minute/Second Symbol)
-	binclude	"Uncompressed\Artunc_Hud0to9_Sym.bin"
+	binclude	"artunc\Hud0to9_Sym.bin"
 AniArt_RingSprites:						; Ring Sprites
-	binclude	"Uncompressed\Artunc_Spark_Ring.bin"
+	binclude	"artunc\Spark_Ring.bin"
 AniArt_Tether:							; Tether Star Sprites
-	binclude	"Uncompressed\Artunc_Tether.bin"
+	binclude	"artunc\Tether.bin"
 AniArt_MultiStars:						; Multiple Stars (Unused)
-	binclude	"Uncompressed\Artunc_MultipleStars_Un.bin"
+	binclude	"artunc\MultipleStars_Un.bin"
 AniArt_MiliSymbol:						; "" (Second/Mili-Second Symbol)
-	binclude	"Uncompressed\Artunc_Hud_Sym2.bin"
+	binclude	"artunc\Hud_Sym2.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19622,7 +19622,7 @@ MAPUNC_ElectricFieldBG:
 	align $60000			; Aligned
 ; ---------------------------------------------------------------------------
 ARTUNC_SonicArms:
-	binclude	"Uncompressed\ArtuncSonicArms.bin"	; Sonic"s Arms
+	binclude	"artunc\SonicArms.bin"	; Sonic"s Arms
 	even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19632,7 +19632,7 @@ ARTUNC_SonicArms:
 	align $64000			; Aligned
 ; ---------------------------------------------------------------------------
 ARTUNC_TailsArms:
-	binclude	"Uncompressed\ArtuncTailsArms.bin"	; Tails" Arms
+	binclude	"artunc\TailsArms.bin"	; Tails" Arms
 	even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19804,7 +19804,7 @@ Map_TailsFields:
 ; ---------------------------------------------------------------------------
 	align $80000			; Aligned
 ; ---------------------------------------------------------------------------
-ARTUNC_Sonic:	binclude	"Uncompressed\ArtuncSonic.bin"
+ARTUNC_Sonic:	binclude	"artunc\Sonic.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19823,7 +19823,7 @@ ARTUNC_Sonic:	binclude	"Uncompressed\ArtuncSonic.bin"
 	align $90000			; Aligned
 ; ---------------------------------------------------------------------------
 ARTUNC_SonicField:
-		binclude	"Uncompressed\ArtuncSonicField.bin"
+		binclude	"artunc\SonicField.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19853,7 +19853,7 @@ ARTUNC_SonicField:
 	align $98000			; Aligned
 ; ---------------------------------------------------------------------------
 ARTUNC_UnknownHud:
-		binclude	"Uncompressed\Artunc_UnknownHud.bin"
+		binclude	"artunc\UnknownHud.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19871,7 +19871,7 @@ ARTUNC_UnknownHud:
 ; ---------------------------------------------------------------------------
 	align $A0000			; Aligned
 ; ---------------------------------------------------------------------------
-ARTUNC_Tails:	binclude	"Uncompressed\ArtuncTails.bin"
+ARTUNC_Tails:	binclude	"artunc\Tails.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19892,7 +19892,7 @@ ARTUNC_Tails:	binclude	"Uncompressed\ArtuncTails.bin"
 	align $B0000			; Aligned
 ; ---------------------------------------------------------------------------
 ARTUNC_TailsField:
-		binclude	"Uncompressed\ArtuncTailsField.bin"
+		binclude	"artunc\TailsField.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
