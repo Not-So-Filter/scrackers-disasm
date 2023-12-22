@@ -2796,18 +2796,18 @@ loc_1C50:
 
 loc_1C60:
 		add.w	d2,d2
-		move.w	word_1C6A(pc,d2.w),d2
-		jmp	word_1C6A(pc,d2.w)
+		move.w	off_1C6A(pc,d2.w),d2
+		jmp	off_1C6A(pc,d2.w)
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-word_1C6A:	dc.w W1C6A_loc01-word_1C6A
-		dc.w W1C6A_loc03-word_1C6A
-		dc.w W1C6A_loc05-word_1C6A
-		dc.w W1C6A_loc07-word_1C6A
-		dc.w W1C6A_loc00-word_1C6A
-		dc.w W1C6A_loc02-word_1C6A
-		dc.w W1C6A_loc04-word_1C6A
-		dc.w W1C6A_loc06-word_1C6A
+off_1C6A:	dc.w W1C6A_loc01-off_1C6A
+		dc.w W1C6A_loc03-off_1C6A
+		dc.w W1C6A_loc05-off_1C6A
+		dc.w W1C6A_loc07-off_1C6A
+		dc.w W1C6A_loc00-off_1C6A
+		dc.w W1C6A_loc02-off_1C6A
+		dc.w W1C6A_loc04-off_1C6A
+		dc.w W1C6A_loc06-off_1C6A
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -11300,35 +11300,35 @@ loc_B81A:				; DATA XREF: ROM:0000A20Ao
 loc_B82E:				; CODE XREF: ROM:0000B822j
 		pea	(loc_BBE8).l
 		move.w	$26(a5),d7
-		move.w	word_B840(pc,d7.w),d7
-		jmp	word_B840(pc,d7.w)
+		move.w	off_B840(pc,d7.w),d7
+		jmp	off_B840(pc,d7.w)
 ; ---------------------------------------------------------------------------
-word_B840:	dc.w sub_B874-word_B840
-		dc.w sub_B916-word_B840
-		dc.w sub_B95C-word_B840
-		dc.w sub_B9A4-word_B840
-		dc.w sub_B9EC-word_B840
-		dc.w sub_BA34-word_B840
-		dc.w sub_BA4A-word_B840
-		dc.w sub_BA60-word_B840
-		dc.w sub_BA76-word_B840
-		dc.w loc_BA8C-word_B840
-		dc.w sub_BA94-word_B840
-		dc.w sub_BAB4-word_B840
-		dc.w sub_BADE-word_B840
-		dc.w loc_BB08-word_B840
-		dc.w sub_BB10-word_B840
-		dc.w sub_BB26-word_B840
-		dc.w sub_BB46-word_B840
-		dc.w sub_BB68-word_B840
-		dc.w sub_BB88-word_B840
-		dc.w sub_BB26-word_B840
-		dc.w sub_BB46-word_B840
-		dc.w sub_BB68-word_B840
-		dc.w sub_BB88-word_B840
-		dc.w loc_BBAA-word_B840
-		dc.w loc_BBB2-word_B840
-		dc.w sub_BBBA-word_B840
+off_B840:	dc.w sub_B874-off_B840
+		dc.w sub_B916-off_B840
+		dc.w sub_B95C-off_B840
+		dc.w sub_B9A4-off_B840
+		dc.w sub_B9EC-off_B840
+		dc.w sub_BA34-off_B840
+		dc.w sub_BA4A-off_B840
+		dc.w sub_BA60-off_B840
+		dc.w sub_BA76-off_B840
+		dc.w loc_BA8C-off_B840
+		dc.w sub_BA94-off_B840
+		dc.w sub_BAB4-off_B840
+		dc.w sub_BADE-off_B840
+		dc.w loc_BB08-off_B840
+		dc.w sub_BB10-off_B840
+		dc.w sub_BB26-off_B840
+		dc.w sub_BB46-off_B840
+		dc.w sub_BB68-off_B840
+		dc.w sub_BB88-off_B840
+		dc.w sub_BB26-off_B840
+		dc.w sub_BB46-off_B840
+		dc.w sub_BB68-off_B840
+		dc.w sub_BB88-off_B840
+		dc.w loc_BBAA-off_B840
+		dc.w loc_BBB2-off_B840
+		dc.w sub_BBBA-off_B840
 ; ---------------------------------------------------------------------------
 
 sub_B874:
