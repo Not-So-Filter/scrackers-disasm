@@ -2997,3 +2997,7 @@ stru_1210:	db 0Ah
 		db zmake68kBank(DAC_Index)
 		dw DAC_Sample5_End-DAC_Sample5
 		dw zmake68kPtr(DAC_Sample5)
+		
+		restore
+		padding	off
+		dephase		; reset to 68K location
