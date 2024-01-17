@@ -1,9 +1,5 @@
-@echo off
+@ECHO OFF
 
-IF EXIST scbuilt.bin move /Y scbuilt.bin scbuilt.prev.bin >NUL
-
-set USEANSI=n
-build_tools\asl -q -L -A -E -xx sonic.asm
-build_tools\p2bin sonic.p scbuilt.bin -r 0x-0x
-
-del sonic.p
+REM // This file has been gutted and replaced with the Lua build script.
+REM // It has been kept around for ease-of-use for Windows users.
+"build_tools/Lua/lua.exe" build.lua || pause REM // Pause on Lua parse failure so that the user can read the error message.

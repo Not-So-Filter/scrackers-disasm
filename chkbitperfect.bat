@@ -1,7 +1,5 @@
-@echo off
+@ECHO OFF
 
-echo Checking Built ROM with Original ROM...
-IF EXIST scbuilt.bin ( fc /b scbuilt.bin sc.bin 
-)else echo scbuilt.bin does not exist.
+"build_tools/Lua/lua.exe" chkbitperfect.lua
 
 pause

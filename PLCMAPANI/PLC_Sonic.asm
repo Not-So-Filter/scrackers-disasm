@@ -25,44 +25,44 @@ PLCSon_LookDown:	dc.w $E000,$9704,$0200,$D380,$FFFF
 PLCSon_Hurt:		dc.w $2001,$9704,$02E0,$D380,$FFFF
 PLCSon_Wait1:		dc.w $F000,$9704,$0400,$D380,$FFFF
 PLCSon_Wait2:		dc.w $F000,$9704,$04F0,$D380,$FFFF
-PLCSON_BlncIn1:		dc.w $1001,$9704,$05E0,$D380,$FFFF		; Balance in 1
-PLCSON_BlncIn2:		dc.w $2001,$9704,$06F0,$D380,$FFFF		; Balance in 2
-PLCSON_BlncIn3:		dc.w $2001,$9704,$0810,$D380,$FFFF		; Balance in 3
-PLCSON_BlncOut1:	dc.w $2001,$9704,$0930,$D380,$FFFF		; Balance out 1
-PLCSON_BlncOut2:	dc.w $1001,$9704,$0A50,$D380,$FFFF		; Balance out 2
-PLCSON_BlncOut3:	dc.w $F000,$9704,$0B60,$D380,$FFFF		; Balance out 3
+PLCSon_BlncIn1:		dc.w $1001,$9704,$05E0,$D380,$FFFF		; Balance in 1
+PLCSon_BlncIn2:		dc.w $2001,$9704,$06F0,$D380,$FFFF		; Balance in 2
+PLCSon_BlncIn3:		dc.w $2001,$9704,$0810,$D380,$FFFF		; Balance in 3
+PLCSon_BlncOut1:	dc.w $2001,$9704,$0930,$D380,$FFFF		; Balance out 1
+PLCSon_BlncOut2:	dc.w $1001,$9704,$0A50,$D380,$FFFF		; Balance out 2
+PLCSon_BlncOut3:	dc.w $F000,$9704,$0B60,$D380,$FFFF		; Balance out 3
 ; ---------------------------------------------------------------------------
 ; Walking (Angle: 000* 180* degrees)
-PLCSON_Walk5_000:	dc.w $6001,$9704,$0C50,$D380,$FFFF
-PLCSON_Walk6_000:	dc.w $3001,$9704,$0DB0,$D380,$FFFF
-PLCSON_Walk1_000:	dc.w $E000,$9704,$0EE0,$D380,$FFFF
-PLCSON_Walk2_000:	dc.w $1001,$9704,$0FC0,$D380,$FFFF
-PLCSON_Walk3_000:	dc.w $F000,$9704,$10D0,$D380,$FFFF
-PLCSON_Walk4_000:	dc.w $1001,$9704,$11C0,$D380,$FFFF
+PLCSon_Walk5_000:	dc.w $6001,$9704,$0C50,$D380,$FFFF
+PLCSon_Walk6_000:	dc.w $3001,$9704,$0DB0,$D380,$FFFF
+PLCSon_Walk1_000:	dc.w $E000,$9704,$0EE0,$D380,$FFFF
+PLCSon_Walk2_000:	dc.w $1001,$9704,$0FC0,$D380,$FFFF
+PLCSon_Walk3_000:	dc.w $F000,$9704,$10D0,$D380,$FFFF
+PLCSon_Walk4_000:	dc.w $1001,$9704,$11C0,$D380,$FFFF
 ; ---------------------------------------------------------------------------
 ; Walking (Angle: 045* 225* degrees)
-PLCSON_Walk5_045:	dc.w $4001,$9704,$12D0,$D380,$FFFF
-PLCSON_Walk6_045:	dc.w $6001,$9704,$1410,$D380,$FFFF
-PLCSON_Walk1_045:	dc.w $0001,$9704,$1570,$D380,$FFFF
-PLCSON_Walk2_045:	dc.w $4001,$9704,$1670,$D380,$FFFF
-PLCSON_Walk3_045:	dc.w $3001,$9704,$17B0,$D380,$FFFF
-PLCSON_Walk4_045:	dc.w $3001,$9704,$18E0,$D380,$FFFF
+PLCSon_Walk5_045:	dc.w $4001,$9704,$12D0,$D380,$FFFF
+PLCSon_Walk6_045:	dc.w $6001,$9704,$1410,$D380,$FFFF
+PLCSon_Walk1_045:	dc.w $0001,$9704,$1570,$D380,$FFFF
+PLCSon_Walk2_045:	dc.w $4001,$9704,$1670,$D380,$FFFF
+PLCSon_Walk3_045:	dc.w $3001,$9704,$17B0,$D380,$FFFF
+PLCSon_Walk4_045:	dc.w $3001,$9704,$18E0,$D380,$FFFF
 ; ---------------------------------------------------------------------------
 ; Walking (Angle: 090* 270* degrees)
-PLCSON_Walk5_090:	dc.w $6001,$9704,$1A10,$D380,$FFFF
-PLCSON_Walk6_090:	dc.w $4001,$9704,$1B70,$D380,$FFFF
-PLCSON_Walk1_090:	dc.w $E000,$9704,$1CB0,$D380,$FFFF
-PLCSON_Walk2_090:	dc.w $1001,$9704,$1D90,$D380,$FFFF
-PLCSON_Walk3_090:	dc.w $F000,$9704,$1EA0,$D380,$FFFF
-PLCSON_Walk4_090:	dc.w $1001,$9704,$1F90,$D380,$FFFF
+PLCSon_Walk5_090:	dc.w $6001,$9704,$1A10,$D380,$FFFF
+PLCSon_Walk6_090:	dc.w $4001,$9704,$1B70,$D380,$FFFF
+PLCSon_Walk1_090:	dc.w $E000,$9704,$1CB0,$D380,$FFFF
+PLCSon_Walk2_090:	dc.w $1001,$9704,$1D90,$D380,$FFFF
+PLCSon_Walk3_090:	dc.w $F000,$9704,$1EA0,$D380,$FFFF
+PLCSon_Walk4_090:	dc.w $1001,$9704,$1F90,$D380,$FFFF
 ; ---------------------------------------------------------------------------
 ; Walking (Angle: 135* 315* degrees)
-PLCSON_Walk5_135:	dc.w $4001,$9704,$20A0,$D380,$FFFF
-PLCSON_Walk6_135:	dc.w $6001,$9704,$21E0,$D380,$FFFF
-PLCSON_Walk1_135:	dc.w $1001,$9704,$2340,$D380,$FFFF
-PLCSON_Walk2_135:	dc.w $3001,$9704,$2450,$D380,$FFFF
-PLCSON_Walk3_135:	dc.w $3001,$9704,$2580,$D380,$FFFF
-PLCSON_Walk4_135:	dc.w $3001,$9704,$26B0,$D380,$FFFF
+PLCSon_Walk5_135:	dc.w $4001,$9704,$20A0,$D380,$FFFF
+PLCSon_Walk6_135:	dc.w $6001,$9704,$21E0,$D380,$FFFF
+PLCSon_Walk1_135:	dc.w $1001,$9704,$2340,$D380,$FFFF
+PLCSon_Walk2_135:	dc.w $3001,$9704,$2450,$D380,$FFFF
+PLCSon_Walk3_135:	dc.w $3001,$9704,$2580,$D380,$FFFF
+PLCSon_Walk4_135:	dc.w $3001,$9704,$26B0,$D380,$FFFF
 ; ---------------------------------------------------------------------------
 PLCSon_Run1_000:	dc.w $2001,$9704,$27E0,$D380,$FFFF
 PLCSon_Run1_045:	dc.w $2001,$9704,$2900,$D380,$FFFF

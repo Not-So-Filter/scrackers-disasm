@@ -1158,7 +1158,7 @@ CmdPtrTable:	dw FadeOutMusic
 ; ---------------------------------------------------------------------------
 
 FadeInMusic:
-		ld	ix, 1F70h
+		ld	ix, zTracksSFXEnd
 		ld	b, 2
 		ld	a, 80h
 		ld	(zUpdateSound), a
@@ -1245,7 +1245,7 @@ loc_5B2:
 		ld	b, a
 		ld	hl, PSGInitBytes
 		ld	(zTrackInitPos), hl
-		ld	de, 1D90h
+		ld	de, zSongPSG1
 		ld	a, (iy+4)
 
 loc_5E7:

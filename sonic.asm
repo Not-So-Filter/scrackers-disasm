@@ -13250,7 +13250,7 @@ off_C84A:	dc.l ANI_Sonic
 		dc.l 0
 		dc.l 0
 		dc.l 0
-		dc.l MAP_Sonic
+		dc.l Map_Sonic
 		dc.l MAP_Tails
 		dc.l 0
 		dc.l 0
@@ -18964,9 +18964,7 @@ UnkData:	dc.w $0000						; VRam location
 ; ---------------------------------------------------------------------------
 ; Music Data (Z80 aligned to $00010000)
 ; ---------------------------------------------------------------------------
-	align $10000			; Aligned for Z80
-; ---------------------------------------------------------------------------
-MusicIndex:
+MusicIndex:	startBank
 Music81:	include	"Sound\Music\Mus81 - Electoria.asm"
 Music82:	include	"Sound\Music\Mus82 - Walkin'.asm"
 Music83:	include	"Sound\Music\Mus83 - Hyper-Hyper.asm"
@@ -18974,6 +18972,7 @@ Music84:	include	"Sound\Music\Mus84 - Evening Star.asm"
 Music85:	include	"Sound\Music\Mus85 - Moonrise.asm"
 Music86:	include	"Sound\Music\Mus86 - Game Over.asm"
 		even
+		finishBank
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19044,9 +19043,7 @@ Music86:	include	"Sound\Music\Mus86 - Game Over.asm"
 ; ---------------------------------------------------------------------------
 ; Align to $00018000, Sound Data (Unused by Z80)
 ; ---------------------------------------------------------------------------
-	align $18000			; Aligned
-; ---------------------------------------------------------------------------
-SoundIndex:
+SoundIndex:	startBank
 SoundA0:	include	"Sound\SFX\SndA0 - Jump.asm"		; Jump SFX (Same as Sonic CD FM NO.02)
 SoundA1:	include	"Sound\SFX\SndA1 - Cash Register.asm"		; Cash Machine SFX (Same as Sonic 1 SFX C5)
 SoundA2:	include	"Sound\SFX\SndA2.asm"		; strange noise (it has modulation of "01 01 28 00", which the "00" makes the modulation do nothing) (this MAY be a "get hit by spikes" SFX unfinished)
@@ -19069,6 +19066,7 @@ SoundAC:	include	"Sound\SFX\SndAC.asm"
 SoundAD:	include	"Sound\SFX\SndAD.asm"
 SoundAE:	include	"Sound\SFX\SndAE.asm"
 SoundAF:	include	"Sound\SFX\SndAF.asm"
+		finishBank
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19131,9 +19129,7 @@ SoundAF:	include	"Sound\SFX\SndAF.asm"
 ; ---------------------------------------------------------------------------
 ; Align to $00020000, PCM Voice Data
 ; ---------------------------------------------------------------------------
-	align $20000			; Aligned
-; ---------------------------------------------------------------------------
-DAC_Index:
+DAC_Index:	startBank
 DAC_Sample1:	binclude	"Sound\DAC\Kick.dpcm"		; DAC 81 (Beat Sample)
 DAC_Sample1_End:even
 DAC_Sample2:	binclude	"Sound\DAC\Snare.dpcm"		; DAC 82 (Snare Sample)
@@ -19149,6 +19145,7 @@ DAC_Sample4:	binclude	"Sound\DAC\Let's Go.dpcm"	; DAC 86 (Unknown voice "Let"s G
 DAC_Sample4_End:even
 DAC_Sample5:	binclude	"Sound\DAC\Hey.dpcm"		; DAC 87 (Unknown voice "Hey!" or "Hez!" in Japanese accent)
 DAC_Sample5_End:even
+		finishBank
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19669,7 +19666,7 @@ PLCMAP_Sonic_MainIndex:
 PLC_Sonic:
 	include	"PLCMAPANI\PLC_Sonic.asm"
 ; ---------------------------------------------------------------------------
-MAP_Sonic:
+Map_Sonic:
 	include	"PLCMAPANI\MAP_Sonic.asm"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================

@@ -23,3 +23,25 @@ waitZ80:	macro
 		
 ; function to make a little-endian 16-bit pointer for the Z80 sound driver
 z80_ptr function x,(x)<<8&$FF00|(x)>>8&$7F|$80
+
+; Function to make a little endian (z80) pointer
+k68z80Pointer function addr,((((addr&$7FFF)+$8000)<<8)&$FF00)+(((addr&$7FFF)+$8000)>>8)
+
+little_endian function x,(x)<<8&$FF00|(x)>>8&$FF
+
+startBank macro {INTLABEL}
+	align	$8000
+__LABEL__ label *
+soundBankStart := __LABEL__
+soundBankName := "__LABEL__"
+    endm
+
+DebugSoundbanks := 1
+
+finishBank macro
+	if * > soundBankStart + $8000
+		fatal "soundBank \{soundBankName} must fit in $8000 bytes but was $\{*-soundBankStart}. Try moving something to the other bank."
+	elseif (DebugSoundbanks<>0)&&(MOMPASS=1)
+		message "soundBank \{soundBankName} has $\{$8000+soundBankStart-*} bytes free at end."
+	endif
+    endm
