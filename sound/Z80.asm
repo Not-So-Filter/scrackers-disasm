@@ -61,18 +61,23 @@ VoicesHigh	ds.b 1
 		ds.b 1
 zTrack ENDSTRUCT
 
-	phase $1C04
+	phase $1C00
+
+	ds.l 1
 zMusicBank	ds.b 1
 zSoundBank	ds.b 1
 zUnk_1C06	ds.b 1
-	ds.b 1
-	ds.b 1
+	ds.w 1
+
+zTempVariablesStart
+
 zSoundQueueStart
 zSoundQueue0	ds.b 1
 zSoundQueue1	ds.b 1
 zSoundQueue2	ds.b 1
 zSoundQueue3	ds.b 1
 zSoundQueueEnd
+
 zFadeOutTimeout	ds.b 1
 zFadeDelay	ds.b 1
 zFadeDelayTimeout	ds.b 1
@@ -130,6 +135,8 @@ zTracksSFXEnd
 zTracksSpecSFXStart
 zSpecSFX_FM3	zTrack
 zTracksSpecSFXEnd
+
+zTempVariablesEnd
 	dephase
 	!org	Z80_Driver
 
@@ -138,6 +145,8 @@ zTracksSpecSFXEnd
 		cpu z80		; use Z80 cpu
 		listing purecode	; add to listing file
 
+zDAC_Status	=	1FFDh
+zDAC_Sample	=	1FFFh
 zStack		=	2000h
 zYM2612_A0	=	4000h
 zYM2612_D0	=	4001h
@@ -326,9 +335,9 @@ loc_B9:
 		ld	hl, zSoundBank
 		ld	a, (hl)
 		bankswitch
-		ld	iy, DPCMData
+		ld	iy, DecTable
 		ei
-		jp	loc_EE5
+		jp	zPlayDigitalAudio
 
 ; =============== S U B	R O U T	I N E =======================================
 
@@ -347,7 +356,7 @@ UpdateAll:
 		ld	ix, zTracksStart
 		bit	7, (ix+zTrack.PlaybackControl)
 		call	nz, DrumUpdateTrack
-		ld	b, 9
+		ld	b, (zTracksEnd-zSongFM1)/zTrack.len
 		ld	ix, zSongFM1
 		jr	TrkUpdateLoop
 ; End of function UpdateAll
@@ -372,7 +381,7 @@ UpdateSFXTracks:
 		ld	(hl), a
 		ld	(hl), a
 		ld	ix, zTracksSFXStart
-		ld	b, 7
+		ld	b, (zTracksSFXEnd-zTracksSFXStart)/zTrack.len
 		call	TrkUpdateLoop
 		ld	a, 80h
 		ld	(zUpdateSound), a	; 80 - Special SFX Mode
@@ -457,8 +466,8 @@ loc_1B8:
 		cp	2
 		jr	nz, loc_1AF
 		call	GetFM3FreqPtr
-		ld	b, 4
-		ld	hl, SpcFM3Regs
+		ld	b, zSpecialFreqCommands_End-zSpecialFreqCommands
+		ld	hl, zSpecialFreqCommands
 
 loc_1C7:
 		push	bc
@@ -488,7 +497,12 @@ loc_1C7:
 ; End of function SendFMFreq
 
 ; ---------------------------------------------------------------------------
-SpcFM3Regs:	db 0ADh, 0AEh, 0ACh, 0A6h
+zSpecialFreqCommands:
+		db 0ADh								; Operator 4 frequency MSB
+		db 0AEh								; Operator 3 frequency MSB
+		db 0ACh								; Operator 2 frequency MSB
+		db 0A6h								; Operator 1 frequency MSB
+zSpecialFreqCommands_End
 
 ; =============== S U B	R O U T	I N E =======================================
 
@@ -785,8 +799,8 @@ DoFMVolEnv:
 		call	DoPSGVolEnv
 		ld	h, (ix+zTrack.TLPtrHigh)
 		ld	l, (ix+zTrack.TLPtrLow)
-		ld	de, Volume_Ops
-		ld	b, 4
+		ld	de, zFMInstrumentTLTable
+		ld	b, zFMInstrumentTLTable_End-zFMInstrumentTLTable
 		ld	c, (ix+zTrack.FMVolEnvMask)
 
 loc_382:
@@ -1022,17 +1036,12 @@ GetFMInsPtr:
 		jr	z, JumpToInsData ; Mode	00 (Music Mode)	- jump
 		ld	l, (ix+zTrack.VoicesLow)	; load SFX track Instrument Pointer (Trk+2A/2B)
 		ld	h, (ix+zTrack.VoicesHigh)
-; End of function GetFMInsPtr
-
-
-; =============== S U B	R O U T	I N E =======================================
-
 
 JumpToInsData:
 		xor	a
 		or	b
 		ret	z
-		ld	de, 19h
+		ld	de, 25
 
 loc_4C1:
 		add	hl, de
@@ -1041,26 +1050,60 @@ loc_4C1:
 ; End of function JumpToInsData
 
 ; ---------------------------------------------------------------------------
-FMInsOperators:	db 0B0h
-		db  30h, 38h, 34h, 3Ch
-		db  50h, 58h, 54h, 5Ch
-		db  60h, 68h, 64h, 6Ch
-		db  70h, 78h, 74h, 7Ch
-		db  80h, 88h, 84h, 8Ch
-Volume_Ops:	db  40h, 48h, 44h, 4Ch
-SSGEG_Ops:	db  90h, 98h, 94h, 9Ch
+zFMInstrumentRegTable:
+		db 0B0h								; Feedback/Algorithm
+zFMInstrumentOperatorTable:
+		db  30h								; Detune/multiple operator 1
+		db  38h								; Detune/multiple operator 3
+		db  34h								; Detune/multiple operator 2
+		db  3Ch								; Detune/multiple operator 4
+zFMInstrumentRSARTable:
+		db  50h								; Rate scaling/attack rate operator 1
+		db  58h								; Rate scaling/attack rate operator 3
+		db  54h								; Rate scaling/attack rate operator 2
+		db  5Ch								; Rate scaling/attack rate operator 4
+zFMInstrumentAMD1RTable:
+		db  60h								; Amplitude modulation/first decay rate operator 1
+		db  68h								; Amplitude modulation/first decay rate operator 3
+		db  64h								; Amplitude modulation/first decay rate operator 2
+		db  6Ch								; Amplitude modulation/first decay rate operator 4
+zFMInstrumentD2RTable:
+		db  70h								; Secondary decay rate operator 1
+		db  78h								; Secondary decay rate operator 3
+		db  74h								; Secondary decay rate operator 2
+		db  7Ch								; Secondary decay rate operator 4
+zFMInstrumentD1LRRTable:
+		db  80h								; Secondary amplitude/release rate operator 1
+		db  88h								; Secondary amplitude/release rate operator 3
+		db  84h								; Secondary amplitude/release rate operator 2
+		db  8Ch								; Secondary amplitude/release rate operator 4
+zFMInstrumentOperatorTable_End
+
+zFMInstrumentTLTable:
+		db  40h								; Total level operator 1
+		db  48h								; Total level operator 3
+		db  44h								; Total level operator 2
+		db  4Ch								; Total level operator 4
+zFMInstrumentTLTable_End
+
+zFMInstrumentSSGEGTable:
+		db  90h								; SSG-EG operator 1
+		db  98h								; SSG-EG operator 3
+		db  94h								; SSG-EG operator 2
+		db  9Ch								; SSG-EG operator 4
+zFMInstrumentSSGEGTable_End
 
 ; =============== S U B	R O U T	I N E =======================================
 
 
 SendFMIns:
-		ld	de, FMInsOperators
+		ld	de, zFMInstrumentRegTable
 		ld	c, (ix+zTrack.AMSFMSPan)
 		ld	a, 0B4h
 		rst	WriteFMIorII
 		call	WriteInsReg
 		ld	(ix+zTrack.FeedbackAlgo), a
-		ld	b, 14h
+		ld	b, zFMInstrumentOperatorTable_End-zFMInstrumentOperatorTable
 
 loc_4F3:
 		call	WriteInsReg
@@ -1416,11 +1459,6 @@ FinishFMTrkInit:
 		ld	(de), a
 		inc	de
 		ex	af, af'
-; End of function FinishFMTrkInit
-
-
-; =============== S U B	R O U T	I N E =======================================
-
 
 FinishTrkInit:
 		ex	de, hl
@@ -1492,7 +1530,7 @@ UnpauseMusic:
 		or	a
 		jp	nz, StopAllSound
 		ld	ix, zTracksStart
-		ld	b, 7
+		ld	b, (zSongPSG1-zTracksStart)/zTrack.len
 
 loc_780:
 		ld	a, (zHaltFlag)
@@ -1510,8 +1548,8 @@ loc_792:
 		ld	de, zTrack.len
 		add	ix, de
 		djnz	loc_780
-		ld	ix, 1E20h
-		ld	b, 8
+		ld	ix, zTracksSFXStart
+		ld	b, (zTracksSpecSFXEnd-zTracksSFXStart)/zTrack.len
 
 loc_79F:
 		bit	7, (ix+zTrack.PlaybackControl)
@@ -1605,9 +1643,9 @@ loc_82E:
 
 
 StopAllSound:
-		ld	hl, zSoundQueue0
-		ld	de, zSoundQueue1
-		ld	bc, 396h
+		ld	hl, zTempVariablesStart
+		ld	de, zTempVariablesStart+1
+		ld	bc, zTempVariablesEnd-zTempVariablesStart-1
 		ld	(hl), 0
 		ldir
 		ld	ix, FMInitBytes
@@ -1716,7 +1754,7 @@ DoTempo:
 		ret	nc
 		ld	hl, zTracksStart+zTrack.DurationTimeout
 		ld	de, zTrack.len
-		ld	b, 0Ah	; number of tracks
+		ld	b, (zTracksEnd-zTracksStart)/zTrack.len	; Number of tracks
 
 loc_8D1:
 		inc	(hl)
@@ -2042,10 +2080,10 @@ cfE6_ChgFMVol:
 
 RefreshVolume:
 		push	de
-		ld	de, Volume_Ops
+		ld	de, zFMInstrumentTLTable
 		ld	l, (ix+zTrack.TLPtrLow)
 		ld	h, (ix+zTrack.TLPtrHigh)
-		ld	b, 4
+		ld	b, zFMInstrumentTLTable_End-zFMInstrumentTLTable	; Number of entries
 
 loc_B1B:
 		ld	a, (hl)
@@ -2538,7 +2576,7 @@ cf02_MusPause:
 
 loc_DAE:
 		ld	ix, zTracksStart
-		ld	b, 0Ah
+		ld	b, (zTracksEnd-zTracksStart)/zTrack.len	; Number of tracks
 		ld	de, zTrack.len
 
 loc_DB7:
@@ -2555,7 +2593,7 @@ loc_DC8:
 		push	ix
 		push	de
 		ld	ix, zTracksStart
-		ld	b, 0Ah
+		ld	b, (zTracksEnd-zTracksStart)/zTrack.len	; Number of tracks
 		ld	de, zTrack.len
 
 loc_DD4:
@@ -2583,16 +2621,16 @@ cf03_CopyMem:
 ; ---------------------------------------------------------------------------
 
 cf04_TickMulAll:
-		ld	b, 0Ah
-		ld	hl, 1C42h
+		ld	b, (zTracksEnd-zTracksStart)/zTrack.len	; Number of tracks
+		ld	hl, zTracksStart+zTrack.TempoDivider	; Want to change tempo dividers
 
-loc_DF3:
-		push	bc
-		ld	bc, zTrack.len
-		ld	(hl), a
-		add	hl, bc
-		pop	bc
-		djnz	loc_DF3
+.loop:
+		push	bc							; Save bc
+		ld	bc, zTrack.len					; Spacing between tracks
+		ld	(hl), a							; Set tempo divider for track
+		add	hl, bc							; Advance to next track
+		pop	bc								; Restore bc
+		djnz	.loop
 		ret
 ; ---------------------------------------------------------------------------
 
@@ -2605,8 +2643,8 @@ cf05_SSGEG:
 
 
 Sends.bSGEG:
-		ld	hl, SSGEG_Ops
-		ld	b, 4
+		ld	hl, zFMInstrumentSSGEGTable
+		ld	b, zFMInstrumentSSGEGTable_End-zFMInstrumentSSGEGTable
 
 loc_E0C:
 		ld	a, (de)
@@ -2776,7 +2814,7 @@ SilencePSGChn:
 
 ; ---------------------------------------------------------------------------
 
-loc_EE5:
+zPlayDigitalAudio:
 		di
 		ld	a, 2Bh
 		ld	c, 0
@@ -2835,7 +2873,7 @@ loc_F1C:
 		inc	hl
 		ld	a, h
 		or	l
-		jp	nz, locb_F52
+		jp	nz, .loc_F52
 		ld	hl, zROMWindow
 		di
 		exx
@@ -2847,7 +2885,7 @@ loc_F1C:
 		exx
 		ei
 
-locb_F52:
+.loc_F52:
 		dec	de
 		ld	a, d
 		or	e
@@ -2856,10 +2894,14 @@ locb_F52:
 		res	2, (hl)
 		xor	a
 		ld	(zDACIndex), a
-		jp	loc_EE5
+		jp	zPlayDigitalAudio
 ; ---------------------------------------------------------------------------
-DPCMData:	db    0,   1,	2,   4,	  8, 10h, 20h, 40h
-		db  80h,0FFh,0FEh,0FCh,0F8h,0F0h,0E0h,0C0h
+; ===========================================================================
+; JMan2050's DAC decode lookup table
+; ===========================================================================
+DecTable:
+		db	   0,	 1,   2,   4,   8,  10h,  20h,  40h
+		db	 80h,	-1,  -2,  -4,  -8, -10h, -20h, -40h
 VolEnvPtrs:	dw PSG1,PSG2,PSG3,PSG4,PSG5,PSG6
 		dw PSG7,PSG8,PSG9,PSGA,PSGB,PSGC
 PSG1:		binclude "PSG/PSG 1.bin"

@@ -4336,14 +4336,14 @@ sub_6612:
 		move.b	(z80_version).l,d0			; load Z80 version number
 		rol.b	#2,d0					; roll left 2 bits
 		andi.w	#2,d0					; get only the original 1st bit that was in version number
-		move.w	loc_6626(pc,d0.w),($FFFFD402).w		; save correct routine (depending on version number) to routine location storage
+		move.w	off_6626(pc,d0.w),($FFFFD402).w		; save correct routine (depending on version number) to routine location storage
 		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ;
 ; ---------------------------------------------------------------------------
 
-loc_6626:
+off_6626:
 		;	black, white
 		dc.w	$0000,$0EEE
 
@@ -7603,7 +7603,7 @@ loc_967C:				; CODE XREF: ROM:loc_9670j
 		lea	SSZ_ArtLocs(pc),a2
 		bsr.w	sub_9D30
 		lea	($FFFFC9DE).w,a0
-		move.l	#$FF0D08,$28(a0)
+		move.l	#v_128x128,$28(a0)
 		lea	SSZ_MapFGLocs(pc),a2
 		bsr.w	DecEniMapLocs
 		move.l	a1,($FFFFCA46).w
@@ -7808,7 +7808,7 @@ loc_9898:				; CODE XREF: ROM:loc_988Cj
 		lea	TTZ_ArtLocs(pc),a2
 		bsr.w	sub_9D30
 		lea	($FFFFC9DE).w,a0
-		move.l	#$FF0D08,$28(a0)
+		move.l	#v_128x128,$28(a0)
 		lea	TTZ_MapFGLocs(pc),a2
 		bsr.w	DecEniMapLocs
 		move.l	a1,($FFFFCA46).w
@@ -8305,6 +8305,17 @@ sub_9D30:				; CODE XREF: ROM:000096A8p
 ; ---------------------------------------------------------------------------
 ; (I think) Subroutine to take the data in "MapLocs" tables and decompress
 ; them correctly
+
+; input:
+;	$1C(a0) = starting art tile (added to each 8x8 before writing to destination)
+;	a2 = source address
+;	$28(a0) = destination address
+
+; usage:
+;	lea	(source).l,a2
+;	move.l	#destination,$28(a0)
+;	move.w	#arttile,$1C(a0)
+;	bsr.w	DecEniMapLocs
 ; ---------------------------------------------------------------------------
 
 DecEniMapLocs:
