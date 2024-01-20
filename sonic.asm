@@ -5559,7 +5559,7 @@ Fields:
 		movem.l	(sp)+,a0
 		lea	loc_7ED8(pc),a0
 		jsr	(sub_8D0).w
-		move.b	#$81,d0					; load BGM 81
+		move.b	#bgm_Electoria,d0			; load BGM 81
 		jsr	(PlayMusic).l				; Play BGM
 		lea	PAL_PrimaryColours_Field(pc),a0		; load primary Field palettes address to a0
 		lea	($FFFFD3E4).w,a1
@@ -6563,7 +6563,7 @@ loc_87A4:				; CODE XREF: sub_8736+62j
 		adda.w	2(a1,d0.w),a2
 		move.l	a2,(a4)
 		or.b	d2,($FFFFD87A).w
-		move.l	a3,$10(a6)
+		move.l	a3,obMap(a6)
 		rts
 ; End of function sub_8736
 
@@ -6618,7 +6618,7 @@ Levels:					; CODE XREF: ROM:00005026j
 		movem.l	(sp)+,a0
 		lea	loc_89C8(pc),a0
 		jsr	(sub_8D0).w
-		move.b	#$81,d0
+		move.b	#bgm_Electoria,d0
 		tst.w	($FFFFD834).w
 		beq.s	loc_88C2
 		move.w	($FFFFD83A).w,d0
@@ -11283,7 +11283,7 @@ loc_B7DA:				; CODE XREF: ROM:0000B7D6j
 		lea	(PLC_SonicArm).l,a2
 		adda.w	(a0,d0.w),a1
 		adda.w	2(a0,d0.w),a2
-		move.l	a1,$10(a6)
+		move.l	a1,obMap(a6)
 		tst.b	6(a5)
 		bne.s	loc_B80E
 		move.l	a2,($FFFFD888).w
@@ -11781,7 +11781,7 @@ loc_BBF0:				; CODE XREF: ROM:0000BBECj
 		lea	(PLC_TailsArm).l,a2
 		adda.w	(a0,d0.w),a1
 		adda.w	2(a0,d0.w),a2
-		move.l	a1,$10(a6)
+		move.l	a1,obMap(a6)
 		tst.b	6(a5)
 		bne.s	loc_BC24
 		move.l	a2,($FFFFD888).w
@@ -12039,7 +12039,7 @@ loc_BE2E:				; CODE XREF: ROM:0000BE2Aj
 		lea	(PLC_Tails).l,a2
 		adda.w	(a0,d0.w),a1
 		adda.w	2(a0,d0.w),a2
-		move.l	a1,$10(a6)
+		move.l	a1,obMap(a6)
 		tst.b	6(a5)
 		bne.s	loc_BE66
 		move.l	a2,($FFFFD894).w
@@ -13223,7 +13223,7 @@ loc_C832:				; CODE XREF: ROM:0000C826j
 		adda.w	2(a1,d0.w),a2
 		move.l	a2,(a4)
 		or.b	d2,($FFFFD87A).w
-		move.l	a3,$10(a6)
+		move.l	a3,obMap(a6)
 		rts
 ; ---------------------------------------------------------------------------
 off_C84A:	dc.l ANI_Sonic
@@ -13645,8 +13645,8 @@ loc_CC62:				; CODE XREF: sub_CC5C+68j
 		jsr	(sub_1918).w
 		bmi.s	locret_CCC8
 		move.w	#$80,4(a0) ; "€"
-		move.w	#$28,6(a0) ; "("
-		move.w	#$28,6(a0) ; "("
+		move.w	#$28,6(a0) 
+		move.w	#$28,6(a0) 
 		move.w	#$FF,$26(a0)
 		move.w	8(a6),8(a0)
 		move.w	$C(a6),$C(a0)
@@ -14623,7 +14623,7 @@ loc_D2A8:				; CODE XREF: ROM:loc_D224j
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_D2D6
-		move.l	#Map_SpringLR,$10(a6)
+		move.l	#Map_SpringLR,obMap(a6)
 		move.w	#$407,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#8,$22(a6)
@@ -14705,7 +14705,7 @@ loc_D394:				; CODE XREF: ROM:0000D228j
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_D3C2
-		move.l	#Map_SpringLR,$10(a6)
+		move.l	#Map_SpringLR,obMap(a6)
 		move.w	#$C07,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#8,$22(a6)
@@ -14789,7 +14789,7 @@ loc_D484:				; CODE XREF: ROM:0000D22Cj
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_D4B2
-		move.l	#Map_SpringUp,$10(a6)
+		move.l	#Map_SpringUp,obMap(a6)
 		move.w	#$407,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$10,$22(a6)
@@ -14873,7 +14873,7 @@ loc_D574:				; CODE XREF: ROM:0000D230j
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_D5A2
-		move.l	#Map_SpringUp,$10(a6)
+		move.l	#Map_SpringUp,obMap(a6)
 		move.w	#$1407,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$10,$22(a6)
@@ -14954,7 +14954,7 @@ loc_D660:				; CODE XREF: ROM:0000D238j
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_D68E
-		move.l	#Map_SpringAngUp,$10(a6)
+		move.l	#Map_SpringAngUp,obMap(a6)
 		move.w	#$407,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$C,$22(a6)
@@ -15046,7 +15046,7 @@ loc_D770:				; CODE XREF: ROM:0000D23Cj
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_D79E
-		move.l	#Map_SpringAngUp,$10(a6)
+		move.l	#Map_SpringAngUp,obMap(a6)
 		move.w	#$C07,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$C,$22(a6)
@@ -15140,7 +15140,7 @@ loc_D884:				; CODE XREF: ROM:0000D240j
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_D8B2
-		move.l	#Map_SpringAngUp,$10(a6)
+		move.l	#Map_SpringAngUp,obMap(a6)
 		move.w	#$1407,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$C,$22(a6)
@@ -15230,7 +15230,7 @@ loc_D990:				; CODE XREF: ROM:0000D244j
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_D9BE
-		move.l	#Map_SpringAngUp,$10(a6)
+		move.l	#Map_SpringAngUp,obMap(a6)
 		move.w	#$1C07,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$C,$22(a6)
@@ -15322,7 +15322,7 @@ loc_DAA0:				; CODE XREF: ROM:0000D258j
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_DACE
-		move.l	#Map_SpringLR,$10(a6)
+		move.l	#Map_SpringLR,obMap(a6)
 		move.w	#$2407,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#8,$22(a6)
@@ -15405,7 +15405,7 @@ loc_DB8C:				; CODE XREF: ROM:0000D25Cj
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_DBBA
-		move.l	#Map_SpringLR,$10(a6)	; mappings to load for object
+		move.l	#Map_SpringLR,obMap(a6)	; mappings to load for object
 		move.w	#$2C07,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#8,$22(a6)
@@ -15489,7 +15489,7 @@ loc_DC7C:				; CODE XREF: ROM:0000D260j
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_DCAA
-		move.l	#Map_SpringUp,$10(a6)
+		move.l	#Map_SpringUp,obMap(a6)
 		move.w	#$2407,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$10,$22(a6)
@@ -15573,7 +15573,7 @@ loc_DD6C:				; CODE XREF: ROM:0000D264j
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_DD9A
-		move.l	#Map_SpringUp,$10(a6)
+		move.l	#Map_SpringUp,obMap(a6)
 		move.w	#$3407,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$10,$22(a6)
@@ -15655,7 +15655,7 @@ loc_DE58:				; CODE XREF: ROM:0000D268j
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_DE86
-		move.l	#Map_SpringAngUp,$10(a6)
+		move.l	#Map_SpringAngUp,obMap(a6)
 		move.w	#$2407,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$C,$22(a6)
@@ -15747,7 +15747,7 @@ loc_DF68:				; CODE XREF: ROM:0000D26Cj
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_DF96
-		move.l	#Map_SpringAngUp,$10(a6)
+		move.l	#Map_SpringAngUp,obMap(a6)
 		move.w	#$2C07,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$C,$22(a6)
@@ -15841,7 +15841,7 @@ loc_E07C:				; CODE XREF: ROM:0000D270j
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_E0AA
-		move.l	#Map_SpringAngUp,$10(a6)
+		move.l	#Map_SpringAngUp,obMap(a6)
 		move.w	#$3407,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$C,$22(a6)
@@ -15931,7 +15931,7 @@ loc_E188:				; CODE XREF: ROM:0000D274j
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_E1B6
-		move.l	#Map_SpringAngUp,$10(a6)
+		move.l	#Map_SpringAngUp,obMap(a6)
 		move.w	#$3C07,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$C,$22(a6)
@@ -16364,7 +16364,7 @@ loc_E4FE:				; CODE XREF: ROM:0000D278j
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_E526
-		move.l	#Map_SpikesUpLrg,$10(a6)
+		move.l	#Map_SpikesUpLrg,obMap(a6)
 		move.w	#$23BF,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$10,$22(a6)
@@ -16429,7 +16429,7 @@ loc_E5A6:				; CODE XREF: ROM:0000D27Cj
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_E5CE
-		move.l	#Map_SpikesUpLrg,$10(a6)
+		move.l	#Map_SpikesUpLrg,obMap(a6)
 		move.w	#$33BF,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$10,$22(a6)
@@ -16494,7 +16494,7 @@ loc_E64E:				; CODE XREF: ROM:0000D280j
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_E676
-		move.l	#Map_SpikesLR,$10(a6)
+		move.l	#Map_SpikesLR,obMap(a6)
 		move.w	#$23BF,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$10,$22(a6)
@@ -16559,7 +16559,7 @@ loc_E6F6:				; CODE XREF: ROM:0000D284j
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_E71E
-		move.l	#Map_SpikesLR,$10(a6)
+		move.l	#Map_SpikesLR,obMap(a6)
 		move.w	#$2BBF,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$10,$22(a6)
@@ -16624,7 +16624,7 @@ loc_E79E:				; CODE XREF: ROM:0000D288j
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_E7C6
-		move.l	#Map_SpikesAng,$10(a6)
+		move.l	#Map_SpikesAng,obMap(a6)
 		move.w	#$2BBF,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$C,$22(a6)
@@ -16689,7 +16689,7 @@ loc_E846:				; CODE XREF: ROM:0000D28Cj
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_E86E
-		move.l	#Map_SpikesAng,$10(a6)
+		move.l	#Map_SpikesAng,obMap(a6)
 		move.w	#$23BF,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$C,$22(a6)
@@ -16754,7 +16754,7 @@ loc_E8EE:				; CODE XREF: ROM:0000D290j
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_E916
-		move.l	#Map_SpikesAng,$10(a6)
+		move.l	#Map_SpikesAng,obMap(a6)
 		move.w	#$3BBF,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$C,$22(a6)
@@ -16819,7 +16819,7 @@ loc_E996:				; CODE XREF: ROM:0000D294j
 		moveq	#7,d0
 		bclr	d0,$28(a6)
 		beq.s	loc_E9BE
-		move.l	#Map_SpikesAng,$10(a6)
+		move.l	#Map_SpikesAng,obMap(a6)
 		move.w	#$33BF,$20(a6)
 		move.w	#$8080,4(a6)
 		move.b	#$C,$22(a6)
@@ -17186,7 +17186,7 @@ loc_EC02:				; CODE XREF: ROM:0000EBE4j
 
 loc_EC20:				; CODE XREF: ROM:loc_EBFEj
 					; ROM:0000EC12j
-		move.b	#$86,d0
+		move.b	#bgm_GameOver,d0
 		jsr	(PlayMusic).l
 		move.w	#$300,d0
 
@@ -18034,7 +18034,7 @@ sub_F328:				; CODE XREF: sub_F374+6p
 		move.w	($FFFFD81E).w,d3
 		addi.w	#$40,d3
 		jsr	(sub_86E).w
-		moveq	#$28,d0	; "("
+		moveq	#$28,d0	
 		moveq	#9,d1
 		move.w	#$A001,d2
 		move.w	($FFFFD81E).w,d3
@@ -18312,7 +18312,7 @@ locret_F58A:				; CODE XREF: sub_F538+32j
 
 
 sub_F58C:				; CODE XREF: ROM:loc_8968p
-		moveq	#$28,d0	; "("
+		moveq	#$28,d0	
 		moveq	#$20,d1
 		move.w	#$8002,d2
 		move.w	($FFFFD816).w,d3
@@ -18375,12 +18375,12 @@ loc_F612:				; CODE XREF: sub_F4FE+26j
 		moveq	#2,d0
 		moveq	#5,d1
 		move.w	#$8004,d2
-		moveq	#$28,d3	; "("
+		moveq	#$28,d3	
 		sub.w	($FFFFFDC8).w,d3
 		lsl.w	#1,d3
 		add.w	($FFFFD816).w,d3
 		jsr	(sub_86E).w
-		cmpi.w	#$28,($FFFFFDC8).w ; "("
+		cmpi.w	#$28,($FFFFFDC8).w 
 		blt.s	locret_F63A
 		addq.w	#4,($FFFFFDC4).w
 
@@ -18400,7 +18400,7 @@ loc_F63C:				; CODE XREF: sub_F538+48j
 ; ---------------------------------------------------------------------------
 
 loc_F652:				; CODE XREF: sub_F538+10Cj
-		moveq	#$28,d0	; "("
+		moveq	#$28,d0	
 		sub.w	($FFFFFDC8).w,d0
 		moveq	#5,d1
 		move.w	#$8003,d2
@@ -18484,7 +18484,7 @@ loc_F6CA:				; CODE XREF: sub_F538+18Aj
 loc_F720:				; CODE XREF: sub_F4FE+32j
 		addq.w	#1,($FFFFFDCC).w
 		moveq	#1,d0
-		moveq	#$28,d3	; "("
+		moveq	#$28,d3	
 		sub.w	($FFFFFDCC).w,d3
 		lsl.w	#1,d3
 		add.w	($FFFFD816).w,d3
@@ -18603,7 +18603,7 @@ loc_F884:				; CODE XREF: sub_F4FE+2Ej
 		moveq	#3,d0
 		moveq	#2,d1
 		move.w	#$800A,d2
-		moveq	#$28,d3	; "("
+		moveq	#$28,d3
 		sub.w	($FFFFFDCE).w,d3
 		lsl.w	#1,d3
 		addi.w	#$380,d3
@@ -18964,7 +18964,7 @@ UnkData:	dc.w $0000						; VRam location
 ; ---------------------------------------------------------------------------
 ; Music Data (Z80 aligned to $00010000)
 ; ---------------------------------------------------------------------------
-MusicIndex:	startBank
+MusicBank:	startBank
 Music81:	include	"Sound\Music\Mus81 - Electoria.asm"
 Music82:	include	"Sound\Music\Mus82 - Walkin'.asm"
 Music83:	include	"Sound\Music\Mus83 - Hyper-Hyper.asm"
@@ -19032,7 +19032,7 @@ Music86:	include	"Sound\Music\Mus86 - Game Over.asm"
 ; ---------------------------------------------------------------------------
 ; Align to $00016000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $16000
+	align $1000
 ; ---------------------------------------------------------------------------
 ; Data Location (00016000 - 00016703)
 ; Striped out
@@ -19043,7 +19043,7 @@ Music86:	include	"Sound\Music\Mus86 - Game Over.asm"
 ; ---------------------------------------------------------------------------
 ; Align to $00018000, Sound Data (Unused by Z80)
 ; ---------------------------------------------------------------------------
-SoundIndex:	startBank
+SoundBank:	startBank
 SoundA0:	include	"Sound\SFX\SndA0 - Jump.asm"		; Jump SFX (Same as Sonic CD FM NO.02)
 SoundA1:	include	"Sound\SFX\SndA1 - Cash Register.asm"		; Cash Machine SFX (Same as Sonic 1 SFX C5)
 SoundA2:	include	"Sound\SFX\SndA2.asm"		; strange noise (it has modulation of "01 01 28 00", which the "00" makes the modulation do nothing) (this MAY be a "get hit by spikes" SFX unfinished)
@@ -19129,7 +19129,7 @@ SoundAF:	include	"Sound\SFX\SndAF.asm"
 ; ---------------------------------------------------------------------------
 ; Align to $00020000, PCM Voice Data
 ; ---------------------------------------------------------------------------
-DAC_Index:	startBank
+DACBank:	startBank
 DAC_Sample1:	binclude	"Sound\DAC\Kick.dpcm"		; DAC 81 (Beat Sample)
 DAC_Sample1_End:even
 DAC_Sample2:	binclude	"Sound\DAC\Snare.dpcm"		; DAC 82 (Snare Sample)
@@ -19196,7 +19196,7 @@ DAC_Sample5_End:even
 ; ---------------------------------------------------------------------------
 ; Align to $0002C000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $2C000			; Aligned
+	align $2000
 ; ---------------------------------------------------------------------------
 ; Data Location (0002C000 - 0002D1FF)
 ; Striped out
@@ -19207,7 +19207,7 @@ DAC_Sample5_End:even
 ; ---------------------------------------------------------------------------
 ; Align to $00030000, Used Multiple Data
 ; ---------------------------------------------------------------------------
-	align $30000			; Aligned
+	align $3000
 ; ---------------------------------------------------------------------------
 ArtUnc_HUD:
 	binclude	"artunc\Hud.bin"			; Hud Patterns
@@ -19624,7 +19624,7 @@ MAPUNC_ElectricFieldBG:
 ; ---------------------------------------------------------------------------
 ; Align to $00060000, Sonic"s Arms
 ; ---------------------------------------------------------------------------
-	align $60000			; Aligned
+	align $6000
 ; ---------------------------------------------------------------------------
 ARTUNC_SonicArms:
 	binclude	"artunc\SonicArms.bin"	; Sonic"s Arms
@@ -19634,7 +19634,7 @@ ARTUNC_SonicArms:
 ; ---------------------------------------------------------------------------
 ; Align to $00064000, Tails" Arms
 ; ---------------------------------------------------------------------------
-	align $64000			; Aligned
+	align $1000
 ; ---------------------------------------------------------------------------
 ARTUNC_TailsArms:
 	binclude	"artunc\TailsArms.bin"	; Tails" Arms
@@ -19743,7 +19743,7 @@ Map_TailsFields:
 ; ---------------------------------------------------------------------------
 ; Align to $0006C000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $6C000			; Aligned
+	align $2000
 ; ---------------------------------------------------------------------------
 ; Data Location (0006C000 - 0006CE07)
 ; Striped out
@@ -19763,7 +19763,7 @@ Map_TailsFields:
 ; ---------------------------------------------------------------------------
 ; Align to $00070000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $70000			; Aligned
+	align $4000
 ; ---------------------------------------------------------------------------
 ; Data Location (00070000 - 00071813)
 ; Striped out
@@ -19774,7 +19774,7 @@ Map_TailsFields:
 ; ---------------------------------------------------------------------------
 ; Align to $00072000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $72000			; Aligned
+	align $800
 ; ---------------------------------------------------------------------------
 ; Data Location (00072000 - 00072763)
 ; Striped out
@@ -19785,7 +19785,7 @@ Map_TailsFields:
 ; ---------------------------------------------------------------------------
 ; Align to $00074000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $74000			; Aligned
+	align $2000
 ; ---------------------------------------------------------------------------
 ; Data Location (00074000 - 0007562F)
 ; Striped out
@@ -19796,7 +19796,7 @@ Map_TailsFields:
 ; ---------------------------------------------------------------------------
 ; Align to $00076000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $76000			; Aligned
+	align $1000
 ; ---------------------------------------------------------------------------
 ; Data Location (00076000 - 00076703)
 ; Striped out
@@ -19807,7 +19807,7 @@ Map_TailsFields:
 ; ---------------------------------------------------------------------------
 ; Uncompressed Art - Sonic
 ; ---------------------------------------------------------------------------
-	align $80000			; Aligned
+	align $10000
 ; ---------------------------------------------------------------------------
 ARTUNC_Sonic:	binclude	"artunc\Sonic.bin"
 		even
@@ -19825,7 +19825,7 @@ ARTUNC_Sonic:	binclude	"artunc\Sonic.bin"
 ; ---------------------------------------------------------------------------
 ; Uncompressed Art - Sonic Fields
 ; ---------------------------------------------------------------------------
-	align $90000			; Aligned
+	align $4000
 ; ---------------------------------------------------------------------------
 ARTUNC_SonicField:
 		binclude	"artunc\SonicField.bin"
@@ -19844,7 +19844,7 @@ ARTUNC_SonicField:
 ; ---------------------------------------------------------------------------
 ; Align to $00096000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $96000			; Aligned
+	align $1000
 ; ---------------------------------------------------------------------------
 ; Data Location (00096000 - 00096703)
 ; Striped out
@@ -19855,7 +19855,7 @@ ARTUNC_SonicField:
 ; ---------------------------------------------------------------------------
 ; Uncompressed Art - Unknown Unused Small Hud Patterns
 ; ---------------------------------------------------------------------------
-	align $98000			; Aligned
+	align $2000
 ; ---------------------------------------------------------------------------
 ARTUNC_UnknownHud:
 		binclude	"artunc\UnknownHud.bin"
@@ -19874,7 +19874,7 @@ ARTUNC_UnknownHud:
 ; ---------------------------------------------------------------------------
 ; Uncompressed Art - Tails
 ; ---------------------------------------------------------------------------
-	align $A0000			; Aligned
+	align $10
 ; ---------------------------------------------------------------------------
 ARTUNC_Tails:	binclude	"artunc\Tails.bin"
 		even
@@ -19883,7 +19883,7 @@ ARTUNC_Tails:	binclude	"artunc\Tails.bin"
 ; ---------------------------------------------------------------------------
 ; Align to $000AC000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $AC000			; Aligned
+	align $1000
 ; ---------------------------------------------------------------------------
 ; Data Location (000AC000 - 000AD1F9)
 ; Striped out
@@ -19894,7 +19894,7 @@ ARTUNC_Tails:	binclude	"artunc\Tails.bin"
 ; ---------------------------------------------------------------------------
 ; Uncompressed Art - Tails Field
 ; ---------------------------------------------------------------------------
-	align $B0000			; Aligned
+	align $4000
 ; ---------------------------------------------------------------------------
 ARTUNC_TailsField:
 		binclude	"artunc\TailsField.bin"
@@ -19913,7 +19913,7 @@ ARTUNC_TailsField:
 ; ---------------------------------------------------------------------------
 ; Align to $000B6000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $B6000			; Aligned
+	align $1000
 ; ---------------------------------------------------------------------------
 ; Data Location (000B6000 - 000B6703)
 ; Striped out
@@ -19924,7 +19924,7 @@ ARTUNC_TailsField:
 ; ---------------------------------------------------------------------------
 ; Align to $000C0000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $C0000			; Aligned
+	align $C000
 ; ---------------------------------------------------------------------------
 ; Data Location (000C0000 - 000CA887)
 ; Striped out
@@ -19935,7 +19935,7 @@ ARTUNC_TailsField:
 ; ---------------------------------------------------------------------------
 ; Align to $000CC000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $CC000			; Aligned
+	align $2000
 ; ---------------------------------------------------------------------------
 ; Data Location (000CC000 - 000D58BF)
 ; Striped out
@@ -19946,7 +19946,7 @@ ARTUNC_TailsField:
 ; ---------------------------------------------------------------------------
 ; Align to $000D6000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $D6000			; Aligned
+	align $1000
 ; ---------------------------------------------------------------------------
 ; Data Location (000D6000 - 000D6703)
 ; Striped out
@@ -19957,7 +19957,7 @@ ARTUNC_TailsField:
 ; ---------------------------------------------------------------------------
 ; Align to $000D8000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $D8000			; Aligned
+	align $2000
 ; ---------------------------------------------------------------------------
 ; Data Location (000D8000 - 000DA3FF)
 ; Striped out
@@ -19968,7 +19968,7 @@ ARTUNC_TailsField:
 ; ---------------------------------------------------------------------------
 ; Align to $000E0000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $E0000			; Aligned
+	align $7000
 ; ---------------------------------------------------------------------------
 ; Data Location (000E0000 - 000E3067)
 ; Striped out
@@ -19979,7 +19979,7 @@ ARTUNC_TailsField:
 ; ---------------------------------------------------------------------------
 ; Align to $000E4000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $E4000			; Aligned
+	align $1000
 ; ---------------------------------------------------------------------------
 ; Data Location (000E4000 - 000E4EC7)
 ; Striped out
@@ -19990,7 +19990,7 @@ ARTUNC_TailsField:
 ; ---------------------------------------------------------------------------
 ; Align to $000E6000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $E6000			; Aligned
+	align $2000
 ; ---------------------------------------------------------------------------
 ; Data Location (000E6000 - 000EAC5F)
 ; Striped out
@@ -20001,7 +20001,7 @@ ARTUNC_TailsField:
 ; ---------------------------------------------------------------------------
 ; Align to $000EC000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $EC000			; Aligned
+	align $2000
 ; ---------------------------------------------------------------------------
 ; Data Location (000EC000 - 000ED1FF)
 ; Striped out
@@ -20012,7 +20012,7 @@ ARTUNC_TailsField:
 ; ---------------------------------------------------------------------------
 ; Align to $000F0000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $F0000			; Aligned
+	align $3000
 ; ---------------------------------------------------------------------------
 ; Data Location (000F0000 - 000F1813)
 ; Striped out
@@ -20023,7 +20023,7 @@ ARTUNC_TailsField:
 ; ---------------------------------------------------------------------------
 ; Align to $000F2000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $F2000			; Aligned
+	align $800
 ; ---------------------------------------------------------------------------
 ; Data Location (000F2000 - 000F2763)
 ; Striped out
@@ -20034,7 +20034,7 @@ ARTUNC_TailsField:
 ; ---------------------------------------------------------------------------
 ; Align to $000F4000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $F4000			; Aligned
+	align $2000
 ; ---------------------------------------------------------------------------
 ; Data Location (000F4000 - 000F562F)
 ; Striped out
@@ -20045,7 +20045,7 @@ ARTUNC_TailsField:
 ; ---------------------------------------------------------------------------
 ; Align to $000F6000, Unknown Data
 ; ---------------------------------------------------------------------------
-	align $F6000			; Aligned
+	align $1000
 ; ---------------------------------------------------------------------------
 ; Data Location (000F6000 - 000F6703)
 ; Striped out

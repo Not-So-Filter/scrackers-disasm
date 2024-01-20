@@ -45,3 +45,10 @@ finishBank macro
 		message "soundBank \{soundBankName} has $\{$8000+soundBankStart-*} bytes free at end."
 	endif
     endm
+    
+; ---------------------------------------------------------------------------
+; turn a sample rate into a djnz loop counter
+; ---------------------------------------------------------------------------
+
+pcmLoopCounter function sampleRate,baseCycles, 1+(53693175/15/(sampleRate)-(baseCycles)+(13/2))/13
+dpcmLoopCounter function sampleRate, pcmLoopCounter(sampleRate,268/2) ; 268 is the number of cycles zPlayPCMLoop takes.

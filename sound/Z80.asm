@@ -270,7 +270,7 @@ VInt:		rsttarget
 		ld	a, (hl)
 		dec	a
 		set	7, (hl)
-		ld	hl, DACTablePtrs
+		ld	hl, DAC_Index
 		rst	ReadPtrTable
 		ld	c, 80h
 		ld	a, (hl)
@@ -324,14 +324,24 @@ loc_B9:
 		dec	c
 		jr	nz, loc_B7
 		call	StopAllSound
-		ld	a, zmake68kBank(MusicIndex)
+		ld	a, zmake68kBank(MusicBank)
 		ld	(zMusicBank), a
 		; DANGER!
 		; This is bugged, it adds 1 to the bank, which makes it point
 		; to the DAC Index instead of the Sound Index.
 		; To fix this, remove the +1.
-		ld	a, zmake68kBank(SoundIndex)+1
+		ld	a, zmake68kBank(SoundBank)+1
 		ld	(zSoundBank), a
+		; DANGER!
+		; This is bugged, the DAC needs de to be cleared in order to
+		; not continue checking if there is a sample. This leads to
+		; constant crashes on hardware if nothing is played on the
+                ; Sega Screen or anywhere that sound isn't being played.
+		; To fix this, uncomment the 'ld	de, 0' command below,
+                ; and remove the 'ld	a, (hl)' line.
+		; Fix founded by MarkeyJester.
+
+		;ld	de, 0
 		ld	hl, zSoundBank
 		ld	a, (hl)
 		bankswitch
@@ -1181,7 +1191,7 @@ loc_552:
 ; ---------------------------------------------------------------------------
 
 zPlayMusic:
-		sub	81h
+		sub	bgm_First
 		ret	m
 		ex	af, af'
 		call	StopAllSound
@@ -1199,7 +1209,7 @@ zPlayMusic:
 		ld	a, (hl)
 		bankswitch
 		pop	af
-		ld	hl, MusicPtrs
+		ld	hl, MusicIndex
 		rst	ReadPtrTable
 		push	hl
 		push	hl
@@ -1297,10 +1307,10 @@ PlaySpcSFX:
 		ld	(hl), a
 		ld	(hl), a
 		ex	af, af'
-		sub	0D0h
+		sub	spec_First
 		ex	af, af'
 		ld	a, 80h
-		ld	hl, SpcSFXPtrs
+		ld	hl, SpecSoundIndex
 		jr	loc_652
 ; ---------------------------------------------------------------------------
 
@@ -1319,10 +1329,10 @@ PlaySFX:
 		ld	(hl), a
 		ld	(hl), a
 		ex	af, af'
-		sub	0A0h
+		sub	sfx_First
 		ex	af, af'
 		xor	a
-		ld	hl, SFXPtrs
+		ld	hl, SoundIndex
 
 loc_652:
 		ld	(zUpdateSound), a
@@ -1778,7 +1788,7 @@ loc_8E0:
 		ld	c, a
 		bit	7, a
 		jr	z, loc_905
-		sub	86h
+		sub	bgm_Last
 		jp	c, loc_90B
 		sub	1Ah
 		ld	hl, SndPriorities
@@ -2210,7 +2220,7 @@ SetInsFromSong:
 		push	de
 		ld	a, (ix+zTrack.VoiceSongID)
 		sub	81h
-		ld	hl, MusicPtrs
+		ld	hl, MusicIndex
 		rst	ReadPtrTable
 		ld	a, (hl)
 		inc	hl
@@ -2815,65 +2825,66 @@ SilencePSGChn:
 ; ---------------------------------------------------------------------------
 
 zPlayDigitalAudio:
-		di
-		ld	a, 2Bh
-		ld	c, 0
-		call	WriteFMI
+		di			; 4
+		ld	a, 2Bh		; 7
+		ld	c, 0		; 7
+		call	WriteFMI	; 17
 
 loc_EED:
-		ei
-		ld	a, d
-		or	e
-		jr	z, loc_EED
-		ei
+		ei			; 4
+		ld	a, d		; 4
+		or	e		; 4
+		jr	z, loc_EED	; 7
+		ei			; 4
 
 DACLoop:
-		ld	b, 0Ah
+		ld	b, 0Ah		; 7
 
 loc_EF5:
-		djnz	$
-		ld	a, (hl)
-		rlca
-		rlca
-		rlca
-		rlca
-		and	0Fh
-		ld	(loc_F02+2), a
-		ld	a, c
+		djnz	$		; 8
+		ld	a, (hl)		; 7
+		rlca			; 4
+		rlca			; 4
+		rlca			; 4
+		rlca			; 4
+		and	0Fh		; 7
+		ld	(loc_F02+2), a	; 13
+		ld	a, c		; 4
 
 loc_F02:
-		add	a, (iy+0)
-		ld	c, a
-		ld	a, 2Ah
-		di
-		ld	(zYM2612_A0), a
-		ld	a, c
-		ld	(zYM2612_D0), a
-		ei
+		add	a, (iy+0)	; 19
+		ld	c, a		; 4
+		ld	a, 2Ah		; 7
+		di			; 4
+		ld	(zYM2612_A0), a	; 13
+		ld	a, c		; 4
+		ld	(zYM2612_D0), a	; 13
+		ei			; 4
 
 loc_F11:
-		ld	b, 0Ah
+		ld	b, 0Ah		; 7
 
 loc_F13:
-		djnz	$
-		ld	a, (hl)
-		and	0Fh
-		ld	(loc_F1C+2), a
-		ld	a, c
+		djnz	$		; 8
+		ld	a, (hl)		; 7
+		and	0Fh		; 7
+		ld	(loc_F1C+2), a	; 13
+		ld	a, c		; 4
 
 loc_F1C:
-		add	a, (iy+0)
-		ld	c, a
-		ld	a, 2Ah
-		di
-		ld	(zYM2612_A0), a
-		ld	a, c
-		ld	(zYM2612_D0), a
-		ei
-		inc	hl
-		ld	a, h
-		or	l
-		jp	nz, .loc_F52
+		add	a, (iy+0)	; 19
+		ld	c, a		; 4
+		ld	a, 2Ah		; 7
+		di			; 4
+		ld	(zYM2612_A0), a	; 13
+		ld	a, c		; 4
+		ld	(zYM2612_D0), a	; 13
+		ei			; 4
+		inc	hl		; 6
+		ld	a, h		; 4
+		or	l		; 4
+		jp	nz, .loc_F52	; 10
+					; 268 cycles in total
 		ld	hl, zROMWindow
 		di
 		exx
@@ -2958,43 +2969,56 @@ byte_1131:	db    3,   2,	1,   0,	  0,   0,   1
 byte_1139:	db    0,   0,	0,   0,	  1,   1,   1,	 1,   2,   2,	1
 		db    1,   1,	0,   0,	  0
 		db  84h, 01h, 82h, 04h
-MusicBanks:	db zmake68kBank(MusicIndex)
-		db zmake68kBank(MusicIndex)
-		db zmake68kBank(MusicIndex)
-		db zmake68kBank(MusicIndex)
-		db zmake68kBank(MusicIndex)
-		db zmake68kBank(MusicIndex)
-MusicPtrs:	dw zmake68kPtr(Music81)
-		dw zmake68kPtr(Music82)
-		dw zmake68kPtr(Music83)
-		dw zmake68kPtr(Music84)
-		dw zmake68kPtr(Music85)
-		dw zmake68kPtr(Music86)
-SFXPtrs:	
+MusicBanks:
+	; The way that this works is that each individual music track has it's own bank
+	; that it uses for finding and playing music from banks.
+	rept 6
+		db zmake68kBank(MusicBank)
+	endm
+MusicIndex:
+ptr_mus81:	dw zmake68kPtr(Music81)
+ptr_mus82:	dw zmake68kPtr(Music82)
+ptr_mus83:	dw zmake68kPtr(Music83)
+ptr_mus84:	dw zmake68kPtr(Music84)
+ptr_mus85:	dw zmake68kPtr(Music85)
+ptr_mus86:	dw zmake68kPtr(Music86)
+ptr_musend
+
+SoundIndex:
 		; DANGER!
 		; These pointers along with the pointers inside of the SFX are
 		; all half a bank too long!
 		; To fix this, remove the +4000h and +$4000 from both the pointers
 		; here and in the SMPS data itself.
-                dw zmake68kPtr(SoundA0)+4000h
-		dw zmake68kPtr(SoundA1)+4000h
-		dw zmake68kPtr(SoundA2)+4000h
-		dw zmake68kPtr(SoundA3)+4000h
-		dw zmake68kPtr(SoundA4)+4000h
-		dw zmake68kPtr(SoundA5)+4000h
-		dw zmake68kPtr(SoundA6)+4000h
-		dw zmake68kPtr(SoundA7)+4000h
-		dw zmake68kPtr(SoundA8)+4000h
-		dw zmake68kPtr(SoundA9)+4000h
-		dw zmake68kPtr(SoundAA)+4000h
-		dw zmake68kPtr(SoundAB)+4000h
-		dw zmake68kPtr(SoundAC)+4000h
-		dw zmake68kPtr(SoundAD)+4000h
-		dw zmake68kPtr(SoundAE)+4000h
-		dw zmake68kPtr(SoundAF)+4000h
-SpcSFXPtrs:	dw zmake68kPtr(SoundA0)+4000h
-		dw zmake68kPtr(SoundA1)+4000h
-		dw zmake68kPtr(SoundA3)+4000h
+ptr_sndA0:	dw zmake68kPtr(SoundA0)+4000h
+ptr_sndA1:	dw zmake68kPtr(SoundA1)+4000h
+ptr_sndA2:	dw zmake68kPtr(SoundA2)+4000h
+ptr_sndA3:	dw zmake68kPtr(SoundA3)+4000h
+ptr_sndA4:	dw zmake68kPtr(SoundA4)+4000h
+ptr_sndA5:	dw zmake68kPtr(SoundA5)+4000h
+ptr_sndA6:	dw zmake68kPtr(SoundA6)+4000h
+ptr_sndA7:	dw zmake68kPtr(SoundA7)+4000h
+ptr_sndA8:	dw zmake68kPtr(SoundA8)+4000h
+ptr_sndA9:	dw zmake68kPtr(SoundA9)+4000h
+ptr_sndAA:	dw zmake68kPtr(SoundAA)+4000h
+ptr_sndAB:	dw zmake68kPtr(SoundAB)+4000h
+ptr_sndAC:	dw zmake68kPtr(SoundAC)+4000h
+ptr_sndAD:	dw zmake68kPtr(SoundAD)+4000h
+ptr_sndAE:	dw zmake68kPtr(SoundAE)+4000h
+ptr_sndAF:	dw zmake68kPtr(SoundAF)+4000h
+ptr_sndend
+
+SpecSoundIndex:
+		; DANGER!
+		; Once again, these pointers along with the pointers inside of the
+		; SFX are all half a bank too long!
+		; To fix this, remove the +4000h and +$4000 from both the pointers
+		; here and in the SMPS data itself.
+ptr_sndD0:	dw zmake68kPtr(SoundA0)+4000h
+ptr_sndD1:	dw zmake68kPtr(SoundA1)+4000h
+ptr_sndD2:	dw zmake68kPtr(SoundA3)+4000h
+ptr_specend
+
 SndPriorities:	db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
@@ -3004,42 +3028,42 @@ SndPriorities:	db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh
 		db 7Fh
-DACTablePtrs:	dw stru_11EC
-		dw stru_11F2
-		dw stru_11F8
-		dw stru_11FE
-		dw stru_1204
-		dw stru_120A
-		dw stru_1210
-stru_11EC:	db 30h
-		db zmake68kBank(DAC_Index)
+DAC_Index:	dw .dac81
+		dw .dac82
+		dw .dac83
+		dw .dac84
+		dw .dac85
+		dw .dac86
+		dw .dac87
+.dac81:		db dpcmLoopCounter(4800)
+		db zmake68kBank(DACBank)
 		dw DAC_Sample1_End-DAC_Sample1
 		dw zmake68kPtr(DAC_Sample1)
-stru_11F2:	db 0Ah
-		db zmake68kBank(DAC_Index)
+.dac82:		db dpcmLoopCounter(14000)
+		db zmake68kBank(DACBank)
 		dw DAC_Sample2_End-DAC_Sample2
 		dw zmake68kPtr(DAC_Sample2)
-stru_11F8:	db 0Ah
-		db zmake68kBank(DAC_Index)
+.dac83:		db dpcmLoopCounter(14000)
+		db zmake68kBank(DACBank)
 		dw DAC_Sample3_End-DAC_Sample3
 		dw zmake68kPtr(DAC_Sample3)
-stru_11FE:	db 0Eh
-		db zmake68kBank(DAC_Index)
+.dac84:		db dpcmLoopCounter(12000)
+		db zmake68kBank(DACBank)
 		dw DAC_Sample3_End-DAC_Sample3
 		dw zmake68kPtr(DAC_Sample3)
-stru_1204:	db 10h
-		db zmake68kBank(DAC_Index)
+.dac85:		db dpcmLoopCounter(11000)
+		db zmake68kBank(DACBank)
 		dw DAC_Sample3_End-DAC_Sample3
 		dw zmake68kPtr(DAC_Sample3)
-stru_120A:	db 0Ah
-		db zmake68kBank(DAC_Index)
+.dac86:		db dpcmLoopCounter(14000)
+		db zmake68kBank(DACBank)
 		dw DAC_Sample4_End-DAC_Sample4
 		dw zmake68kPtr(DAC_Sample4)
-stru_1210:	db 0Ah
-		db zmake68kBank(DAC_Index)
+.dac87:		db dpcmLoopCounter(14000)
+		db zmake68kBank(DACBank)
 		dw DAC_Sample5_End-DAC_Sample5
 		dw zmake68kPtr(DAC_Sample5)
-		
+
 		restore
 		padding	off
 		dephase		; reset to 68K location

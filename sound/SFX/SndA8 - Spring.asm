@@ -20,6 +20,7 @@ Snd08_Loop00:
 	smpsFMAlterVol      $01
 	dc.b	smpsNoAttack
 	smpsLoop            $00, $19, Snd08_Loop00+$4000
+	; This line appears bugged, as this didn't exist in Sonic 3 & Knuckles.
 	smpsFMAlterVol      $E7
 	smpsStop
 
