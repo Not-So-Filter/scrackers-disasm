@@ -20,6 +20,34 @@ waitZ80:	macro
 .wait:		btst	#0,(z80_bus_request).l
 		bne.s	.wait
 		endm
+
+; ---------------------------------------------------------------------------
+; reset the Z80
+; ---------------------------------------------------------------------------
+
+resetZ80:	macro
+		move.w	#$100,(z80_reset).l
+		endm
+
+resetZ80a:	macro
+		move.w	#0,(z80_reset).l
+		endm
+
+; ---------------------------------------------------------------------------
+; disable interrupts
+; ---------------------------------------------------------------------------
+
+disable_ints:	macro
+		move	#$2700,sr
+		endm
+
+; ---------------------------------------------------------------------------
+; enable interrupts
+; ---------------------------------------------------------------------------
+
+enable_ints:	macro
+		move	#$2300,sr
+		endm
 		
 ; function to make a little-endian 16-bit pointer for the Z80 sound driver
 z80_ptr function x,(x)<<8&$FF00|(x)>>8&$7F|$80
