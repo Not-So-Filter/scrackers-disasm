@@ -20,36 +20,36 @@
 MAPTal_Stand:		dc.b $0B,$EE,$06,$9C,$F4,$FF
 MAPTal_LookUp:		dc.b $0B,$EE,$06,$9C,$F4,$FF
 MAPTal_LookDown:	dc.b $0A,$F6,$06,$9C,$FC,$FF
-MAPTal_WaitBlink2:	dc.b $0B,$EE,$06,$9C,$F4,$FF		; Blink (eyes half closed)
-MAPTal_WaitBlink1:	dc.b $0B,$EE,$06,$9C,$F4,$FF		; Blink (eyes closed)
-MAPTal_WaitStare:	dc.b $0B,$EE,$06,$9C,$F4,$FF		; Waiting (Looking at player)
-MAPTal_WaitYawn1:	dc.b $0B,$EE,$06,$9C,$F4,$FF		; Yawn (eyes half closed)
-MAPTal_WaitYawn2:	dc.b $0B,$EE,$06,$9C,$F4,$FF		; Yawn (Hand wave away)
-MAPTal_WaitYawn3:	dc.b $0B,$EE,$06,$9C,$F4,$FF		; Yawn (Hand wave close)
+MAPTal_WaitBlink2:	dc.b $0B,$EE,$06,$9C,$F4,$FF	; Blink (eyes half closed)
+MAPTal_WaitBlink1:	dc.b $0B,$EE,$06,$9C,$F4,$FF	; Blink (eyes closed)
+MAPTal_WaitStare:	dc.b $0B,$EE,$06,$9C,$F4,$FF	; Waiting (Looking at player)
+MAPTal_WaitYawn1:	dc.b $0B,$EE,$06,$9C,$F4,$FF	; Yawn (eyes half closed)
+MAPTal_WaitYawn2:	dc.b $0B,$EE,$06,$9C,$F4,$FF	; Yawn (Hand wave away)
+MAPTal_WaitYawn3:	dc.b $0B,$EE,$06,$9C,$F4,$FF	; Yawn (Hand wave close)
 ; ---------------------------------------------------------------------------
 ; Walking (Angle: 000* 180* degrees)
-MAPTal_Walk7_000:	dc.b $09,$EE,$06,$9C,$F2,$00		; Walk 7
+MAPTal_Walk7_000:	dc.b $09,$EE,$06,$9C,$F2,$00	; Walk 7
 			dc.b $0D,$FE,$06,$A2,$F2,$00
 			dc.b $09,$FE,$06,$AC,$E4,$FF
-MAPTal_Walk8_000:	dc.b $0A,$EE,$06,$9C,$F2,$00		; Walk 8
+MAPTal_Walk8_000:	dc.b $0A,$EE,$06,$9C,$F2,$00	; Walk 8
 			dc.b $0C,$06,$06,$A5,$F2,$00
 			dc.b $09,$FE,$06,$AC,$E6,$FF
-MAPTal_Walk1_000:	dc.b $0A,$EE,$06,$9C,$FA,$00		; Walk 1
+MAPTal_Walk1_000:	dc.b $0A,$EE,$06,$9C,$FA,$00	; Walk 1
 			dc.b $08,$06,$06,$A5,$F8,$00
 			dc.b $09,$FB,$06,$AC,$E6,$FF
-MAPTal_Walk2_000:	dc.b $0A,$EE,$06,$9C,$F2,$00		; Walk 2
+MAPTal_Walk2_000:	dc.b $0A,$EE,$06,$9C,$F2,$00	; Walk 2
 			dc.b $0C,$06,$06,$A5,$F2,$00
 			dc.b $09,$FB,$06,$AC,$E6,$FF
-MAPTal_Walk3_000:	dc.b $09,$EE,$06,$9C,$F2,$00		; Walk 3
+MAPTal_Walk3_000:	dc.b $09,$EE,$06,$9C,$F2,$00	; Walk 3
 			dc.b $0D,$FE,$06,$A2,$F2,$00
 			dc.b $09,$FE,$06,$AC,$E4,$FF
-MAPTal_Walk4_000:	dc.b $0A,$EE,$06,$9C,$F2,$00		; Walk 4
+MAPTal_Walk4_000:	dc.b $0A,$EE,$06,$9C,$F2,$00	; Walk 4
 			dc.b $0C,$06,$06,$A5,$F2,$00
 			dc.b $09,$FE,$06,$AC,$E6,$FF
-MAPTal_Walk5_000:	dc.b $0A,$EE,$06,$9C,$FA,$00		; Walk 5
+MAPTal_Walk5_000:	dc.b $0A,$EE,$06,$9C,$FA,$00	; Walk 5
 			dc.b $04,$06,$06,$A5,$FA,$00
 			dc.b $09,$FB,$06,$AC,$E6,$FF
-MAPTal_Walk6_000:	dc.b $0B,$EE,$06,$9C,$F2,$00		; Walk 6
+MAPTal_Walk6_000:	dc.b $0B,$EE,$06,$9C,$F2,$00	; Walk 6
 			dc.b $09,$FB,$06,$AC,$E6,$FF
 ; ---------------------------------------------------------------------------
 ; Walking (Angle: 045* 225* degrees)
@@ -148,52 +148,52 @@ MAPTal_Spindsh2:	dc.b $0E,$F8,$06,$9C,$F0,$FF
 MAPTal_Spindsh3:	dc.b $0F,$F4,$06,$9C,$F0,$FF
 ; ---------------------------------------------------------------------------
 MAPTal_Hurt:		dc.b $0F,$F0,$06,$9C,$F0,$FF
-MAPTal_Fly:		dc.b $0F,$F0,$06,$9C,$F0,$FF		; Tails Flying (Unused)
-MAPTal_FlyTired1:	dc.b $0F,$F0,$06,$9C,$F0,$FF		; Tails Flying When Tired 1 (Unused)
-MAPTal_FlyTired2:	dc.b $0F,$F0,$06,$9C,$F0,$FF		; Tails Flying When Tired 2 (Unused)
-MAPTal_FlyHeliTails:	dc.b $0C,$08,$06,$9C,$00,$FF		; Tails' "Tails" (Flying Helicopter Tails) (Unused)
-MAPTal_Skid1:		dc.b $09,$F0,$06,$9C,$F0,$00		; Skidding 1
+MAPTal_Fly:		dc.b $0F,$F0,$06,$9C,$F0,$FF	; Tails Flying (Unused)
+MAPTal_FlyTired1:	dc.b $0F,$F0,$06,$9C,$F0,$FF	; Tails Flying When Tired 1 (Unused)
+MAPTal_FlyTired2:	dc.b $0F,$F0,$06,$9C,$F0,$FF	; Tails Flying When Tired 2 (Unused)
+MAPTal_FlyHeliTails:	dc.b $0C,$08,$06,$9C,$00,$FF	; Tails' "Tails" (Flying Helicopter Tails) (Unused)
+MAPTal_Skid1:		dc.b $09,$F0,$06,$9C,$F0,$00	; Skidding 1
 			dc.b $0D,$00,$06,$A2,$F0,$FF
-MAPTal_Skid2:		dc.b $09,$F0,$06,$9C,$F0,$00		; Skidding 2
+MAPTal_Skid2:		dc.b $09,$F0,$06,$9C,$F0,$00	; Skidding 2
 			dc.b $0D,$00,$06,$A2,$F0,$FF
-MAPTal_Skid3:		dc.b $0B,$F0,$06,$9C,$F0,$FF		; Skidding 3 (Turn Direction)
-MAPTal_UnkSkid1:	dc.b $0A,$F0,$06,$9C,$F0,$00		; Unused Hulting 1
+MAPTal_Skid3:		dc.b $0B,$F0,$06,$9C,$F0,$FF	; Skidding 3 (Turn Direction)
+MAPTal_UnkSkid1:	dc.b $0A,$F0,$06,$9C,$F0,$00	; Unused Hulting 1
 			dc.b $08,$08,$06,$A5,$F8,$FF
-MAPTal_UnkSkid2:	dc.b $09,$F0,$06,$9C,$F0,$00		; Unused Hulting 2
+MAPTal_UnkSkid2:	dc.b $09,$F0,$06,$9C,$F0,$00	; Unused Hulting 2
 			dc.b $0D,$00,$06,$A2,$F0,$FF
-MAPTal_BlncOut1:	dc.b $0F,$F0,$06,$9C,$F0,$FF		; Balancing 1 (Facing outwards)
-MAPTal_BlncOut2:	dc.b $09,$F0,$06,$9C,$F0,$00		; Balancing 2 (Facing outwards)
+MAPTal_BlncOut1:	dc.b $0F,$F0,$06,$9C,$F0,$FF	; Balancing 1 (Facing outwards)
+MAPTal_BlncOut2:	dc.b $09,$F0,$06,$9C,$F0,$00	; Balancing 2 (Facing outwards)
 			dc.b $0D,$00,$06,$A2,$F0,$FF
-MAPTal_BlncOut3:	dc.b $0B,$F0,$06,$9C,$F5,$FF		; Balancing 3 (Facing outwards)
-MAPTal_BlncIn1:		dc.b $09,$F1,$06,$9C,$F3,$00		; Balancing 1 (Facing inwards)
+MAPTal_BlncOut3:	dc.b $0B,$F0,$06,$9C,$F5,$FF	; Balancing 3 (Facing outwards)
+MAPTal_BlncIn1:		dc.b $09,$F1,$06,$9C,$F3,$00	; Balancing 1 (Facing inwards)
 			dc.b $05,$01,$06,$A2,$F3,$FF
-MAPTal_BlncIn2:		dc.b $09,$F0,$06,$9C,$F7,$00		; Balancing 2 (Facing inwards)
+MAPTal_BlncIn2:		dc.b $09,$F0,$06,$9C,$F7,$00	; Balancing 2 (Facing inwards)
 			dc.b $09,$00,$06,$A2,$F2,$FF
-MAPTal_BlncIn3:		dc.b $09,$F0,$06,$9C,$F8,$00		; Balancing 3 (Facing inwards)
+MAPTal_BlncIn3:		dc.b $09,$F0,$06,$9C,$F8,$00	; Balancing 3 (Facing inwards)
 			dc.b $0D,$00,$06,$A2,$F0,$FF
 ; ---------------------------------------------------------------------------
 ; Unused
-MAPTal_Throw1:		dc.b $0A,$E8,$06,$9C,$F0,$00		; Throwing 1 (Unused)
+MAPTal_Throw1:		dc.b $0A,$E8,$06,$9C,$F0,$00	; Throwing 1 (Unused)
 			dc.b $0D,$00,$06,$A5,$F0,$FF
-MAPTal_Throw2:		dc.b $0A,$F0,$06,$9C,$F0,$00		; Throwing 2 (Unused)
+MAPTal_Throw2:		dc.b $0A,$F0,$06,$9C,$F0,$00	; Throwing 2 (Unused)
 			dc.b $05,$08,$06,$A5,$F6,$FF
-MAPTal_Throw3:		dc.b $0A,$F2,$06,$9C,$F2,$00		; Throwing 3 (Unused)
+MAPTal_Throw3:		dc.b $0A,$F2,$06,$9C,$F2,$00	; Throwing 3 (Unused)
 			dc.b $05,$0A,$06,$A5,$F7,$FF
-MAPTal_Throw4:		dc.b $0B,$F4,$06,$9C,$FA,$FF		; Throwing 4/Hanging 1? (Unused)
-MAPTal_Hang2:		dc.b $09,$00,$06,$9C,$03,$00		; Hanging 2 (Unused)
+MAPTal_Throw4:		dc.b $0B,$F4,$06,$9C,$FA,$FF	; Throwing 4/Hanging 1? (Unused)
+MAPTal_Hang2:		dc.b $09,$00,$06,$9C,$03,$00	; Hanging 2 (Unused)
 			dc.b $06,$10,$06,$A2,$07,$FF
-MAPTal_Dizzy1:		dc.b $0B,$EF,$06,$9C,$F5,$FF		; Spinning Dizzy 1
-MAPTal_Dizzy2:		dc.b $09,$F1,$06,$9C,$F2,$00		; Spinning Dizzy 2
+MAPTal_Dizzy1:		dc.b $0B,$EF,$06,$9C,$F5,$FF	; Spinning Dizzy 1
+MAPTal_Dizzy2:		dc.b $09,$F1,$06,$9C,$F2,$00	; Spinning Dizzy 2
 			dc.b $09,$01,$06,$A2,$F9,$FF
-MAPTal_Dizzy3:		dc.b $08,$F0,$06,$9C,$F3,$00		; Spinning Dizzy 3
+MAPTal_Dizzy3:		dc.b $08,$F0,$06,$9C,$F3,$00	; Spinning Dizzy 3
 			dc.b $0A,$F8,$06,$9F,$F5,$FF
-MAPTal_Dizzy4:		dc.b $0B,$F0,$06,$9C,$F2,$FF		; Spinning Dizzy 4
-MAPTal_Dizzy5:		dc.b $0B,$EF,$06,$9C,$F6,$FF		; Spinning Dizzy 5
-MAPTal_Dizzy6:		dc.b $09,$F1,$06,$9C,$F9,$00		; Spinning Dizzy 6
+MAPTal_Dizzy4:		dc.b $0B,$F0,$06,$9C,$F2,$FF	; Spinning Dizzy 4
+MAPTal_Dizzy5:		dc.b $0B,$EF,$06,$9C,$F6,$FF	; Spinning Dizzy 5
+MAPTal_Dizzy6:		dc.b $09,$F1,$06,$9C,$F9,$00	; Spinning Dizzy 6
 			dc.b $0D,$01,$06,$A2,$F1,$FF
-MAPTal_Dizzy7:		dc.b $0E,$F0,$06,$9C,$F3,$00		; Spinning Dizzy 7
+MAPTal_Dizzy7:		dc.b $0E,$F0,$06,$9C,$F3,$00	; Spinning Dizzy 7
 			dc.b $04,$08,$06,$A8,$F6,$FF
-MAPTal_Dizzy8:		dc.b $0B,$F0,$06,$9C,$F8,$FF		; Spinning Dizzy 8
+MAPTal_Dizzy8:		dc.b $0B,$F0,$06,$9C,$F8,$FF	; Spinning Dizzy 8
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -224,40 +224,40 @@ MAPTal_TalJmp03_135:	dc.b $06,$00,$06,$AE,$00,$FF
 MAPTal_TalJmp04_135:	dc.b $06,$00,$06,$AE,$00,$FF
 ; ---------------------------------------------------------------------------
 ; Running Normal and Fast (Angle: 000* 180* degrees)
-MAPTal_RunNorm01_000:	dc.b $07,$00,$06,$AC,$00,$FF		; RUN normal 1 000 (Unused)
-MAPTal_RunNorm02_000:	dc.b $05,$08,$06,$AC,$00,$FF		; RUN normal 2 000 (Unused)
-MAPTal_RunFast01_000:	dc.b $04,$0C,$06,$AC,$00,$FF		; RUN fast 1 000
-MAPTal_RunFast02_000:	dc.b $07,$F0,$06,$AC,$F8,$FF		; RUN fast 2 000
+MAPTal_RunNorm01_000:	dc.b $07,$00,$06,$AC,$00,$FF	; RUN normal 1 000 (Unused)
+MAPTal_RunNorm02_000:	dc.b $05,$08,$06,$AC,$00,$FF	; RUN normal 2 000 (Unused)
+MAPTal_RunFast01_000:	dc.b $04,$0C,$06,$AC,$00,$FF	; RUN fast 1 000
+MAPTal_RunFast02_000:	dc.b $07,$F0,$06,$AC,$F8,$FF	; RUN fast 2 000
 ; ---------------------------------------------------------------------------
 ; Running Normal and Fast (Angle: 045* 225* degrees)
-MAPTal_RunNorm01_045:	dc.b $09,$00,$06,$AC,$00,$00		; RUN normal 1 045 (Unused)
-			dc.b $01,$10,$06,$B2,$10,$FF		; ''
-MAPTal_RunNorm02_045:	dc.b $05,$00,$06,$AC,$00,$FF		; RUN normal 2 045 (Unused)
-MAPTal_RunFast01_045:	dc.b $05,$00,$06,$AC,$00,$FF		; RUN fast 1 045 (Unused)
-MAPTal_RunFast02_045:	dc.b $09,$01,$06,$AC,$00,$00		; RUN fast 2 045 (Unused)
-			dc.b $04,$11,$06,$B2,$08,$FF		; ''
+MAPTal_RunNorm01_045:	dc.b $09,$00,$06,$AC,$00,$00	; RUN normal 1 045 (Unused)
+			dc.b $01,$10,$06,$B2,$10,$FF	; ''
+MAPTal_RunNorm02_045:	dc.b $05,$00,$06,$AC,$00,$FF	; RUN normal 2 045 (Unused)
+MAPTal_RunFast01_045:	dc.b $05,$00,$06,$AC,$00,$FF	; RUN fast 1 045 (Unused)
+MAPTal_RunFast02_045:	dc.b $09,$01,$06,$AC,$00,$00	; RUN fast 2 045 (Unused)
+			dc.b $04,$11,$06,$B2,$08,$FF	; ''
 ; ---------------------------------------------------------------------------
 ; Running Normal and Fast (Angle: 090* 270* degrees)
-MAPTal_RunNorm01_090:	dc.b $05,$00,$06,$AC,$00,$FF		; RUN normal 1 090 (Unused)
-MAPTal_RunNorm02_090:	dc.b $0D,$00,$06,$AC,$00,$FF		; RUN normal 2 090 (Unused)
-MAPTal_RunFast01_090:	dc.b $05,$00,$06,$AC,$08,$FF		; RUN fast 1 090 (Unused)
-MAPTal_RunFast02_090:	dc.b $01,$00,$06,$AC,$0C,$FF		; RUN fast 2 090 (Unused)
+MAPTal_RunNorm01_090:	dc.b $05,$00,$06,$AC,$00,$FF	; RUN normal 1 090 (Unused)
+MAPTal_RunNorm02_090:	dc.b $0D,$00,$06,$AC,$00,$FF	; RUN normal 2 090 (Unused)
+MAPTal_RunFast01_090:	dc.b $05,$00,$06,$AC,$08,$FF	; RUN fast 1 090 (Unused)
+MAPTal_RunFast02_090:	dc.b $01,$00,$06,$AC,$0C,$FF	; RUN fast 2 090 (Unused)
 ; ---------------------------------------------------------------------------
 ; Running Normal and Fast (Angle: 135* 315* degrees)
-MAPTal_RunNorm01_135:	dc.b $0D,$00,$06,$AC,$00,$FF		; RUN normal 1 135 (Unused)
-MAPTal_RunNorm02_135:	dc.b $08,$00,$06,$AC,$03,$00		; RUN normal 2 135 (Unused)
-			dc.b $05,$08,$06,$AF,$00,$FF		; ''
-MAPTal_RunFast01_135:	dc.b $05,$00,$06,$AC,$00,$FF		; RUN fast 1 135 (Unused)
-MAPTal_RunFast02_135:	dc.b $05,$00,$06,$AC,$00,$FF		; RUN fast 2 135 (Unused)
+MAPTal_RunNorm01_135:	dc.b $0D,$00,$06,$AC,$00,$FF	; RUN normal 1 135 (Unused)
+MAPTal_RunNorm02_135:	dc.b $08,$00,$06,$AC,$03,$00	; RUN normal 2 135 (Unused)
+			dc.b $05,$08,$06,$AF,$00,$FF	; ''
+MAPTal_RunFast01_135:	dc.b $05,$00,$06,$AC,$00,$FF	; RUN fast 1 135 (Unused)
+MAPTal_RunFast02_135:	dc.b $05,$00,$06,$AC,$00,$FF	; RUN fast 2 135 (Unused)
 ; ---------------------------------------------------------------------------
-MAPTal_UnkTails1:	dc.b $04,$00,$06,$AC,$08,$00		; Unknown frames (looks like the tails are flipping or snapping, or something on them lines)
-			dc.b $09,$08,$06,$AE,$00,$FF		; ''
-MAPTal_UnkTails2:	dc.b $05,$00,$06,$AC,$00,$FF		; ''
-MAPTal_Wait01:		dc.b $06,$08,$06,$AC,$10,$FF		; waiting, Looking up, looking down (Tails' Idle tails)
-MAPTal_Wait02:		dc.b $0A,$08,$06,$AC,$08,$FF		; ''
-MAPTal_Wait03:		dc.b $0A,$08,$06,$AC,$08,$FF		; ''
-MAPTal_Wait04:		dc.b $09,$10,$06,$AC,$08,$FF		; ''
-MAPTal_Wait05:		dc.b $0A,$08,$06,$AC,$08,$FF		; ''
+MAPTal_UnkTails1:	dc.b $04,$00,$06,$AC,$08,$00	; Unknown frames (looks like the tails are flipping or snapping, or something on them lines)
+			dc.b $09,$08,$06,$AE,$00,$FF	; ''
+MAPTal_UnkTails2:	dc.b $05,$00,$06,$AC,$00,$FF	; ''
+MAPTal_Wait01:		dc.b $06,$08,$06,$AC,$10,$FF	; waiting, Looking up, looking down (Tails' Idle tails)
+MAPTal_Wait02:		dc.b $0A,$08,$06,$AC,$08,$FF	; ''
+MAPTal_Wait03:		dc.b $0A,$08,$06,$AC,$08,$FF	; ''
+MAPTal_Wait04:		dc.b $09,$10,$06,$AC,$08,$FF	; ''
+MAPTal_Wait05:		dc.b $0A,$08,$06,$AC,$08,$FF	; ''
 			even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================

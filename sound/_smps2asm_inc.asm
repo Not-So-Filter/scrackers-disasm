@@ -59,11 +59,11 @@ nMaxPSG2			EQU nB6
 cPSG1				EQU $80
 cPSG2				EQU $A0
 cPSG3				EQU $C0
-cNoise				EQU $E0	; Not for use in S3/S&K/S3D
+cNoise				EQU $E0			; Not for use in S3/S&K/S3D
 cFM3				EQU $02
 cFM4				EQU $04
 cFM5				EQU $05
-cFM6				EQU $06	; Only in S3/S&K/S3D, overrides DAC
+cFM6				EQU $06			; Only in S3/S&K/S3D, overrides DAC
 ; ---------------------------------------------------------------------------
 ; Conversion macros and functions
 
@@ -545,7 +545,7 @@ smpsFM3SpecialMode macro ind1,ind2,ind3,ind4
 
 smpsPlaySound macro index
 	if SonicDriverVer>=5
-		message "smpsPlaySound only plays SFX in Flamedriver; use smpsPlayMusic to play music or fade effects."
+		message "smpsPlaySound only plays SFX in Flamedriver ; use smpsPlayMusic to play music or fade effects."
 	endif
 	dc.b	$FF,$01,index
 	endm

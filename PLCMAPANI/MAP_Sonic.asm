@@ -30,19 +30,19 @@ MAPSon_Wait1:		dc.b $0B,$E9,$06,$9C,$F0,$00
 			dc.b $08,$09,$06,$A8,$F8,$FF
 MAPSon_Wait2:		dc.b $0B,$E9,$06,$9C,$F0,$00
 			dc.b $08,$09,$06,$A8,$F8,$FF
-MAPSon_BlncIn1:		dc.b $0F,$EC,$06,$9C,$EE,$00			; Balance in 1
+MAPSon_BlncIn1:		dc.b $0F,$EC,$06,$9C,$EE,$00	; Balance in 1
 			dc.b $00,$0C,$06,$AC,$F8,$FF
-MAPSon_BlncIn2:		dc.b $0F,$EA,$06,$9C,$EC,$00			; Balance in 2
+MAPSon_BlncIn2:		dc.b $0F,$EA,$06,$9C,$EC,$00	; Balance in 2
 			dc.b $04,$0A,$06,$AC,$F0,$FF
-MAPSon_BlncIn3:		dc.b $0E,$EB,$06,$9C,$EC,$00			; Balance in 3
+MAPSon_BlncIn3:		dc.b $0E,$EB,$06,$9C,$EC,$00	; Balance in 3
 			dc.b $09,$03,$06,$A8,$ED,$FF
-MAPSon_BlncOut1:	dc.b $0B,$EC,$06,$9C,$FC,$00			; Balance out 1
+MAPSon_BlncOut1:	dc.b $0B,$EC,$06,$9C,$FC,$00	; Balance out 1
 			dc.b $05,$F6,$06,$A8,$EC,$00
 			dc.b $04,$0C,$06,$AC,$04,$FF
-MAPSon_BlncOut2:	dc.b $0E,$EC,$06,$9C,$F4,$00			; Balance out 2
+MAPSon_BlncOut2:	dc.b $0E,$EC,$06,$9C,$F4,$00	; Balance out 2
 			dc.b $00,$F8,$06,$A8,$EC,$00
 			dc.b $05,$04,$06,$A9,$FD,$FF
-MAPSon_BlncOut3:	dc.b $0D,$EC,$06,$9C,$F0,$00			; Balance out 3
+MAPSon_BlncOut3:	dc.b $0D,$EC,$06,$9C,$F0,$00	; Balance out 3
 			dc.b $09,$FC,$06,$A4,$F4,$00
 			dc.b $00,$0C,$06,$AA,$03,$FF
 ; ---------------------------------------------------------------------------

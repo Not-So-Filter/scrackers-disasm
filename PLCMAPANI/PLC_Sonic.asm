@@ -25,12 +25,12 @@ PLCSon_LookDown:	dc.w $E000,$9704,$0200,$D380,$FFFF
 PLCSon_Hurt:		dc.w $2001,$9704,$02E0,$D380,$FFFF
 PLCSon_Wait1:		dc.w $F000,$9704,$0400,$D380,$FFFF
 PLCSon_Wait2:		dc.w $F000,$9704,$04F0,$D380,$FFFF
-PLCSon_BlncIn1:		dc.w $1001,$9704,$05E0,$D380,$FFFF		; Balance in 1
-PLCSon_BlncIn2:		dc.w $2001,$9704,$06F0,$D380,$FFFF		; Balance in 2
-PLCSon_BlncIn3:		dc.w $2001,$9704,$0810,$D380,$FFFF		; Balance in 3
-PLCSon_BlncOut1:	dc.w $2001,$9704,$0930,$D380,$FFFF		; Balance out 1
-PLCSon_BlncOut2:	dc.w $1001,$9704,$0A50,$D380,$FFFF		; Balance out 2
-PLCSon_BlncOut3:	dc.w $F000,$9704,$0B60,$D380,$FFFF		; Balance out 3
+PLCSon_BlncIn1:		dc.w $1001,$9704,$05E0,$D380,$FFFF ; Balance in 1
+PLCSon_BlncIn2:		dc.w $2001,$9704,$06F0,$D380,$FFFF ; Balance in 2
+PLCSon_BlncIn3:		dc.w $2001,$9704,$0810,$D380,$FFFF ; Balance in 3
+PLCSon_BlncOut1:	dc.w $2001,$9704,$0930,$D380,$FFFF ; Balance out 1
+PLCSon_BlncOut2:	dc.w $1001,$9704,$0A50,$D380,$FFFF ; Balance out 2
+PLCSon_BlncOut3:	dc.w $F000,$9704,$0B60,$D380,$FFFF ; Balance out 3
 ; ---------------------------------------------------------------------------
 ; Walking (Angle: 000* 180* degrees)
 PLCSon_Walk5_000:	dc.w $6001,$9704,$0C50,$D380,$FFFF

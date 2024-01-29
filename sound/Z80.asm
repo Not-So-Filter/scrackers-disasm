@@ -141,9 +141,9 @@ zTempVariablesEnd
 	!org	Z80_Driver
 
 		save
-		phase	0	; set Z80 location to 0
-		cpu z80		; use Z80 cpu
-		listing purecode	; add to listing file
+		phase	0				; set Z80 location to 0
+		cpu z80					; use Z80 cpu
+		listing purecode			; add to listing file
 
 zDAC_Status	=	1FFDh
 zDAC_Sample	=	1FFFh
@@ -359,7 +359,7 @@ UpdateAll:
 		call	PlaySoundID
 		call	UpdateSFXTracks
 		xor	a
-		ld	(zUpdateSound), a	; 00 - Music Mode
+		ld	(zUpdateSound), a		; 00 - Music Mode
 		ld	hl, zMusicBank
 		ld	a, (hl)
 		bankswitch
@@ -377,9 +377,9 @@ UpdateAll:
 
 UpdateSFXTracks:
 		ld	a, 1
-		ld	(zUpdateSound), a	; 01 - SFX Mode
-		ld	hl, zBankRegister	; switch to Bank 018000
-		xor	a		; Bank bits written: 003h
+		ld	(zUpdateSound), a		; 01 - SFX Mode
+		ld	hl, zBankRegister		; switch to Bank 018000
+		xor	a				; Bank bits written: 003h
 		ld	e, 1
 		ld	(hl), e
 		ld	(hl), e
@@ -394,7 +394,7 @@ UpdateSFXTracks:
 		ld	b, (zTracksSFXEnd-zTracksSFXStart)/zTrack.len
 		call	TrkUpdateLoop
 		ld	a, 80h
-		ld	(zUpdateSound), a	; 80 - Special SFX Mode
+		ld	(zUpdateSound), a		; 80 - Special SFX Mode
 		ld	b, 1
 		ld	ix, zTracksSpecSFXStart
 ; End of function UpdateSFXTracks
@@ -427,7 +427,7 @@ UpdateTrack:
 		bit	4, (ix+zTrack.PlaybackControl)
 		ret	nz
 		call	PrepareModulat
-		call	DoPitchSlide	; also updates the frequency
+		call	DoPitchSlide			; also updates the frequency
 		call	DoModulation
 		call	SendFMFreq
 		jp	DoNoteOn
@@ -508,10 +508,10 @@ loc_1C7:
 
 ; ---------------------------------------------------------------------------
 zSpecialFreqCommands:
-		db 0ADh								; Operator 4 frequency MSB
-		db 0AEh								; Operator 3 frequency MSB
-		db 0ACh								; Operator 2 frequency MSB
-		db 0A6h								; Operator 1 frequency MSB
+		db 0ADh					; Operator 4 frequency MSB
+		db 0AEh					; Operator 3 frequency MSB
+		db 0ACh					; Operator 2 frequency MSB
+		db 0A6h					; Operator 1 frequency MSB
 zSpecialFreqCommands_End
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -521,11 +521,11 @@ GetFM3FreqPtr:
 		ld	de, zMusicMode
 		ld	a, (zUpdateSound)
 		or	a
-		ret	z		; Music	Mode (00) - 1C2A
+		ret	z				; Music	Mode (00) - 1C2A
 		ld	de, zSpecSFXMode
-		ret	p		; Special SFX Mode (80)	- 1C1A
+		ret	p				; Special SFX Mode (80)	- 1C1A
 		ld	de, zSFXMode
-		ret			; SFX Mode (01)	- 1C22
+		ret					; SFX Mode (01)	- 1C22
 ; End of function GetFM3FreqPtr
 
 
@@ -934,12 +934,12 @@ loc_41C:
 		bit	7, a
 		jp	z, ModEnv_Positive
 		cp	82h
-		jr	z, ModEnv_Jump2Idx ; 82	xx - jump to byte xx
+		jr	z, ModEnv_Jump2Idx		; 82	xx - jump to byte xx
 		cp	80h
-		jr	z, ModEnv_Reset	; 80 - loop back to beginning
+		jr	z, ModEnv_Reset			; 80 - loop back to beginning
 		cp	84h
-		jr	z, ModEnv_ChgMult ; 84 xx - change Modulation Multipler
-		ld	h, 0FFh		; make HL negative (FFxx)
+		jr	z, ModEnv_ChgMult		; 84 xx - change Modulation Multipler
+		ld	h, 0FFh				; make HL negative (FFxx)
 		jr	nc, ModEnv_Next
 		set	6, (ix+zTrack.PlaybackControl)
 		pop	hl
@@ -968,7 +968,7 @@ ModEnv_ChgMult:
 ; ---------------------------------------------------------------------------
 
 ModEnv_Positive:
-		ld	h, 0		; make HL positive (00xx)
+		ld	h, 0				; make HL positive (00xx)
 
 ModEnv_Next:
 		ld	l, a
@@ -1043,7 +1043,7 @@ GetFMInsPtr:
 		ld	hl, (zVoiceTblPtr)
 		ld	a, (zUpdateSound)
 		or	a
-		jr	z, JumpToInsData ; Mode	00 (Music Mode)	- jump
+		jr	z, JumpToInsData		; Mode	00 (Music Mode)	- jump
 		ld	l, (ix+zTrack.VoicesLow)	; load SFX track Instrument Pointer (Trk+2A/2B)
 		ld	h, (ix+zTrack.VoicesHigh)
 
@@ -1061,46 +1061,46 @@ loc_4C1:
 
 ; ---------------------------------------------------------------------------
 zFMInstrumentRegTable:
-		db 0B0h								; Feedback/Algorithm
+		db 0B0h					; Feedback/Algorithm
 zFMInstrumentOperatorTable:
-		db  30h								; Detune/multiple operator 1
-		db  38h								; Detune/multiple operator 3
-		db  34h								; Detune/multiple operator 2
-		db  3Ch								; Detune/multiple operator 4
+		db  30h					; Detune/multiple operator 1
+		db  38h					; Detune/multiple operator 3
+		db  34h					; Detune/multiple operator 2
+		db  3Ch					; Detune/multiple operator 4
 zFMInstrumentRSARTable:
-		db  50h								; Rate scaling/attack rate operator 1
-		db  58h								; Rate scaling/attack rate operator 3
-		db  54h								; Rate scaling/attack rate operator 2
-		db  5Ch								; Rate scaling/attack rate operator 4
+		db  50h					; Rate scaling/attack rate operator 1
+		db  58h					; Rate scaling/attack rate operator 3
+		db  54h					; Rate scaling/attack rate operator 2
+		db  5Ch					; Rate scaling/attack rate operator 4
 zFMInstrumentAMD1RTable:
-		db  60h								; Amplitude modulation/first decay rate operator 1
-		db  68h								; Amplitude modulation/first decay rate operator 3
-		db  64h								; Amplitude modulation/first decay rate operator 2
-		db  6Ch								; Amplitude modulation/first decay rate operator 4
+		db  60h					; Amplitude modulation/first decay rate operator 1
+		db  68h					; Amplitude modulation/first decay rate operator 3
+		db  64h					; Amplitude modulation/first decay rate operator 2
+		db  6Ch					; Amplitude modulation/first decay rate operator 4
 zFMInstrumentD2RTable:
-		db  70h								; Secondary decay rate operator 1
-		db  78h								; Secondary decay rate operator 3
-		db  74h								; Secondary decay rate operator 2
-		db  7Ch								; Secondary decay rate operator 4
+		db  70h					; Secondary decay rate operator 1
+		db  78h					; Secondary decay rate operator 3
+		db  74h					; Secondary decay rate operator 2
+		db  7Ch					; Secondary decay rate operator 4
 zFMInstrumentD1LRRTable:
-		db  80h								; Secondary amplitude/release rate operator 1
-		db  88h								; Secondary amplitude/release rate operator 3
-		db  84h								; Secondary amplitude/release rate operator 2
-		db  8Ch								; Secondary amplitude/release rate operator 4
+		db  80h					; Secondary amplitude/release rate operator 1
+		db  88h					; Secondary amplitude/release rate operator 3
+		db  84h					; Secondary amplitude/release rate operator 2
+		db  8Ch					; Secondary amplitude/release rate operator 4
 zFMInstrumentOperatorTable_End
 
 zFMInstrumentTLTable:
-		db  40h								; Total level operator 1
-		db  48h								; Total level operator 3
-		db  44h								; Total level operator 2
-		db  4Ch								; Total level operator 4
+		db  40h					; Total level operator 1
+		db  48h					; Total level operator 3
+		db  44h					; Total level operator 2
+		db  4Ch					; Total level operator 4
 zFMInstrumentTLTable_End
 
 zFMInstrumentSSGEGTable:
-		db  90h								; SSG-EG operator 1
-		db  98h								; SSG-EG operator 3
-		db  94h								; SSG-EG operator 2
-		db  9Ch								; SSG-EG operator 4
+		db  90h					; SSG-EG operator 1
+		db  98h					; SSG-EG operator 3
+		db  94h					; SSG-EG operator 2
+		db  9Ch					; SSG-EG operator 4
 zFMInstrumentSSGEGTable_End
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1143,13 +1143,13 @@ WriteInsReg:
 PlaySoundID:
 		ld	a, (zSoundQueue0)
 		bit	7, a
-		jp	z, StopAllSound	; 00-7F	- Stop All
+		jp	z, StopAllSound			; 00-7F	- Stop All
 		cp	0A0h
-		jp	c, zPlayMusic	; 80-9F	- Music
+		jp	c, zPlayMusic			; 80-9F	- Music
 		cp	0B0h
-		jp	c, PlaySFX	; 90-9F	- SFX
+		jp	c, PlaySFX			; 90-9F	- SFX
 		cp	0E0h
-		jp	c, PlaySpcSFX	; B0-DF	- Special SFX
+		jp	c, PlaySpcSFX			; B0-DF	- Special SFX
 		cp	0F9h
 		jp	nc, StopAllSound
 
@@ -1294,8 +1294,8 @@ PSGInitBytes:	db  80h, 80h
 
 PlaySpcSFX:
 		ex	af, af'
-		ld	hl, zBankRegister	; switch to Bank 018000
-		xor	a		; Bank bits written: 003h
+		ld	hl, zBankRegister		; switch to Bank 018000
+		xor	a				; Bank bits written: 003h
 		ld	e, 1
 		ld	(hl), e
 		ld	(hl), e
@@ -1316,8 +1316,8 @@ PlaySpcSFX:
 
 PlaySFX:
 		ex	af, af'
-		ld	hl, zBankRegister	; switch to Bank 018000
-		xor	a		; Bank bits written: 003h
+		ld	hl, zBankRegister		; switch to Bank 018000
+		xor	a				; Bank bits written: 003h
 		ld	e, 1
 		ld	(hl), e
 		ld	(hl), e
@@ -1444,16 +1444,16 @@ loc_6FA:
 		ld	hl, SFXChnPtrs
 		rst	ReadPtrTable
 		push	hl
-		pop	ix		; IX - SFX Track
+		pop	ix				; IX - SFX Track
 		pop	af
 		push	af
 		ld	hl, SpcSFXChnPtrs
 		rst	ReadPtrTable
 		push	hl
-		pop	iy		; IY - Special SFX Track
+		pop	iy				; IY - Special SFX Track
 		pop	af
 		ld	hl, BGMChnPtrs
-		rst	ReadPtrTable	; HL - Music Track
+		rst	ReadPtrTable			; HL - Music Track
 		ret
 ; End of function GetSFXChnPtrs
 
@@ -1764,7 +1764,7 @@ DoTempo:
 		ret	nc
 		ld	hl, zTracksStart+zTrack.DurationTimeout
 		ld	de, zTrack.len
-		ld	b, (zTracksEnd-zTracksStart)/zTrack.len	; Number of tracks
+		ld	b, (zTracksEnd-zTracksStart)/zTrack.len ; Number of tracks
 
 loc_8D1:
 		inc	(hl)
@@ -2093,7 +2093,7 @@ RefreshVolume:
 		ld	de, zFMInstrumentTLTable
 		ld	l, (ix+zTrack.TLPtrLow)
 		ld	h, (ix+zTrack.TLPtrHigh)
-		ld	b, zFMInstrumentTLTable_End-zFMInstrumentTLTable	; Number of entries
+		ld	b, zFMInstrumentTLTable_End-zFMInstrumentTLTable ; Number of entries
 
 loc_B1B:
 		ld	a, (hl)
@@ -2338,8 +2338,8 @@ loc_C54:
 		call	JumpToInsData
 		call	SendFMIns
 		push	hl
-		ld	hl, zBankRegister	; switch to Bank 018000
-		xor	a		; Bank bits written: 003h
+		ld	hl, zBankRegister		; switch to Bank 018000
+		xor	a				; Bank bits written: 003h
 		ld	e, 1
 		ld	(hl), e
 		ld	(hl), e
@@ -2586,7 +2586,7 @@ cf02_MusPause:
 
 loc_DAE:
 		ld	ix, zTracksStart
-		ld	b, (zTracksEnd-zTracksStart)/zTrack.len	; Number of tracks
+		ld	b, (zTracksEnd-zTracksStart)/zTrack.len ; Number of tracks
 		ld	de, zTrack.len
 
 loc_DB7:
@@ -2603,7 +2603,7 @@ loc_DC8:
 		push	ix
 		push	de
 		ld	ix, zTracksStart
-		ld	b, (zTracksEnd-zTracksStart)/zTrack.len	; Number of tracks
+		ld	b, (zTracksEnd-zTracksStart)/zTrack.len ; Number of tracks
 		ld	de, zTrack.len
 
 loc_DD4:
@@ -2631,15 +2631,15 @@ cf03_CopyMem:
 ; ---------------------------------------------------------------------------
 
 cf04_TickMulAll:
-		ld	b, (zTracksEnd-zTracksStart)/zTrack.len	; Number of tracks
-		ld	hl, zTracksStart+zTrack.TempoDivider	; Want to change tempo dividers
+		ld	b, (zTracksEnd-zTracksStart)/zTrack.len ; Number of tracks
+		ld	hl, zTracksStart+zTrack.TempoDivider ; Want to change tempo dividers
 
 .loop:
-		push	bc							; Save bc
-		ld	bc, zTrack.len					; Spacing between tracks
-		ld	(hl), a							; Set tempo divider for track
-		add	hl, bc							; Advance to next track
-		pop	bc								; Restore bc
+		push	bc				; Save bc
+		ld	bc, zTrack.len			; Spacing between tracks
+		ld	(hl), a				; Set tempo divider for track
+		add	hl, bc				; Advance to next track
+		pop	bc				; Restore bc
 		djnz	.loop
 		ret
 ; ---------------------------------------------------------------------------
@@ -2763,11 +2763,11 @@ DoPSGVolEnv:
 		bit	7, a
 		jr	z, VolEnv_Next
 		cp	83h
-		jr	z, VolEnv_Off	; 83 - stop the	tone
+		jr	z, VolEnv_Off			; 83 - stop the	tone
 		cp	81h
-		jr	z, VolEnv_Hold	; 81 - hold the	envelope at current level
+		jr	z, VolEnv_Hold			; 81 - hold the	envelope at current level
 		cp	80h
-		jr	z, VolEnv_Reset	; 80 - loop back to beginning
+		jr	z, VolEnv_Reset			; 80 - loop back to beginning
 		inc	bc
 		ld	a, (bc)
 		jr	loc_E92
@@ -2825,66 +2825,66 @@ SilencePSGChn:
 ; ---------------------------------------------------------------------------
 
 zPlayDigitalAudio:
-		di			; 4
-		ld	a, 2Bh		; 7
-		ld	c, 0		; 7
-		call	WriteFMI	; 17
+		di					; 4
+		ld	a, 2Bh				; 7
+		ld	c, 0				; 7
+		call	WriteFMI			; 17
 
 loc_EED:
-		ei			; 4
-		ld	a, d		; 4
-		or	e		; 4
-		jr	z, loc_EED	; 7
-		ei			; 4
+		ei					; 4
+		ld	a, d				; 4
+		or	e				; 4
+		jr	z, loc_EED			; 7
+		ei					; 4
 
 DACLoop:
-		ld	b, 0Ah		; 7
+		ld	b, 0Ah				; 7
 
 loc_EF5:
-		djnz	$		; 8
-		ld	a, (hl)		; 7
-		rlca			; 4
-		rlca			; 4
-		rlca			; 4
-		rlca			; 4
-		and	0Fh		; 7
-		ld	(loc_F02+2), a	; 13
-		ld	a, c		; 4
+		djnz	$				; 8
+		ld	a, (hl)				; 7
+		rlca					; 4
+		rlca					; 4
+		rlca					; 4
+		rlca					; 4
+		and	0Fh				; 7
+		ld	(loc_F02+2), a			; 13
+		ld	a, c				; 4
 
 loc_F02:
-		add	a, (iy+0)	; 19
-		ld	c, a		; 4
-		ld	a, 2Ah		; 7
-		di			; 4
-		ld	(zYM2612_A0), a	; 13
-		ld	a, c		; 4
-		ld	(zYM2612_D0), a	; 13
-		ei			; 4
+		add	a, (iy+0)			; 19
+		ld	c, a				; 4
+		ld	a, 2Ah				; 7
+		di					; 4
+		ld	(zYM2612_A0), a			; 13
+		ld	a, c				; 4
+		ld	(zYM2612_D0), a			; 13
+		ei					; 4
 
 loc_F11:
-		ld	b, 0Ah		; 7
+		ld	b, 0Ah				; 7
 
 loc_F13:
-		djnz	$		; 8
-		ld	a, (hl)		; 7
-		and	0Fh		; 7
-		ld	(loc_F1C+2), a	; 13
-		ld	a, c		; 4
+		djnz	$				; 8
+		ld	a, (hl)				; 7
+		and	0Fh				; 7
+		ld	(loc_F1C+2), a			; 13
+		ld	a, c				; 4
 
 loc_F1C:
-		add	a, (iy+0)	; 19
-		ld	c, a		; 4
-		ld	a, 2Ah		; 7
-		di			; 4
-		ld	(zYM2612_A0), a	; 13
-		ld	a, c		; 4
-		ld	(zYM2612_D0), a	; 13
-		ei			; 4
-		inc	hl		; 6
-		ld	a, h		; 4
-		or	l		; 4
-		jp	nz, .loc_F52	; 10
-					; 268 cycles in total
+		add	a, (iy+0)			; 19
+		ld	c, a				; 4
+		ld	a, 2Ah				; 7
+		di					; 4
+		ld	(zYM2612_A0), a			; 13
+		ld	a, c				; 4
+		ld	(zYM2612_D0), a			; 13
+		ei					; 4
+		inc	hl				; 6
+		ld	a, h				; 4
+		or	l				; 4
+		jp	nz, .loc_F52			; 10
+							; 268 cycles in total
 		ld	hl, zROMWindow
 		di
 		exx
@@ -3066,4 +3066,4 @@ DAC_Index:	dw .dac81
 
 		restore
 		padding	off
-		dephase		; reset to 68K location
+		dephase					; reset to 68K location

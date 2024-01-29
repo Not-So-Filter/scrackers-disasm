@@ -22,12 +22,12 @@
 PLCTal_Stand:		dc.w $C000,$9705,$0000,$D380,$FFFF
 PLCTal_LookUp:		dc.w $C000,$9705,$00C0,$D380,$FFFF
 PLCTal_LookDown:	dc.w $9000,$9705,$0180,$D380,$FFFF
-PLCTal_WaitBlink2:	dc.w $C000,$9705,$0210,$D380,$FFFF	; Blink (eyes half closed)
-PLCTal_WaitBlink1:	dc.w $C000,$9705,$02D0,$D380,$FFFF	; Blink (eyes closed)
-PLCTal_WaitStare:	dc.w $C000,$9705,$0390,$D380,$FFFF	; Waiting (Looking at player)
-PLCTal_WaitYawn1:	dc.w $C000,$9705,$0450,$D380,$FFFF	; Yawn (eyes half closed)
-PLCTal_WaitYawn2:	dc.w $C000,$9705,$0510,$D380,$FFFF	; Yawn (Hand wave away)
-PLCTal_WaitYawn3:	dc.w $C000,$9705,$05D0,$D380,$FFFF	; Yawn (Hand wave close)
+PLCTal_WaitBlink2:	dc.w $C000,$9705,$0210,$D380,$FFFF ; Blink (eyes half closed)
+PLCTal_WaitBlink1:	dc.w $C000,$9705,$02D0,$D380,$FFFF ; Blink (eyes closed)
+PLCTal_WaitStare:	dc.w $C000,$9705,$0390,$D380,$FFFF ; Waiting (Looking at player)
+PLCTal_WaitYawn1:	dc.w $C000,$9705,$0450,$D380,$FFFF ; Yawn (eyes half closed)
+PLCTal_WaitYawn2:	dc.w $C000,$9705,$0510,$D380,$FFFF ; Yawn (Hand wave away)
+PLCTal_WaitYawn3:	dc.w $C000,$9705,$05D0,$D380,$FFFF ; Yawn (Hand wave close)
 ; ---------------------------------------------------------------------------
 ; Walking (Angle: 000* 180* degrees)
 PLCTal_Walk7_000:	dc.w $E000,$9705,$0690,$D380,$0000
@@ -102,35 +102,35 @@ PLCTal_Spindsh2:	dc.w $C000,$9705,$30B0,$D380,$FFFF
 PLCTal_Spindsh3:	dc.w $0001,$9705,$3170,$D380,$FFFF
 ; ---------------------------------------------------------------------------
 PLCTal_Hurt:		dc.w $0001,$9705,$3270,$D380,$FFFF
-PLCTal_Fly:		dc.w $0001,$9705,$3370,$D380,$FFFF	; Tails Flying (Unused)
-PLCTal_FlyTired1:	dc.w $0001,$9705,$3470,$D380,$FFFF	; Tails Flying When Tired 1 (Unused)
-PLCTal_FlyTired2:	dc.w $0001,$9705,$3570,$D380,$FFFF	; Tails Flying When Tired 2 (Unused)
-PLCTal_FlyHeliTails:	dc.w $4000,$9705,$3670,$D380,$FFFF	; Tails' "Tails" (Flying Helicopter Tails) (Unused)
-PLCTal_Skid1:		dc.w $E000,$9705,$36B0,$D380,$FFFF	; Skidding 1
-PLCTal_Skid2:		dc.w $E000,$9705,$3790,$D380,$FFFF	; Skidding 2
-PLCTal_Skid3:		dc.w $C000,$9705,$3870,$D380,$FFFF	; Skidding 3 (Turn Direction)
-PLCTal_UnkSkid1:	dc.w $C000,$9705,$3930,$D380,$FFFF	; Unused Hulting 1
-PLCTal_UnkSkid2:	dc.w $E000,$9705,$39F0,$D380,$FFFF	; Unused Hulting 2
-PLCTal_BlncOut1:	dc.w $0001,$9705,$3AD0,$D380,$FFFF	; Balancing 1 (Facing outwards)
-PLCTal_BlncOut2:	dc.w $E000,$9705,$3BD0,$D380,$FFFF	; Balancing 2 (Facing outwards)
-PLCTal_BlncOut3:	dc.w $C000,$9705,$3CB0,$D380,$FFFF	; Balancing 3 (Facing outwards)
-PLCTal_BlncIn1:		dc.w $A000,$9705,$3D70,$D380,$FFFF	; Balancing 1 (Facing inwards)
-PLCTal_BlncIn2:		dc.w $C000,$9705,$3E10,$D380,$FFFF	; Balancing 2 (Facing inwards)
-PLCTal_BlncIn3:		dc.w $E000,$9705,$3ED0,$D380,$FFFF	; Balancing 3 (Facing inwards)
+PLCTal_Fly:		dc.w $0001,$9705,$3370,$D380,$FFFF ; Tails Flying (Unused)
+PLCTal_FlyTired1:	dc.w $0001,$9705,$3470,$D380,$FFFF ; Tails Flying When Tired 1 (Unused)
+PLCTal_FlyTired2:	dc.w $0001,$9705,$3570,$D380,$FFFF ; Tails Flying When Tired 2 (Unused)
+PLCTal_FlyHeliTails:	dc.w $4000,$9705,$3670,$D380,$FFFF ; Tails' "Tails" (Flying Helicopter Tails) (Unused)
+PLCTal_Skid1:		dc.w $E000,$9705,$36B0,$D380,$FFFF ; Skidding 1
+PLCTal_Skid2:		dc.w $E000,$9705,$3790,$D380,$FFFF ; Skidding 2
+PLCTal_Skid3:		dc.w $C000,$9705,$3870,$D380,$FFFF ; Skidding 3 (Turn Direction)
+PLCTal_UnkSkid1:	dc.w $C000,$9705,$3930,$D380,$FFFF ; Unused Hulting 1
+PLCTal_UnkSkid2:	dc.w $E000,$9705,$39F0,$D380,$FFFF ; Unused Hulting 2
+PLCTal_BlncOut1:	dc.w $0001,$9705,$3AD0,$D380,$FFFF ; Balancing 1 (Facing outwards)
+PLCTal_BlncOut2:	dc.w $E000,$9705,$3BD0,$D380,$FFFF ; Balancing 2 (Facing outwards)
+PLCTal_BlncOut3:	dc.w $C000,$9705,$3CB0,$D380,$FFFF ; Balancing 3 (Facing outwards)
+PLCTal_BlncIn1:		dc.w $A000,$9705,$3D70,$D380,$FFFF ; Balancing 1 (Facing inwards)
+PLCTal_BlncIn2:		dc.w $C000,$9705,$3E10,$D380,$FFFF ; Balancing 2 (Facing inwards)
+PLCTal_BlncIn3:		dc.w $E000,$9705,$3ED0,$D380,$FFFF ; Balancing 3 (Facing inwards)
 ; ---------------------------------------------------------------------------
-PLCTal_Throw1:		dc.w $1001,$9705,$3FB0,$D380,$FFFF	; Throwing 1 (Unused)
-PLCTal_Throw2:		dc.w $D000,$9705,$40C0,$D380,$FFFF	; Throwing 2 (Unused)
-PLCTal_Throw3:		dc.w $D000,$9705,$4190,$D380,$FFFF	; Throwing 3 (Unused)
-PLCTal_Throw4:		dc.w $C000,$9705,$4260,$D380,$FFFF	; Throwing 4/Hanging 1? (Unused)
-PLCTal_Hang2:		dc.w $C000,$9705,$4320,$D380,$FFFF	; Hanging 2 (Unused)
-PLCTal_Dizzy1:		dc.w $C000,$9705,$43E0,$D380,$FFFF	; Spinning Dizzy 1
-PLCTal_Dizzy2:		dc.w $C000,$9705,$44A0,$D380,$FFFF	; Spinning Dizzy 2
-PLCTal_Dizzy3:		dc.w $C000,$9705,$4560,$D380,$FFFF	; Spinning Dizzy 3
-PLCTal_Dizzy4:		dc.w $C000,$9705,$4620,$D380,$FFFF	; Spinning Dizzy 4
-PLCTal_Dizzy5:		dc.w $C000,$9705,$46E0,$D380,$FFFF	; Spinning Dizzy 5
-PLCTal_Dizzy6:		dc.w $E000,$9705,$47A0,$D380,$FFFF	; Spinning Dizzy 6
-PLCTal_Dizzy7:		dc.w $E000,$9705,$4880,$D380,$FFFF	; Spinning Dizzy 7
-PLCTal_Dizzy8:		dc.w $C000,$9705,$4960,$D380,$FFFF	; Spinning Dizzy 8
+PLCTal_Throw1:		dc.w $1001,$9705,$3FB0,$D380,$FFFF ; Throwing 1 (Unused)
+PLCTal_Throw2:		dc.w $D000,$9705,$40C0,$D380,$FFFF ; Throwing 2 (Unused)
+PLCTal_Throw3:		dc.w $D000,$9705,$4190,$D380,$FFFF ; Throwing 3 (Unused)
+PLCTal_Throw4:		dc.w $C000,$9705,$4260,$D380,$FFFF ; Throwing 4/Hanging 1? (Unused)
+PLCTal_Hang2:		dc.w $C000,$9705,$4320,$D380,$FFFF ; Hanging 2 (Unused)
+PLCTal_Dizzy1:		dc.w $C000,$9705,$43E0,$D380,$FFFF ; Spinning Dizzy 1
+PLCTal_Dizzy2:		dc.w $C000,$9705,$44A0,$D380,$FFFF ; Spinning Dizzy 2
+PLCTal_Dizzy3:		dc.w $C000,$9705,$4560,$D380,$FFFF ; Spinning Dizzy 3
+PLCTal_Dizzy4:		dc.w $C000,$9705,$4620,$D380,$FFFF ; Spinning Dizzy 4
+PLCTal_Dizzy5:		dc.w $C000,$9705,$46E0,$D380,$FFFF ; Spinning Dizzy 5
+PLCTal_Dizzy6:		dc.w $E000,$9705,$47A0,$D380,$FFFF ; Spinning Dizzy 6
+PLCTal_Dizzy7:		dc.w $E000,$9705,$4880,$D380,$FFFF ; Spinning Dizzy 7
+PLCTal_Dizzy8:		dc.w $C000,$9705,$4960,$D380,$FFFF ; Spinning Dizzy 8
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -161,35 +161,35 @@ PLCTal_TalJmp03_135:	dc.w $6000,$9705,$4F60,$D5C0,$FFFF
 PLCTal_TalJmp04_135:	dc.w $6000,$9705,$4FC0,$D5C0,$FFFF
 ; ---------------------------------------------------------------------------
 ; Running Normal and Fast (Angle: 000* 180* degrees)
-PLCTal_RunNorm01_000:	dc.w $8000,$9705,$5020,$D580,$FFFF	; RUN normal 1 000 (Unused)
-PLCTal_RunNorm02_000:	dc.w $4000,$9705,$50A0,$D580,$FFFF	; RUN normal 2 000 (Unused)
-PLCTal_RunFast01_000:	dc.w $2000,$9705,$50E0,$D580,$FFFF	; RUN fast 1 000
-PLCTal_RunFast02_000:	dc.w $8000,$9705,$5100,$D580,$FFFF	; RUN fast 2 000
+PLCTal_RunNorm01_000:	dc.w $8000,$9705,$5020,$D580,$FFFF ; RUN normal 1 000 (Unused)
+PLCTal_RunNorm02_000:	dc.w $4000,$9705,$50A0,$D580,$FFFF ; RUN normal 2 000 (Unused)
+PLCTal_RunFast01_000:	dc.w $2000,$9705,$50E0,$D580,$FFFF ; RUN fast 1 000
+PLCTal_RunFast02_000:	dc.w $8000,$9705,$5100,$D580,$FFFF ; RUN fast 2 000
 ; ---------------------------------------------------------------------------
 ; Running Normal and Fast (Angle: 045* 225* degrees)
-PLCTal_RunNorm01_045:	dc.w $8000,$9705,$5180,$D580,$FFFF	; RUN normal 1 045 (Unused)
-PLCTal_RunNorm02_045:	dc.w $4000,$9705,$5200,$D580,$FFFF	; RUN normal 2 045 (Unused)
-PLCTal_RunFast01_045:	dc.w $4000,$9705,$5240,$D580,$FFFF	; RUN fast 1 045 (Unused)
-PLCTal_RunFast02_045:	dc.w $8000,$9705,$5280,$D580,$FFFF	; RUN fast 2 045 (Unused)
+PLCTal_RunNorm01_045:	dc.w $8000,$9705,$5180,$D580,$FFFF ; RUN normal 1 045 (Unused)
+PLCTal_RunNorm02_045:	dc.w $4000,$9705,$5200,$D580,$FFFF ; RUN normal 2 045 (Unused)
+PLCTal_RunFast01_045:	dc.w $4000,$9705,$5240,$D580,$FFFF ; RUN fast 1 045 (Unused)
+PLCTal_RunFast02_045:	dc.w $8000,$9705,$5280,$D580,$FFFF ; RUN fast 2 045 (Unused)
 ; ---------------------------------------------------------------------------
 ; Running Normal and Fast (Angle: 090* 270* degrees)
-PLCTal_RunNorm01_090:	dc.w $4000,$9705,$5300,$D580,$FFFF	; RUN normal 1 090 (Unused)
-PLCTal_RunNorm02_090:	dc.w $8000,$9705,$5340,$D580,$FFFF	; RUN normal 2 090 (Unused)
-PLCTal_RunFast01_090:	dc.w $4000,$9705,$53C0,$D580,$FFFF	; RUN fast 1 090 (Unused)
-PLCTal_RunFast02_090:	dc.w $2000,$9705,$5400,$D580,$FFFF	; RUN fast 2 090 (Unused)
+PLCTal_RunNorm01_090:	dc.w $4000,$9705,$5300,$D580,$FFFF ; RUN normal 1 090 (Unused)
+PLCTal_RunNorm02_090:	dc.w $8000,$9705,$5340,$D580,$FFFF ; RUN normal 2 090 (Unused)
+PLCTal_RunFast01_090:	dc.w $4000,$9705,$53C0,$D580,$FFFF ; RUN fast 1 090 (Unused)
+PLCTal_RunFast02_090:	dc.w $2000,$9705,$5400,$D580,$FFFF ; RUN fast 2 090 (Unused)
 ; ---------------------------------------------------------------------------
 ; Running Normal and Fast (Angle: 135* 315* degrees)
-PLCTal_RunNorm01_135:	dc.w $8000,$9705,$5420,$D580,$FFFF	; RUN normal 1 135 (Unused)
-PLCTal_RunNorm02_135:	dc.w $7000,$9705,$54A0,$D580,$FFFF	; RUN normal 2 135 (Unused)
-PLCTal_RunFast01_135:	dc.w $4000,$9705,$5510,$D580,$FFFF	; RUN fast 1 135 (Unused)
-PLCTal_RunFast02_135:	dc.w $4000,$9705,$5550,$D580,$FFFF	; RUN fast 2 135 (Unused)
+PLCTal_RunNorm01_135:	dc.w $8000,$9705,$5420,$D580,$FFFF ; RUN normal 1 135 (Unused)
+PLCTal_RunNorm02_135:	dc.w $7000,$9705,$54A0,$D580,$FFFF ; RUN normal 2 135 (Unused)
+PLCTal_RunFast01_135:	dc.w $4000,$9705,$5510,$D580,$FFFF ; RUN fast 1 135 (Unused)
+PLCTal_RunFast02_135:	dc.w $4000,$9705,$5550,$D580,$FFFF ; RUN fast 2 135 (Unused)
 ; ---------------------------------------------------------------------------
-PLCTal_UnkTails1:	dc.w $8000,$9705,$5590,$D580,$FFFF	; Unknown frames (looks like the tails are flipping or snapping, or something on them lines)
-PLCTal_UnkTails2:	dc.w $4000,$9705,$5610,$D580,$FFFF	; ''
-PLCTal_Wait01:		dc.w $6000,$9705,$5650,$D580,$FFFF	; waiting, Looking up, looking down (Tails' Idle tails)
-PLCTal_Wait02:		dc.w $9000,$9705,$56B0,$D580,$FFFF	; ''
-PLCTal_Wait03:		dc.w $9000,$9705,$5740,$D580,$FFFF	; ''
-PLCTal_Wait04:		dc.w $6000,$9705,$57D0,$D580,$FFFF	; ''
-PLCTal_Wait05:		dc.w $9000,$9705,$5830,$D580,$FFFF	; ''
+PLCTal_UnkTails1:	dc.w $8000,$9705,$5590,$D580,$FFFF ; Unknown frames (looks like the tails are flipping or snapping, or something on them lines)
+PLCTal_UnkTails2:	dc.w $4000,$9705,$5610,$D580,$FFFF ; ''
+PLCTal_Wait01:		dc.w $6000,$9705,$5650,$D580,$FFFF ; waiting, Looking up, looking down (Tails' Idle tails)
+PLCTal_Wait02:		dc.w $9000,$9705,$56B0,$D580,$FFFF ; ''
+PLCTal_Wait03:		dc.w $9000,$9705,$5740,$D580,$FFFF ; ''
+PLCTal_Wait04:		dc.w $6000,$9705,$57D0,$D580,$FFFF ; ''
+PLCTal_Wait05:		dc.w $9000,$9705,$5830,$D580,$FFFF ; ''
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
