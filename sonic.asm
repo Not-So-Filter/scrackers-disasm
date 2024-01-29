@@ -4177,7 +4177,7 @@ loc_64AA:
 		move.w	($FFFFC9BA).w,(vdp_control_port).l
 		ori.w	#$8144,($FFFFC9BA).w
 		move.w	($FFFFC9BA).w,(vdp_control_port).l
-		addq.w	#4,($FFFFD824).w		; increase sega screen mode
+		addq.w	#4,(v_subgamemode).w		; increase sega screen mode
 
 loc_64F2:
 		pea	(loc_64F2).l
@@ -4186,7 +4186,7 @@ loc_64F2:
 loc_64FE:
 		tst.b	($FFFFFFC9).w
 		bpl.s	loc_64FE
-		move.w	($FFFFD824).w,d0		; load sub mode to d0
+		move.w	(v_subgamemode).w,d0		; load sub mode to d0
 		jmp	SegaSubArray(pc,d0.w)		; jump to correct sub mode routine
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -4220,7 +4220,7 @@ MultiReturn:
 loc_6526:
 		tst.b	($FFFFC93C).w
 		bpl.s	loc_6532
-		move.w	#$14,($FFFFD824).w
+		move.w	#$14,(v_subgamemode).w
 
 loc_6532:
 		move.w	($FFFFFAC8).w,d0
@@ -4238,7 +4238,7 @@ loc_653A:
 SegaPaletteStart:
 		tst.b	($FFFFC93C).w
 		bpl.s	loc_654E
-		move.w	#$14,($FFFFD824).w
+		move.w	#$14,(v_subgamemode).w
 
 loc_654E:
 		subq.w	#1,($FFFFFAC4).w
@@ -4256,7 +4256,7 @@ loc_654E:
 		move.w	#0,($FFFFFAC4).w		; clear colour number
 		move.w	($FFFFD3E8).w,($FFFFFAC6).w	; save first colour to storage
 		move.w	#$EEE,($FFFFD3E8).w		; save white to colour palette
-		addq.w	#4,($FFFFD824).w		; increase sub mode
+		addq.w	#4,(v_subgamemode).w		; increase sub mode
 		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -4266,7 +4266,7 @@ loc_654E:
 SegaPaletteCycle:
 		tst.b	($FFFFC93C).w
 		bpl.s	loc_6594
-		move.w	#$14,($FFFFD824).w
+		move.w	#$14,(v_subgamemode).w
 
 loc_6594:
 		lea	($FFFFD3E8).w,a0		; load palette address to a0
@@ -4280,7 +4280,7 @@ loc_6594:
 		cmpi.w	#$C,($FFFFFAC4).w		; has colour number finished at C?
 		bne.w	MultiReturn			; if not, branch to return
 		move.w	#$40,($FFFFFAC4).w		; set colour number to 40
-		addq.w	#4,($FFFFD824).w		; increase sub mode
+		addq.w	#4,(v_subgamemode).w		; increase sub mode
 		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -4290,7 +4290,7 @@ loc_6594:
 loc_65C6:
 		tst.b	($FFFFC93C).w
 		bpl.s	loc_65D2
-		move.w	#$14,($FFFFD824).w
+		move.w	#$14,(v_subgamemode).w
 
 loc_65D2:
 		subq.w	#1,($FFFFFAC4).w		; minus 1 from colour number
@@ -4299,7 +4299,7 @@ loc_65D2:
 		jsr	(sub_6CC).w
 		bne.w	MultiReturn
 		move.w	#8,(v_gamemode).w		; set screen mode to title screen
-		clr.l	($FFFFD824).w			; clear sub mode
+		clr.l	(v_subgamemode).w			; clear sub mode
 		movea.l	(RomStart).w,sp
 		jmp	(MAINPROG).w			; jump to Main game array
 ; ===========================================================================
@@ -4312,7 +4312,7 @@ loc_65F6:
 		jsr	(sub_6CC).w
 		bne.w	MultiReturn
 		move.w	#8,(v_gamemode).w
-		clr.l	($FFFFD824).w
+		clr.l	(v_subgamemode).w
 		movea.l	(RomStart).w,sp
 		jmp	(MAINPROG).w
 ; ===========================================================================
@@ -4977,7 +4977,7 @@ loc_6BD8:
 		move.l	d0,(a0)+
 		move.l	$20(a0),(a0)
 		move.w	#$10,($FFFFFAC4).w
-		addq.w	#4,($FFFFD824).w
+		addq.w	#4,(v_subgamemode).w
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -5212,7 +5212,7 @@ loc_6E66:
 		move.l	-$20(a0),(a0)
 		move.b	#4,-$21(a0)
 		move.w	#$10,($FFFFFAC4).w
-		addq.w	#4,($FFFFD824).w
+		addq.w	#4,(v_subgamemode).w
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -5305,7 +5305,7 @@ ARTCRA_SegaLogo:binclude	"artcra\Sega Logo.bin"	; compressed Sega patterns
 ; ---------------------------------------------------------------------------
 
 TitleScreen:
-		move.w	($FFFFD824).w,d0		; load sub mode to d0
+		move.w	(v_subgamemode).w,d0		; load sub mode to d0
 		jmp	loc_735E(pc,d0.w)		; go to correct routine dependant on d0
 
 ; ===========================================================================
@@ -5402,7 +5402,7 @@ loc_7462:
 		clr.w	($FFFFD826).w
 		clr.w	($FFFFD832).w
 		enable_ints				; set the stack register
-		addq.w	#4,($FFFFD824).w		; increase sub mode
+		addq.w	#4,(v_subgamemode).w		; increase sub mode
 		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -5439,7 +5439,7 @@ loc_74FC:
 
 loc_7512:
 		clr.w	($FFFFD83A).w
-		clr.w	($FFFFD824).w
+		clr.w	(v_subgamemode).w
 		move.w	($FFFFD826).w,d0
 		beq.s	loc_7526
 		cmpi.w	#1,d0
@@ -5781,7 +5781,7 @@ loc_810E:
 		dbf	d1,loc_810E
 		move.l	#$40000010,(vdp_control_port).l
 		move.l	($FFFFCDDE).w,(vdp_data_port).l
-		clr.w	($FFFFD824).w
+		clr.w	(v_subgamemode).w
 		addq.w	#1,($FFFFD836).w
 		tst.w	($FFFFD834).w
 		beq.s	loc_813E
@@ -6992,7 +6992,7 @@ UnkRet002:
 ; ---------------------------------------------------------------------------
 
 LevelSelect:
-		move.w	($FFFFD824).w,d0
+		move.w	(v_subgamemode).w,d0
 		jmp	loc_8E14(pc,d0.w)
 ; ---------------------------------------------------------------------------
 
@@ -7033,7 +7033,7 @@ loc_8E1C:
 		move.l	#$EEE,($FFFFD404).w
 		jsr	(VDPSetup_01).w
 		enable_ints
-		addq.w	#4,($FFFFD824).w
+		addq.w	#4,(v_subgamemode).w
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -7160,7 +7160,7 @@ loc_8FE8:
 ; ---------------------------------------------------------------------------
 
 loc_9000:
-		clr.l	($FFFFD824).w
+		clr.l	(v_subgamemode).w
 		cmpi.w	#9,($FFFFD834).w
 		bne.s	loc_9014
 		move.w	#$20,(v_gamemode).w		; " "
@@ -7251,11 +7251,11 @@ UnkRet003:
 ; ---------------------------------------------------------------------------
 
 OptionSoundTest:
-		move.w	($FFFFD824).w,d0
-		jmp	loc_93D4(pc,d0.w)
+		move.w	(v_subgamemode).w,d0
+		jmp	OptionSoundTest_SubModes(pc,d0.w)
 ; ---------------------------------------------------------------------------
 
-loc_93D4:
+OptionSoundTest_SubModes:
 		bra.w	loc_93DC
 ; ---------------------------------------------------------------------------
 		bra.w	loc_944C
@@ -7283,7 +7283,7 @@ loc_93DC:
 		move.l	#0,(vdp_data_port).l
 		move.w	#$80,($FFFFD82A).w		; "�"
 		enable_ints
-		addq.w	#4,($FFFFD824).w
+		addq.w	#4,(v_subgamemode).w
 		rts
 ; ---------------------------------------------------------------------------
 loc_9440:	dc.w $2F
@@ -7316,7 +7316,7 @@ loc_9452:
 		move.b	#$E0,d0
 		jsr	(PlayMusic).l
 		move.w	#8,(v_gamemode).w
-		clr.l	($FFFFD824).w
+		clr.l	(v_subgamemode).w
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -16975,7 +16975,7 @@ loc_EC34:
 		tst.b	($FFFFFFC9).w
 		bpl.s	loc_EC34
 		dbf	d0,loc_EC2E
-		clr.w	($FFFFD824).w
+		clr.w	(v_subgamemode).w
 		move.w	($FFFFD834).w,d0
 		addq.w	#1,d0
 		andi.w	#1,d0
