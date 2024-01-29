@@ -7,6 +7,8 @@
 
 	cpu 68000
 
+FixBugs = 0
+;	| If 1, fixes some bugs (mainly sound driver related)
 zeroOffsetOptimization = 0
 ;	| If 1, makes a handful of zero-offset instructions smaller
 ; Include SMPS2ASM, for expressing SMPS bytecode in a portable and human-readable form.
@@ -4299,7 +4301,7 @@ loc_65D2:
 		jsr	(sub_6CC).w
 		bne.w	MultiReturn
 		move.w	#8,(v_gamemode).w		; set screen mode to title screen
-		clr.l	(v_subgamemode).w			; clear sub mode
+		clr.l	(v_subgamemode).w		; clear sub mode
 		movea.l	(RomStart).w,sp
 		jmp	(MAINPROG).w			; jump to Main game array
 ; ===========================================================================

@@ -326,24 +326,28 @@ loc_B9:
 		call	StopAllSound
 		ld	a, zmake68kBank(MusicBank)
 		ld	(zMusicBank), a
+	if FixBugs
+		ld	a, zmake68kBank(SoundBank)
+	else
 		; DANGER!
 		; This is bugged, it adds 1 to the bank, which makes it point
 		; to the DAC Index instead of the Sound Index.
-		; To fix this, remove the +1.
 		ld	a, zmake68kBank(SoundBank)+1
+	endif
 		ld	(zSoundBank), a
+
+	if FixBugs
+		ld	de, 0				; set DAC length to nothing
+	endif
 		; DANGER!
 		; This is bugged, the DAC needs de to be cleared in order to
 		; not continue checking if there is a sample. This leads to
 		; constant crashes on hardware if nothing is played on the
                 ; Sega Screen or anywhere that sound isn't being played.
-		; To fix this, uncomment the 'ld	de, 0' command below,
-                ; and remove the 'ld	a, (hl)' line.
-		; Fix founded by MarkeyJester.
-
-		;ld	de, 0
 		ld	hl, zSoundBank
+	if ~~FixBugs
 		ld	a, (hl)
+	endif
 		bankswitch
 		ld	iy, DecTable
 		ei
