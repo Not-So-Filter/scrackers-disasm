@@ -1148,7 +1148,7 @@ PlaySoundID:
 		ld	a, (zSoundQueue0)
 		bit	7, a
 		jp	z, StopAllSound			; 00-7F	- Stop All
-		cp	bgm_Last+$1A
+		cp	bgm_Last+1Ah
 		jp	c, zPlayMusic			; 80-9F	- Music
 		cp	sfx_Last+1
 		jp	c, PlaySFX			; 90-9F	- SFX
