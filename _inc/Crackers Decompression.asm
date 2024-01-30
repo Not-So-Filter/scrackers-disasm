@@ -1,5 +1,6 @@
 ; ---------------------------------------------------------------------------
 ; Crackers Decompression Algorithm
+; An LZSS variation with a pretty small window
 ; ---------------------------------------------------------------------------
 
 CracDec:

@@ -168,6 +168,18 @@ bankswitch macro
 		ld	(hl), a
 		endm
 	endm
+	
+bankswitch_2 macro addr68k
+		ld	hl,zBankRegister
+		xor	a	; a = 0
+		ld	e,1	; e = 1
+.cnt	:= 0
+		rept 9
+			; this is either ld (hl),a or ld (hl),e
+			db 73h|((((addr68k)&(1<<(15+.cnt)))=0)<<2)
+.cnt		:= .cnt+1
+		endm
+	endm
 
 ; macro to make a certain error message clearer should you happen to get it...
 rsttarget macro {INTLABEL}
@@ -381,18 +393,7 @@ UpdateAll:
 UpdateSFXTracks:
 		ld	a, 1
 		ld	(zUpdateSound), a		; 01 - SFX Mode
-		ld	hl, zBankRegister		; switch to Bank 018000
-		xor	a				; Bank bits written: 003h
-		ld	e, 1
-		ld	(hl), e
-		ld	(hl), e
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
+		bankswitch_2 SoundBank
 		ld	ix, zTracksSFXStart
 		ld	b, (zTracksSFXEnd-zTracksSFXStart)/zTrack.len
 		call	TrkUpdateLoop
@@ -1160,7 +1161,7 @@ PlaySoundID:
 		jp	c, PlaySpcSFX			; if so, play special SFX
 		cp	flg_First			; is the ID after special SFX but before command flags?
 		ret	c				; do nothing if so
-		cp	flg_Last			; is the ID after the command flags?
+		cp	flg_Last+1			; is the ID after the command flags?
 		ret	nc				; do nothing...
 	else
 		; DANGER!
@@ -1173,7 +1174,7 @@ PlaySoundID:
 		jp	c, PlaySFX			; if so, play SFX
 		cp	flg_First			; is the ID special SFX?
 		jp	c, PlaySpcSFX			; if so, play special SFX
-		cp	flg_Last+15h			; is the ID after the command flags?
+		cp	flg_Last+16h			; is the ID after the command flags?
 		jp	nc, StopAllSound		; if so, Stop all sound
 	endif
 
@@ -1320,18 +1321,7 @@ PSGInitBytes:	db  80h, 80h
 
 PlaySpcSFX:
 		ex	af, af'
-		ld	hl, zBankRegister		; switch to Bank 018000
-		xor	a				; Bank bits written: 003h
-		ld	e, 1
-		ld	(hl), e
-		ld	(hl), e
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
+		bankswitch_2 SoundBank
 		ex	af, af'
 		sub	spec_First
 		ex	af, af'
@@ -1342,18 +1332,7 @@ PlaySpcSFX:
 
 PlaySFX:
 		ex	af, af'
-		ld	hl, zBankRegister		; switch to Bank 018000
-		xor	a				; Bank bits written: 003h
-		ld	e, 1
-		ld	(hl), e
-		ld	(hl), e
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
+		bankswitch_2 SoundBank
 		ex	af, af'
 		sub	sfx_First
 		ex	af, af'
@@ -2364,18 +2343,7 @@ loc_C54:
 		call	JumpToInsData
 		call	SendFMIns
 		push	hl
-		ld	hl, zBankRegister		; switch to Bank 018000
-		xor	a				; Bank bits written: 003h
-		ld	e, 1
-		ld	(hl), e
-		ld	(hl), e
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
-		ld	(hl), a
+		bankswitch_2 SoundBank
 		pop	hl
 		ld	a, (ix+zTrack.FMVolEnv)
 		or	a

@@ -58,7 +58,7 @@ ProductNotes:	dc.b "                                                    "
 RegionsFor:	dc.b "JUE             "
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-; Beginning Entry Point of Game
+; Entry Point
 ; ---------------------------------------------------------------------------
 
 EntryPoint:
@@ -178,7 +178,7 @@ SetupValues:	dc.w $8000				; VDP register Start
 		dc.b $F1,$F9,$F3,$ED,$56,$36,$E9,$E9
 
 		dc.w $8104,$8F02			; Display and increment register values
-		dc.l $C0000000				; VDP CRam address
+		dc.l $C0000000				; VDP CRAM address
 		dc.l $40000010
 		dc.b $9F,$BF,$DF,$FF			; PSG Values
 		even
@@ -255,32 +255,32 @@ loc_38A:
 		move.l	#$40000000,(vdp_control_port).l	; set VDP in VRAM write mode
 		move.w	#$FFF,d1			; set repeat times
 
-Clear_VRam01:
-		move.l	d0,(a0)				; clear VRam
+Clear_VRAM01:
+		move.l	d0,(a0)				; clear VRAM
 		move.l	d0,(a0)
 		move.l	d0,(a0)
 		move.l	d0,(a0)
-		dbf	d1,Clear_VRam01			; repeat til VRam is cleared
+		dbf	d1,Clear_VRAM01			; repeat til VRAM is cleared
 		move.l	#$C0000000,(vdp_control_port).l	; set VDP in CRAM write mode
 		move.w	#7,d1				; set repeat times
 
-Clear_CRam:
+Clear_CRAM:
 		move.l	d0,(a0)				; clear CRAM
 		move.l	d0,(a0)
 		move.l	d0,(a0)
 		move.l	d0,(a0)
-		dbf	d1,Clear_CRam			; repeat til CRAM is cleared
+		dbf	d1,Clear_CRAM			; repeat til CRAM is cleared
 		move.l	#$40000010,(vdp_control_port).l	; set VDP mode
 		move.w	#4,d1				; set repeat times
 
-Clear_VRam02:
+Clear_VRAM02:
 		move.l	d0,(a0)				; clear VDP stuff
 		move.l	d0,(a0)
 		move.l	d0,(a0)
 		move.l	d0,(a0)
-		dbf	d1,Clear_VRam02			; repeat til VDP stuff is cleared
+		dbf	d1,Clear_VRAM02			; repeat til VDP stuff is cleared
 		lea	VDPSetupArray(pc),a0		; load VDP setup values address to a0
-		jsr	(sub_8D0).l
+		jsr	(SetupVDPUsingTable).l
 		resetZ80				; reset the Z80
 		move	#$2000,sr			; set the stack register
 
@@ -355,7 +355,7 @@ VDPClr_SetDMA:
 		andi.w	#$FFEF,($FFFFC9BA).w
 		move.w	($FFFFC9BA).w,(a0)
 		startZ80
-		move.l	#$C0000000,(vdp_control_port).l	; set VDP in CRam write mode
+		move.l	#$C0000000,(vdp_control_port).l	; set VDP in CRAM write mode
 		move.w	($FFFFD3E4).w,-4(a0)		; move colour value in ram to VDP
 		rts
 
@@ -838,9 +838,9 @@ loc_8B0:
 loc_8B6:
 		move.w	(a1)+,d4			; load map
 		add.w	d3,d4				; add colour/plane/flip (Render Flag)
-		move.w	d4,(a0)				; dump to VRam
+		move.w	d4,(a0)				; dump to VRAM
 		dbf	d5,loc_8B6			; repeat til columns are dumped
-		add.l	d6,d0				; increase VRam location for next set of columns
+		add.l	d6,d0				; increase VRAM location for next set of columns
 		dbf	d2,loc_8B0			; repeat til all rows are dumped
 		cmp.w	d0,d0				; ?? Probably left in by accident
 		rts
@@ -855,28 +855,28 @@ loc_8B6:
 ;
 ; ---------------------------------------------------------------------------
 
-sub_8D0:
+SetupVDPUsingTable:
 		lea	($FFFFC9B8).w,a1
 
-loc_8D4:
-		move.w	(a0),d0
-		beq.s	loc_8FA
+.loop:
+		move.w	(a0),d0				; if the currently read word is 0...
+		beq.s	.finish				; we're done, move on...
 		moveq	#$7F,d1
-		and.b	(a0),d1
-		cmpi.b	#$13,d1
-		bge.s	loc_8F0
-		add.w	d1,d1
-		move.w	(a0),(a1,d1.w)
-		move.w	(a0)+,(vdp_control_port).l
-		bra.s	loc_8D4
+		and.b	(a0),d1				; convert the vdp register into an index,
+		cmpi.b	#$13,d1				; are we at the DMA registers?
+		bge.s	.next				; if so, increment the address by 2, otherwise...
+		add.w	d1,d1				; multiply by 2,
+		move.w	(a0),(a1,d1.w)			; offset into the table...
+		move.w	(a0)+,(vdp_control_port).l	; dump it to VDP control
+		bra.s	.loop				; then keep going...
 
-loc_8F0:
-		addq.w	#2,a0
-		bra.s	loc_8D4
+.next:
+		addq.w	#2,a0				; increment pointer by 2
+		bra.s	.loop				; keep going...
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-		ori	#1,ccr
+		ori	#1,ccr				; (???)
 		rts
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -884,7 +884,7 @@ loc_8F0:
 ;
 ; ---------------------------------------------------------------------------
 
-loc_8FA:
+.finish:
 		lea	4(a1),a1
 		move.w	(a1)+,d0
 		lsl.w	#2,d0
@@ -916,13 +916,13 @@ loc_8FA:
 ; ---------------------------------------------------------------------------
 
 ControlInit_Unused:
-		move.b	#1,(z80_reset).l
+		move.b	#1,(z80_reset).l		; do something with the Z80 (?)
 		stopZ80
 		waitZ80
-		moveq	#$40,d0				; prepare Initiation value
-		move.b	d0,($A10009).l			; ...dump to Control Port A
-		move.b	d0,($A1000B).l			; ...Control Port B
-		move.b	d0,($A1000D).l			; ...and Extra port
+		moveq	#$40,d0				; prepare init value
+		move.b	d0,($A10009).l			; ...dump to control port A
+		move.b	d0,($A1000B).l			; ...and port B
+		move.b	d0,($A1000D).l			; ...and extra port
 		startZ80
 		rts
 
@@ -4120,21 +4120,21 @@ SegaScreen:
 		movem.l	(sp)+,a0
 		jsr	(SoundDriverLoad).l		; load the Z80 Sound Driver
 		lea	loc_6442(pc),a0
-		jsr	(sub_8D0).w
+		jsr	(SetupVDPUsingTable).w
 		bra.s	SegaContin
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-loc_6442:	dc.w $8230
-		dc.w $8407
-		dc.w $833C
-		dc.w $855C
-		dc.w $8D2F
-		dc.w $8B00
-		dc.w $8C81
-		dc.w $9011
-		dc.w $8700
-		dc.w $9100
-		dc.w $9200
+loc_6442:	dc.w $8230				; plane a: 
+		dc.w $8407				; plane b:
+		dc.w $833C				; window table: 
+		dc.w $855C				; sprite table: B800
+		dc.w $8D2F				; horizontal scroll table: BC00
+		dc.w $8B00				; full scroll horizontally/vertically, external interrupt disabled
+		dc.w $8C81				; H40, no shadow/highlight
+		dc.w $9011				; tilemap: 64x64
+		dc.w $8700				; background color: entry 0
+		dc.w $9100				; Window plane X: disabled
+		dc.w $9200				; Window plane Y: disabled
 		dc.w 0
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -4589,14 +4589,14 @@ sub_682C:
 		lea	(vdp_data_port).l,a3		; load VDP address to a3
 		moveq	#$F,d7				; set repeat times
 		disable_ints				; set the stack register (Stopping VBlank)
-		move.l	#$5E000000,4(a3)		; set VDP to VRam write mode
+		move.l	#$5E000000,4(a3)		; set VDP to VRAM write mode
 		moveq	#0,d0				; clear d0
 
 ; this is to set the art in such a way that each tile represents 1 pixel on screen
 ; (Repeats for pixel values 0 to F)
 
 DumpTileSizedPixel:
-		move.l	d0,(a3)				; set value to VRam
+		move.l	d0,(a3)				; set value to VRAM
 		move.l	d0,(a3)
 		move.l	d0,(a3)
 		move.l	d0,(a3)
@@ -4619,12 +4619,12 @@ loc_6860:
 loc_6864:
 		move.l	d2,d0				; copy value 2 to d0
 		move.w	d1,d0				; copy value 1 to d0
-		move.l	d0,(a3)				; set values to VRam
+		move.l	d0,(a3)				; set values to VRAM
 		move.l	d0,(a3)
 		move.l	d0,(a3)
 		move.l	d0,(a3)
 		moveq	#0,d0				; clear end word of d0
-		move.l	d0,(a3)				; set values to VRam
+		move.l	d0,(a3)				; set values to VRAM
 		move.l	d0,(a3)
 		move.l	d0,(a3)
 		move.l	d0,(a3)
@@ -5264,7 +5264,7 @@ sub_6F26:
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-; subroutine to dump Sega Tile Data to VDP"s VRam
+; subroutine to dump Sega Tile Data to VDPs VRAM
 ; ---------------------------------------------------------------------------
 
 SegaToVDP:
@@ -5276,7 +5276,7 @@ SegaToVDP:
 		move.l	d0,4(a5)			; set VDP settings to VDP
 
 SegatoVDPRep:
-		move.l	(a0)+,(a5)			; dump data to VRam
+		move.l	(a0)+,(a5)			; dump data to VRAM
 		move.l	(a0)+,(a5)
 		move.l	(a0)+,(a5)
 		move.l	(a0)+,(a5)
@@ -5309,13 +5309,14 @@ ARTCRA_SegaLogo:binclude	"artcra/Sega Logo.bin"	; compressed Sega patterns
 
 TitleScreen:
 		move.w	(v_subgamemode).w,d0		; load sub mode to d0
-		jmp	loc_735E(pc,d0.w)		; go to correct routine dependant on d0
+		jmp	TitleScreen_Submodes(pc,d0.w)	; run code depending on index
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sega Screen Sub Modes
 ; ---------------------------------------------------------------------------
-loc_735E:	bra.w	TitleLoad
+TitleScreen_Submodes:
+		bra.w	TitleLoad
 ; ---------------------------------------------------------------------------
 		bra.w	TitleStart
 ; ---------------------------------------------------------------------------
@@ -5328,7 +5329,7 @@ TitleLoad:
 		movem.l	(sp)+,a0
 		disable_ints
 		lea	loc_7382(pc),a0
-		jsr	(sub_8D0).w
+		jsr	(SetupVDPUsingTable).w
 		bra.s	loc_739A
 ; ---------------------------------------------------------------------------
 loc_7382:	dc.w $8230
@@ -5467,14 +5468,14 @@ loc_754A:
 loc_7552:
 		cmpi.w	#2,($FFFFD826).w
 		bne.s	loc_7562
-		move.w	#id_Options,(v_gamemode).w		; "@"
+		move.w	#id_Options,(v_gamemode).w	; "@"
 		rts
 ; ---------------------------------------------------------------------------
 
 loc_7562:
 		move.b	#0,($FFFFD89C).w
 		move.b	#$FF,($FFFFD8AC).w
-		move.w	#id_LevelSelect,(v_gamemode).w		; "0"
+		move.w	#id_LevelSelect,(v_gamemode).w	; "0"
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -5540,7 +5541,7 @@ Fields:
 		move.l	a0,(v_vdpindex).w
 		movem.l	(sp)+,a0
 		lea	loc_7ED8(pc),a0
-		jsr	(sub_8D0).w
+		jsr	(SetupVDPUsingTable).w
 		move.b	#bgm_Electoria,d0		; load BGM 81
 		jsr	(PlayMusic).l			; Play BGM
 		lea	PAL_PrimaryColours_Field(pc),a0	; load primary Field palettes address to a0
@@ -5598,7 +5599,7 @@ loc_7EF8:
 		jsr	(sub_81F8).l			; Sonic/Tails object related
 		jsr	(sub_82B2).l			; deformation/screen control??
 		disable_ints
-		jsr	(BuildSprites).w			; object loading routine/sprite building (We think)
+		jsr	(BuildSprites).w		; object loading routine/sprite building (We think)
 		enable_ints
 		rts
 
@@ -6599,7 +6600,7 @@ Levels:
 		move.l	a0,(v_vdpindex).w
 		movem.l	(sp)+,a0
 		lea	loc_89C8(pc),a0
-		jsr	(sub_8D0).w
+		jsr	(SetupVDPUsingTable).w
 		move.b	#bgm_Electoria,d0
 		tst.w	($FFFFD834).w
 		beq.s	loc_88C2
@@ -16969,7 +16970,7 @@ loc_EC02:
 loc_EC20:
 		move.b	#bgm_GameOver,d0
 		jsr	(PlayMusic).l
-		move.w	#$300,d0		; this basically performs a spinlock for 12 seconds
+		move.w	#$300,d0			; this basically performs a spinlock for 12 seconds
 
 .loop:
 		bclr	#7,($FFFFFFC9).w
@@ -16984,9 +16985,9 @@ loc_EC20:
 		andi.w	#1,d0
 		move.w	d0,($FFFFD834).w
 		clr.w	($FFFFD836).w
-		move.w	#id_Field,(v_gamemode).w; change game mode to Field
-		movea.l	(RomStart).w,sp		; set the stack pointer
-		jmp	(MAINPROG).w		; jump to the main game loop
+		move.w	#id_Field,(v_gamemode).w	; change game mode to Field
+		movea.l	(RomStart).w,sp			; set the stack pointer
+		jmp	(MAINPROG).w			; jump to the main game loop
 ; ---------------------------------------------------------------------------
 
 loc_EC62:
@@ -18593,7 +18594,7 @@ sub_FA44:
 		lea	UnkReps+2(pc),a0		; load data location to a0
 
 loc_FA4C:
-		move.w	(a0)+,d1			; load VRam location
+		move.w	(a0)+,d1			; load VRAM location
 		add.w	($FFFFD81E).w,d1
 		move.l	(a0)+,d0			; load art location to d0
 		move.w	(a0)+,d2			; load size of art to d2
@@ -18609,7 +18610,7 @@ loc_FA4C:
 ; ---------------------------------------------------------------------------
 
 UnkReps:	dc.w $0022				; number of uncompressed art files to read
-		dc.w $0000				; VRam location
+		dc.w $0000				; VRAM location
 		dc.l AniArt_Hud1to9_Sym			; "0" Hud	; location of Art
 		dc.w $0020				; size of Art
 		dc.w $0080

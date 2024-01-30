@@ -1,5 +1,5 @@
 
-	phase	$FFFF0000
+	phase	ramaddr($FFFF0000)
 v_startofram:	ds.b $200
 
 v_systemstack:	
@@ -25,8 +25,8 @@ unk_C836:	ds.b 6
 unk_C936:	ds.b 1
 unk_C937:	ds.b 1
 unk_C938:	ds.b 1
-v_ngfx_buffer:	equ $FFFFD59A
-v_gamemode:	equ $FFFFD822			; (2 bytes)
+v_ngfx_buffer:	equ ramaddr($FFFFD59A)
+v_gamemode:	equ ramaddr($FFFFD822)			; (2 bytes)
 v_subgamemode =	v_gamemode+2
 	dephase
 	!org 0

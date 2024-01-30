@@ -74,6 +74,10 @@ finishBank macro
 	endif
     endm
     
+; sign-extends a 32-bit integer to 64-bit
+; all RAM addresses are run through this function to allow them to work in both 16-bit and 32-bit addressing modes
+ramaddr function x,(-(x&$80000000)<<1)|x   
+    
 ; ---------------------------------------------------------------------------
 ; turn a sample rate into a djnz loop counter
 ; ---------------------------------------------------------------------------
