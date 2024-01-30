@@ -28,5 +28,11 @@ unk_C938:	ds.b 1
 v_ngfx_buffer:	equ ramaddr($FFFFD59A)
 v_gamemode:	equ ramaddr($FFFFD822)			; (2 bytes)
 v_subgamemode =	v_gamemode+2
+
+v_menu_soundid:	equ ramaddr($FFFFD82A)
+
+v_lagger:	equ ramaddr($FFFFFFC9)
+
+v_text:		equ ramaddr($FFFFFFC0)
 	dephase
 	!org 0

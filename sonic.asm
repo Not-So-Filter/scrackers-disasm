@@ -1,6 +1,6 @@
 ; ===========================================================================
 ; Originally disassembled by: MarkeyJester (DrXInsanity)
-; Redisassembly by: Filter
+; Redisassembly by: Filter/RepellantMold
 ; Special thanks to:
 ; -> Hivebrain (for SCHG sonic crackers location guide on SonicRetro)
 ; -> Malevolence (for the SST Object defining/labling)
@@ -63,80 +63,82 @@ RegionsFor:	dc.b "JUE             "
 
 EntryPoint:
 		tst.l	(z80_port_1_control).l
-		bne.s	loc_20E
+		bne.s	.port1okay
 		tst.w	(z80_expansion_control).l
 
-loc_20E:
-		bne.s	loc_28C
+.port1okay:
+		bne.s	.skipsetup
 		lea	SetupValues(pc),a5
 		movem.w	(a5)+,d5-d7
 		movem.l	(a5)+,a0-a4
 		move.b	-$10FF(a1),d0
 		andi.b	#$F,d0
-		beq.s	loc_22E
-		move.l	#"SEGA",$2F00(a1)
+		beq.s	.skipsecurity
+		move.l	#'SEGA',$2F00(a1)
 
-loc_22E:
+.skipsecurity:
 		move.w	(a4),d0
 		moveq	#0,d0
 		movea.l	d0,a6
 		move.l	a6,usp
 		moveq	#$17,d1
 
-loc_238:
+.vdploop:
 		move.b	(a5)+,d5
 		move.w	d5,(a4)
 		add.w	d7,d5
-		dbf	d1,loc_238
+		dbf	d1,.vdploop
 		move.l	(a5)+,(a4)
 		move.w	d0,(a3)
 		move.w	d7,(a1)
 		move.w	d7,(a2)
 
-loc_24A:
+.waitZ80:
 		btst	d0,(a1)
-		bne.s	loc_24A
-		moveq	#$25,d2
+		bne.s	.waitZ80
+		moveq	#Z80StartupCodeEnd-Z80StartupCodeBegin-1,d2
 
-loc_250:
+.writeZ80:
 		move.b	(a5)+,(a0)+
-		dbf	d2,loc_250
+		dbf	d2,.writeZ80
 		move.w	d0,(a2)
 		move.w	d0,(a1)
 		move.w	d7,(a2)
 
-loc_25C:
+.clearRAM:
 		move.l	d0,-(a6)
-		dbf	d6,loc_25C
+		dbf	d6,.clearRAM
 		move.l	(a5)+,(a4)
 		move.l	(a5)+,(a4)
-		moveq	#$1F,d3
 
-loc_268:
+		moveq	#bytesToLcnt($80),d3
+
+.clearCRAM:
 		move.l	d0,(a3)
-		dbf	d3,loc_268
+		dbf	d3,.clearCRAM
 		move.l	(a5)+,(a4)
-		moveq	#$13,d4
 
-loc_272:
+		moveq	#bytesToLcnt($50),d4
+
+.clearVSRAM:
 		move.l	d0,(a3)
-		dbf	d4,loc_272
-		moveq	#3,d5
+		dbf	d4,.clearVSRAM
+		moveq	#PSGInitValues_End-PSGInitValues-1,d5
 
-loc_27A:
+.psginit:
 		move.b	(a5)+,$11(a3)
-		dbf	d5,loc_27A
+		dbf	d5,.psginit
 		move.w	d0,(a2)
 		movem.l	(a6),d0-a6
 		disable_ints
 
-loc_28C:
+.skipsetup:
 		bra.s	GameProgram
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 SetupValues:	dc.w $8000				; VDP register Start
-		dc.w $3FFF				; Repeat times for clearing 68k ram
+		dc.w bytesToLcnt($10000)		; Repeat times for clearing 68k ram
 		dc.w $100				; VDP register Number increase (Used for Z80 functioning too)
 
 		dc.l z80_ram				; Z80 Ram start
@@ -172,15 +174,46 @@ SetupValues:	dc.w $8000				; VDP register Start
 
 		dc.l $40000080
 
-		dc.b $AF,$01,$D9,$1F,$11,$27,$00,$21,$26,$00 ; Z80 Instruction Values
-		dc.b $F9,$77,$ED,$B0,$DD,$E1,$FD,$E1,$ED,$47
-		dc.b $ED,$4F,$D1,$E1,$F1,$08,$D9,$C1,$D1,$E1
-		dc.b $F1,$F9,$F3,$ED,$56,$36,$E9,$E9
+Z80StartupCodeBegin:					; Z80 instructions (not the sound driver; that gets loaded later)
+	save
+	CPU Z80 ; start assembling Z80 code
+	phase 0 ; pretend we're at address 0
+		xor	a	; clear a to 0
+		ld	bc,((z80_ram_end-z80_ram)-zStartupCodeEndLoc)-1 ; prepare to loop this many times
+		ld	de,zStartupCodeEndLoc+1	; initial destination address
+		ld	hl,zStartupCodeEndLoc	; initial source address
+		ld	sp,hl	; set the address the stack starts at
+		ld	(hl),a	; set first byte of the stack to 0
+		ldir		; loop to fill the stack (entire remaining available Z80 RAM) with 0
+		pop	ix	; clear ix
+		pop	iy	; clear iy
+		ld	i,a	; clear i
+		ld	r,a	; clear r
+		pop	de	; clear de
+		pop	hl	; clear hl
+		pop	af	; clear af
+		ex	af,af'	; swap af with af'
+		exx		; swap bc/de/hl with their shadow registers too
+		pop	bc	; clear bc
+		pop	de	; clear de
+		pop	hl	; clear hl
+		pop	af	; clear af
+		ld	sp,hl	; clear sp
+		di		; clear iff1 (for interrupt handler)
+		im	1	; interrupt handling mode = 1
+		ld	(hl),0E9h ; replace the first instruction with a jump to itself
+		jp	(hl)	  ; jump to the first instruction (to stay there forever)
+zStartupCodeEndLoc:
+	dephase ; stop pretending
+		restore
+	padding off ; unfortunately our flags got reset so we have to set them again...
+Z80StartupCodeEnd:
 
 		dc.w $8104,$8F02			; Display and increment register values
 		dc.l $C0000000				; VDP CRAM address
 		dc.l $40000010
-		dc.b $9F,$BF,$DF,$FF			; PSG Values
+PSGInitValues:	dc.b $9F,$BF,$DF,$FF			; PSG Values
+PSGInitValues_End:
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -190,9 +223,9 @@ SetupValues:	dc.w $8000				; VDP register Start
 
 GameProgram:
 		tst.w	(vdp_control_port).l
-		lea	($FFFFFFC0).w,a0
+		lea	(v_text).w,a0
 		move.l	(a0),d0
-		cmpi.l	#"SEGA",d0
+		cmpi.l	#'SEGA',d0
 		bne.s	loc_326
 		move.b	($A10009).l,d0
 		and.b	($A1000B).l,d0
@@ -207,7 +240,7 @@ loc_326:
 loc_32A:
 		clr.l	(a1)+
 		dbf	d0,loc_32A
-		move.l	#"SEGA",(a0)
+		move.l	#'SEGA',(a0)
 
 loc_336:
 		moveq	#0,d0				; clear registers (d0 to d6 and a2)
@@ -4184,10 +4217,10 @@ loc_64AA:
 
 loc_64F2:
 		pea	(loc_64F2).l
-		bclr	#7,($FFFFFFC9).w
+		bclr	#7,(v_lagger).w
 
 loc_64FE:
-		tst.b	($FFFFFFC9).w
+		tst.b	(v_lagger).w
 		bpl.s	loc_64FE
 		move.w	(v_subgamemode).w,d0		; load sub mode to d0
 		jmp	SegaSubArray(pc,d0.w)		; jump to correct sub mode routine
@@ -5243,7 +5276,7 @@ loc_6EB4:
 		add.w	($FFFFFFC4).w,d0
 		addq.w	#1,d0
 		move.w	d0,($FFFFFFC4).w
-		ori.b	#$80,($FFFFFFC9).w
+		ori.b	#$80,(v_lagger).w
 		addq.w	#1,($FFFFF000).w
 		movem.l	(sp)+,d0-a6
 		rte
@@ -5416,10 +5449,10 @@ PAL_MainMenus:	binclude	"Palettes/PalMainMenus.bin"
 ; ===========================================================================
 
 TitleStart:
-		bclr	#7,($FFFFFFC9).w
+		bclr	#7,(v_lagger).w
 
 loc_74E2:
-		tst.b	($FFFFFFC9).w
+		tst.b	(v_lagger).w
 		bpl.s	loc_74E2
 		move.w	($FFFFC946).w,d0
 		add.w	($FFFFD826).w,d0
@@ -5493,7 +5526,7 @@ loc_7576:
 		move.w	d1,($FFFFC944).w
 		move.w	d2,($FFFFC946).w
 		jsr	(VDPSetup_01).w
-		ori.b	#$80,($FFFFFFC9).w
+		ori.b	#$80,(v_lagger).w
 		movem.l	(sp)+,d0-a6
 		rte
 
@@ -5521,13 +5554,13 @@ ARTNEM_MainMenusText:
 		binclude	"artnem/Main Menu Text.bin"
 		even
 MAPUNC_TitleMenu_1:
-		binclude	"Uncompressed/MapuncTitleMenu01.bin" ; Uncompressed mappings	for the	title screen banner
+		binclude	"Uncompressed/MapuncTitleMenu01.bin" ; Uncompressed mappings for the	title screen banner
 		even
 MAPUNC_TitleMenu_2:
-		binclude	"Uncompressed/MapuncTitleMenu02.bin" ; Uncompressed mappings	for the	title menu selection
+		binclude	"Uncompressed/MapuncTitleMenu02.bin" ; Uncompressed mappings for the	title menu selection
 		even
 MAPUNC_TitleMenu_3:
-		binclude	"Uncompressed/MapuncTitleMenu03.bin" ; Uncompressed mappings	for the	title menu (1ST	ROM 19940401)
+		binclude	"Uncompressed/MapuncTitleMenu03.bin" ; Uncompressed mappings for the	title menu (1ST	ROM 19940401)
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -5564,7 +5597,7 @@ Fields:
 		jsr	(sub_FA44).l
 		ori.w	#$8144,($FFFFC9BA).w
 		move.w	($FFFFC9BA).w,(vdp_control_port).l
-		bra.w	loc_7EEC
+		bra.w	Fields_MainLoop
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 PAL_PrimaryColours_Field:
@@ -5584,13 +5617,12 @@ loc_7ED8:	dc.w $8230
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 
-loc_7EEC:
-
-		pea	(loc_7EEC).l
-		bclr	#7,($FFFFFFC9).w
+Fields_MainLoop:
+		pea	(Fields_MainLoop).l
+		bclr	#7,(v_lagger).w
 
 loc_7EF8:
-		tst.b	($FFFFFFC9).w			; I think these act like a lagger, removing them...
+		tst.b	(v_lagger).w			; I think these act like a lagger, removing them...
 		bpl.s	loc_7EF8			; ...causes the fields to run extremely fast
 		bsr.w	sub_F390
 		jsr	(Field_ReadController).l
@@ -5707,7 +5739,7 @@ loc_8010:
 		move.w	($FFFFD81A).w,d1
 		move.w	#$140,d2
 		jsr	(sub_5E8).w
-		ori.b	#$80,($FFFFFFC9).w
+		ori.b	#$80,(v_lagger).w
 		addq.w	#1,($FFFFF000).w
 		movem.l	(sp)+,d0-a6
 		rte
@@ -5733,10 +5765,10 @@ loc_8086:
 		movem.l	d0-a6,-(sp)
 
 loc_808A:
-		bclr	#7,($FFFFFFC9).w
+		bclr	#7,(v_lagger).w
 
 loc_8090:
-		tst.b	($FFFFFFC9).w
+		tst.b	(v_lagger).w
 		bpl.s	loc_8090
 		jsr	(Field_ReadController).l
 		move.b	($FFFFD89E).w,d0
@@ -6655,7 +6687,7 @@ loc_896C:
 		move.w	($FFFFC9BA).w,(vdp_control_port).l
 		bsr.w	sub_F4FE
 		jsr	(sub_F94A).l
-		bra.w	loc_89E0
+		bra.w	Level_MainLoop
 ; ---------------------------------------------------------------------------
 PAL_PrimaryColours:
 		binclude	"Palettes/PalPrimaryColours.bin"
@@ -6674,13 +6706,12 @@ loc_89C8:	dc.w $8230
 		dc.w 0
 ; ---------------------------------------------------------------------------
 
-loc_89E0:
-
-		pea	(loc_89E0).l
-		bclr	#7,($FFFFFFC9).w
+Level_MainLoop:
+		pea	(Level_MainLoop).l
+		bclr	#7,(v_lagger).w
 
 loc_89EC:
-		tst.b	($FFFFFFC9).w
+		tst.b	(v_lagger).w
 		bpl.s	loc_89EC
 		bsr.w	sub_F390
 		jsr	(Level_ReadController).l
@@ -6807,7 +6838,7 @@ loc_8B1C:
 		lea	(unk_0C86&$FFFFFF).l,a4
 		lea	($FFFFCA1E).w,a5
 		jsr	(sub_14E4).w
-		ori.b	#$80,($FFFFFFC9).w
+		ori.b	#$80,(v_lagger).w
 		addq.w	#1,($FFFFF000).w
 		movem.l	(sp)+,d0-a6
 		rte
@@ -6833,10 +6864,10 @@ loc_8BA0:
 		movem.l	d0-a6,-(sp)
 
 loc_8BA4:
-		bclr	#7,($FFFFFFC9).w
+		bclr	#7,(v_lagger).w
 
 loc_8BAA:
-		tst.b	($FFFFFFC9).w
+		tst.b	(v_lagger).w
 		bpl.s	loc_8BAA
 		jsr	(Level_ReadController).l
 		move.w	($FFFFD8A4).w,d0
@@ -6997,16 +7028,16 @@ UnkRet002:
 
 LevelSelect:
 		move.w	(v_subgamemode).w,d0
-		jmp	loc_8E14(pc,d0.w)
+		jmp	LevelSelect_Submodes(pc,d0.w)
 ; ---------------------------------------------------------------------------
 
-loc_8E14:
-		bra.w	loc_8E1C
+LevelSelect_Submodes:
+		bra.w	LevelSelect_Init
 ; ---------------------------------------------------------------------------
-		bra.w	loc_8EC0
+		bra.w	LevelSelect_Main
 ; ---------------------------------------------------------------------------
 
-loc_8E1C:
+LevelSelect_Init:
 		pea	(a0)
 		lea	loc_903C(pc),a0
 		move.l	a0,(v_vdpindex).w
@@ -7041,11 +7072,11 @@ loc_8E1C:
 		rts
 ; ---------------------------------------------------------------------------
 
-loc_8EC0:
-		bclr	#7,($FFFFFFC9).w
+LevelSelect_Main:
+		bclr	#7,(v_lagger).w
 
 loc_8EC6:
-		tst.b	($FFFFFFC9).w
+		tst.b	(v_lagger).w
 		bpl.s	loc_8EC6
 		move.w	($FFFFC944).w,d0
 		add.w	($FFFFD834).w,d0
@@ -7166,19 +7197,19 @@ loc_8FE8:
 loc_9000:
 		clr.l	(v_subgamemode).w
 		cmpi.w	#9,($FFFFD834).w
-		bne.s	loc_9014
+		bne.s	LevelSelect_PlayField
 		move.w	#id_Null,(v_gamemode).w		; " "
 		rts
 ; ---------------------------------------------------------------------------
 
-loc_9014:
+LevelSelect_PlayField:
 		tst.w	($FFFFD836).w
-		bne.s	loc_9022
+		bne.s	LevelSelect_PlayLevel
 		move.w	#id_Field,(v_gamemode).w
 		rts
 ; ---------------------------------------------------------------------------
 
-loc_9022:
+LevelSelect_PlayLevel:
 		move.w	($FFFFD836).w,d0
 		andi.w	#3,d0
 		move.w	d0,($FFFFD83A).w
@@ -7205,7 +7236,7 @@ loc_903C:
 		move.w	d1,($FFFFC944).w
 		move.w	d2,($FFFFC946).w
 		jsr	(VDPSetup_01).w
-		ori.b	#$80,($FFFFFFC9).w
+		ori.b	#$80,(v_lagger).w
 		movem.l	(sp)+,d0-a6
 		rte
 
@@ -7231,22 +7262,22 @@ sub_9098:
 
 ; ---------------------------------------------------------------------------
 ARTNEM_MenuSelectorBorder:
-		binclude	"artnem/Menu Select Border.bin" ; Selector Art for Select Menu screen
+		binclude	"artnem/Menu Select Border.bin" ; Selector art for Select Menu screen
 		even
 MAPUNC_SelectMenu_1:
-		binclude	"Uncompressed/MapuncSelectMenu01.bin" ; Uncompressed mappings	for the	select menu (Top W? numbers that scroll)
+		binclude	"Uncompressed/MapuncSelectMenu01.bin" ; Uncompressed mappings for the select menu (Top W? numbers that scroll)
 		even
 MAPUNC_SelectMenu_2:
 		binclude	"Uncompressed/MapuncSelectMenu02.bin" ; Uncompressed mappings for the select menu (World ? words)
 		even
 MAPUNC_SelectMenu_3:
-		binclude	"Uncompressed/MapuncSelectMenu03.bin" ; Uncompressed mappings	for the	select menu (Attraction	LV.? words)
+		binclude	"Uncompressed/MapuncSelectMenu03.bin" ; Uncompressed mappings for the select menu (Attraction	LV.? words)
 		even
 MAPUNC_SelectMenu_4:
-		binclude	"Uncompressed/MapuncSelectMenu04.bin" ; Uncompressed mappings	for the	select menu (Field/Attraction words)
+		binclude	"Uncompressed/MapuncSelectMenu04.bin" ; Uncompressed mappings for the select menu (Field/Attraction words)
 		even
 MAPUNC_SelectMenu_5:
-		binclude	"Uncompressed/MapuncSelectMenu05.bin" ; Uncompressed mappings	for the	select menu (Special Stage word)
+		binclude	"Uncompressed/MapuncSelectMenu05.bin" ; Uncompressed mappings for the select menu (Special Stage word)
 		even
 ; ---------------------------------------------------------------------------
 
@@ -7260,12 +7291,12 @@ OptionSoundTest:
 ; ---------------------------------------------------------------------------
 
 OptionSoundTest_SubModes:
-		bra.w	loc_93DC
+		bra.w	OptionSoundTest_Main
 ; ---------------------------------------------------------------------------
-		bra.w	loc_944C
+		bra.w	OptionSoundTest_Exit
 ; ---------------------------------------------------------------------------
 
-loc_93DC:
+OptionSoundTest_Main:
 		pea	(a0)
 		lea	loc_94B4(pc),a0
 		move.l	a0,(v_vdpindex).w
@@ -7285,7 +7316,7 @@ loc_93DC:
 		move.l	#$78000003,(vdp_control_port).l
 		move.l	#0,(vdp_data_port).l
 		move.l	#0,(vdp_data_port).l
-		move.w	#$80,($FFFFD82A).w		; "�"
+		move.w	#$80,(v_menu_soundid).w		; "�"
 		enable_ints
 		addq.w	#4,(v_subgamemode).w
 		rts
@@ -7298,11 +7329,11 @@ loc_9440:	dc.w $2F
 		dc.w $2E
 ; ---------------------------------------------------------------------------
 
-loc_944C:
-		bclr	#7,($FFFFFFC9).w
+OptionSoundTest_Exit:
+		bclr	#7,(v_lagger).w
 
 loc_9452:
-		tst.b	($FFFFFFC9).w
+		tst.b	(v_lagger).w
 		bpl.s	loc_9452
 		move.w	($FFFFC944).w,d0
 		add.b	d0,($FFFFD82B).w
@@ -7310,7 +7341,7 @@ loc_9452:
 		lsl.w	#4,d0
 		add.b	d0,($FFFFD82B).w
 		disable_ints
-		move.w	($FFFFD82A).w,d0
+		move.w	(v_menu_soundid).w,d0
 		move.w	($FFFFD816).w,d1
 		addi.w	#$820,d1
 		jsr	(sub_5090).l
@@ -7331,7 +7362,7 @@ loc_94A0:
 ; ---------------------------------------------------------------------------
 
 loc_94A8:
-		move.w	($FFFFD82A).w,d0
+		move.w	(v_menu_soundid).w,d0
 		jsr	(PlayMusic).l
 		rts
 ; ---------------------------------------------------------------------------
@@ -7349,7 +7380,7 @@ loc_94B4:
 		bsr.s	sub_94F6
 		move.w	d1,($FFFFC944).w
 		move.w	d2,($FFFFC946).w
-		ori.b	#$80,($FFFFFFC9).w
+		ori.b	#$80,(v_lagger).w
 		movem.l	(sp)+,d0-a6
 		rte
 
@@ -16973,10 +17004,10 @@ loc_EC20:
 		move.w	#$300,d0			; this basically performs a spinlock for 12 seconds
 
 .loop:
-		bclr	#7,($FFFFFFC9).w
+		bclr	#7,(v_lagger).w
 
 .wait:
-		tst.b	($FFFFFFC9).w	
+		tst.b	(v_lagger).w	
 		bpl.s	.wait
 		dbf	d0,.loop
 		clr.w	(v_subgamemode).w
@@ -18006,10 +18037,10 @@ sub_F4E4:
 
 
 sub_F4FE:
-		bclr	#7,($FFFFFFC9).w
+		bclr	#7,(v_lagger).w
 
 loc_F504:
-		tst.b	($FFFFFFC9).w
+		tst.b	(v_lagger).w
 		bpl.s	loc_F504
 		move.w	($FFFFFDC4).w,d0
 		cmpi.w	#$14,d0
@@ -18043,10 +18074,10 @@ locret_F536:
 
 
 sub_F538:
-		bclr	#7,($FFFFFFC9).w
+		bclr	#7,(v_lagger).w
 
 loc_F53E:
-		tst.b	($FFFFFFC9).w
+		tst.b	(v_lagger).w
 		bpl.s	loc_F53E
 		jsr	(sub_96E).w
 		jsr	(BuildSprites).w

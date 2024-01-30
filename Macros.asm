@@ -1,3 +1,15 @@
+; calculates initial loop counter value for a dbf loop
+; that writes n bytes total at 4 bytes per iteration
+bytesToLcnt function n,n>>2-1
+
+; calculates initial loop counter value for a dbf loop
+; that writes n bytes total at 2 bytes per iteration
+bytesToWcnt function n,n>>1-1
+
+; calculates initial loop counter value for a dbf loop
+; that writes n bytes total at x bytes per iteration
+bytesToXcnt function n,x,n/x-1
+
 ; ---------------------------------------------------------------------------
 ; start the Z80
 ; ---------------------------------------------------------------------------
