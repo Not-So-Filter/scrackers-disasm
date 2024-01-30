@@ -13,6 +13,14 @@ z80_expansion_control:	equ $A1000C
 z80_bus_request:	equ $A11100
 z80_reset:		equ $A11200
 
+id_Sega:	equ ptr_GM_Sega-GameModeArray
+id_Title:	equ ptr_GM_Title-GameModeArray
+id_Field:	equ ptr_GM_Field-GameModeArray
+id_Level:	equ ptr_GM_Level-GameModeArray
+id_Null:	equ ptr_GM_Null-GameModeArray
+id_LevelSelect:	equ ptr_GM_LevelSelect-GameModeArray
+id_Options:	equ ptr_GM_Options-GameModeArray
+
 ; Object variables
 obMap:		equ $10					; mappings address (4 bytes)
 

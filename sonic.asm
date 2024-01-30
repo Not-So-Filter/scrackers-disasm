@@ -285,8 +285,8 @@ Clear_VRam02:
 		move	#$2000,sr			; set the stack register
 
 MAINPROGLOOP:
-		jsr	(MAINPROG).w
-		bra.s	MAINPROGLOOP
+		jsr	(MAINPROG).w			; jump to the actual loop (really should be a jmp since there's no way for it to return)
+		bra.s	MAINPROGLOOP			; loop indefinitely
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -1966,7 +1966,7 @@ loc_1616:
 
 ; We think this subroutine is responsible for building object sprites
 
-sub_1640:
+BuildSprites:
 		lea	($FFFFD164).w,a6
 		moveq	#0,d6
 		lea	($FFFFD3E4).w,a5
@@ -3850,31 +3850,32 @@ MAINPROG:
 ; ---------------------------------------------------------------------------
 
 GameModeArray:
-		jmp	(SegaScreen).l			; SEGA screen (00)
+ptr_GM_Sega:	jmp	(SegaScreen).l			; SEGA screen (00)
 		nop
 ; ---------------------------------------------------------------------------
-		jmp	(TitleScreen).l			; Title Screen (08)
+ptr_GM_Title:	jmp	(TitleScreen).l			; Title Screen (08)
 		nop
 ; ---------------------------------------------------------------------------
-		jmp	(Fields).l			; Fields Screen (10)
+ptr_GM_Field:	jmp	(Fields).l			; Fields Screen (10)
 		nop
 ; ---------------------------------------------------------------------------
-		jmp	(Levels).l			; Level Zones (18)
+ptr_GM_Level:	jmp	(Levels).l			; Level Zones (18)
 		nop
 ; ---------------------------------------------------------------------------
-		jmp	(UnkRet001).l			; Null (20)
+ptr_GM_Null:	jmp	(UnkRet001).l			; Null (20)
 		nop
 ; ---------------------------------------------------------------------------
 		jmp	(UnkRet002).l			; Null (28)
 		nop
 ; ---------------------------------------------------------------------------
+ptr_GM_LevelSelect:
 		jmp	(LevelSelect).l			; Level Select (on Main Menu) (30)
 		nop
 ; ---------------------------------------------------------------------------
 		jmp	(UnkRet003).l			; Null (38)
 		nop
 ; ---------------------------------------------------------------------------
-		jmp	(OptionSoundTest).l		; Options (Sound Test) (40)
+ptr_GM_Options:	jmp	(OptionSoundTest).l		; Options (Sound Test) (40)
 		nop
 ; ---------------------------------------------------------------------------
 		jmp	(GMAReturn).l			; Null (48)
@@ -4300,10 +4301,10 @@ loc_65D2:
 		moveq	#1,d0
 		jsr	(sub_6CC).w
 		bne.w	MultiReturn
-		move.w	#8,(v_gamemode).w		; set screen mode to title screen
+		move.w	#id_Title,(v_gamemode).w	; set screen mode to title screen
 		clr.l	(v_subgamemode).w		; clear sub mode
-		movea.l	(RomStart).w,sp
-		jmp	(MAINPROG).w			; jump to Main game array
+		movea.l	(RomStart).w,sp			; set stack pointer
+		jmp	(MAINPROG).w			; jump to the main game loop
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ;
@@ -4313,7 +4314,7 @@ loc_65F6:
 		moveq	#1,d0
 		jsr	(sub_6CC).w
 		bne.w	MultiReturn
-		move.w	#8,(v_gamemode).w
+		move.w	#id_Title,(v_gamemode).w
 		clr.l	(v_subgamemode).w
 		movea.l	(RomStart).w,sp
 		jmp	(MAINPROG).w
@@ -4326,7 +4327,7 @@ SegaScrn_CheckRegion:
 		move.b	(z80_version).l,d0		; load Z80 version number
 		rol.b	#2,d0				; roll left 2 bits
 		andi.w	#2,d0				; get only the original 1st bit that was in version number
-		move.w	off_6626(pc,d0.w),($FFFFD402).w	; color the specific part of the palette depending on region
+		move.w	off_6626(pc,d0.w),($FFFFD402).w	; color a specific part of the palette depending on region
 		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -5450,7 +5451,7 @@ loc_7512:
 loc_7526:
 		move.w	#1,($FFFFD834).w
 		move.w	#1,($FFFFD836).w
-		move.w	#$18,(v_gamemode).w
+		move.w	#id_Level,(v_gamemode).w
 		move.b	#0,($FFFFD89C).w
 		tst.w	d0
 		bne.s	loc_754A
@@ -5466,14 +5467,14 @@ loc_754A:
 loc_7552:
 		cmpi.w	#2,($FFFFD826).w
 		bne.s	loc_7562
-		move.w	#$40,(v_gamemode).w		; "@"
+		move.w	#id_Options,(v_gamemode).w		; "@"
 		rts
 ; ---------------------------------------------------------------------------
 
 loc_7562:
 		move.b	#0,($FFFFD89C).w
 		move.b	#$FF,($FFFFD8AC).w
-		move.w	#$30,(v_gamemode).w		; "0"
+		move.w	#id_LevelSelect,(v_gamemode).w		; "0"
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -5591,19 +5592,19 @@ loc_7EF8:
 		tst.b	($FFFFFFC9).w			; I think these act like a lagger, removing them...
 		bpl.s	loc_7EF8			; ...causes the fields to run extremely fast
 		bsr.w	sub_F390
-		jsr	(sub_7F2E).l			; something to do with controls (when commented out, controls wouldn't work)
-		jsr	(sub_8064).l			; pause menu bar related?
+		jsr	(Field_ReadController).l
+		jsr	(Field_PauseGame).l
 		jsr	(sub_CCCA).l			; commented out causes screen not to follow durin normal play, and stars on the tether didn"t animate
 		jsr	(sub_81F8).l			; Sonic/Tails object related
 		jsr	(sub_82B2).l			; deformation/screen control??
 		disable_ints
-		jsr	(sub_1640).w			; object loading routine/sprite building (We think)
+		jsr	(BuildSprites).w			; object loading routine/sprite building (We think)
 		enable_ints
 		rts
 
 ; =============== S U B	R O U T	I N E =======================================
 
-sub_7F2E:
+Field_ReadController:
 		jsr	(sub_96E).w
 		lea	($FFFFC938).w,a3
 		moveq	#0,d1
@@ -5646,7 +5647,7 @@ sub_7F2E:
 loc_7FA8:
 		lea	($FFFFD8AC).w,a4
 		bra.w	sub_7FB0
-; End of function sub_7F2E
+; End of function Field_ReadController
 
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5713,7 +5714,7 @@ loc_8010:
 ; =============== S U B	R O U T	I N E =======================================
 
 
-sub_8064:
+Field_PauseGame:
 		tst.b	($FFFFD89F).w
 		bpl.w	locret_8194
 		move.b	($FFFFC93C).w,d0
@@ -5736,7 +5737,7 @@ loc_808A:
 loc_8090:
 		tst.b	($FFFFFFC9).w
 		bpl.s	loc_8090
-		jsr	(sub_7F2E).l
+		jsr	(Field_ReadController).l
 		move.b	($FFFFD89E).w,d0
 		andi.b	#$70,d0				; "p"
 		beq.w	loc_814C
@@ -5790,7 +5791,7 @@ loc_810E:
 		addq.w	#1,($FFFFD83A).w
 
 loc_813E:
-		move.w	#$18,(v_gamemode).w
+		move.w	#id_Level,(v_gamemode).w
 		movea.l	(RomStart).w,sp
 		jmp	(MAINPROG).w
 ; ---------------------------------------------------------------------------
@@ -5810,7 +5811,7 @@ loc_814C:
 		add.w	d1,$C(a0)
 		jsr	(sub_CCCA).l
 		jsr	(sub_82B2).l
-		jsr	(sub_1640).w
+		jsr	(BuildSprites).w
 		bsr.w	sub_F374
 		tst.b	($FFFFC93D).w
 		bpl.w	loc_808A
@@ -5818,7 +5819,7 @@ loc_814C:
 
 locret_8194:
 		rts
-; End of function sub_8064
+; End of function Field_PauseGame
 
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5967,7 +5968,7 @@ nullsub_1:
 
 
 sub_82B2:
-							; sub_8064+116p
+							; Field_PauseGame+116p
 		move.w	($FFFFD830).w,d0
 		bpl.s	loc_82BA
 		moveq	#0,d0
@@ -6681,25 +6682,25 @@ loc_89EC:
 		tst.b	($FFFFFFC9).w
 		bpl.s	loc_89EC
 		bsr.w	sub_F390
-		jsr	(loc_8A3A).l
-		jsr	(sub_8B7E).l
+		jsr	(Level_ReadController).l
+		jsr	(Level_PauseGame).l
 		jsr	(sub_CCCA).l
 		jsr	(sub_A178).l
 		jsr	(sub_9514).l
 		jsr	(sub_F12C).l
 		jsr	(sub_D20A).l
-		jsr	(sub_EBAE).l
-		jsr	(sub_F954).l
+		jsr	(Level_UpdateHUD).l
+		jsr	(Level_AnimateBG).l
 		disable_ints
-		jsr	(sub_1640).w
+		jsr	(BuildSprites).w
 		enable_ints
 		rts
 
 ; =============== S U B	R O U T	I N E =======================================
 
 
-loc_8A3A:
-							; sub_8B7E+32p
+Level_ReadController:
+							; Level_PauseGame+32p
 		jsr	(sub_96E).w
 		lea	($FFFFC938).w,a3
 		moveq	#0,d1
@@ -6742,7 +6743,7 @@ loc_8A3A:
 loc_8AB4:
 		lea	($FFFFD8AC).w,a4
 		bra.w	sub_8ABC
-; End of function loc_8A3A
+; End of function Level_ReadController
 
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6813,7 +6814,7 @@ loc_8B1C:
 ; =============== S U B	R O U T	I N E =======================================
 
 
-sub_8B7E:
+Level_PauseGame:
 		tst.b	($FFFFD89F).w
 		bpl.w	locret_8BFC
 		move.b	($FFFFC93C).w,d0
@@ -6836,7 +6837,7 @@ loc_8BA4:
 loc_8BAA:
 		tst.b	($FFFFFFC9).w
 		bpl.s	loc_8BAA
-		jsr	(loc_8A3A).l
+		jsr	(Level_ReadController).l
 		move.w	($FFFFD8A4).w,d0
 		move.w	($FFFFD8A6).w,d1
 		add.w	d0,d0
@@ -6851,7 +6852,7 @@ loc_8BAA:
 		add.w	d1,$C(a0)
 		jsr	(sub_CCCA).l
 		jsr	(sub_9514).l
-		jsr	(sub_1640).w
+		jsr	(BuildSprites).w
 		bsr.w	sub_F374
 		tst.b	($FFFFC93D).w
 		bpl.s	loc_8BA4
@@ -6859,7 +6860,7 @@ loc_8BAA:
 
 locret_8BFC:
 		rts
-; End of function sub_8B7E
+; End of function Level_PauseGame
 
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7165,14 +7166,14 @@ loc_9000:
 		clr.l	(v_subgamemode).w
 		cmpi.w	#9,($FFFFD834).w
 		bne.s	loc_9014
-		move.w	#$20,(v_gamemode).w		; " "
+		move.w	#id_Null,(v_gamemode).w		; " "
 		rts
 ; ---------------------------------------------------------------------------
 
 loc_9014:
 		tst.w	($FFFFD836).w
 		bne.s	loc_9022
-		move.w	#$10,(v_gamemode).w
+		move.w	#id_Field,(v_gamemode).w
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -7181,7 +7182,7 @@ loc_9022:
 		andi.w	#3,d0
 		move.w	d0,($FFFFD83A).w
 		move.w	#1,($FFFFD836).w
-		move.w	#$18,(v_gamemode).w
+		move.w	#id_Level,(v_gamemode).w
 		rts
 ; ---------------------------------------------------------------------------
 
@@ -7317,7 +7318,7 @@ loc_9452:
 		bpl.s	loc_94A0
 		move.b	#flg_FadeOut,d0
 		jsr	(PlayMusic).l
-		move.w	#8,(v_gamemode).w
+		move.w	#id_Title,(v_gamemode).w
 		clr.l	(v_subgamemode).w
 		rts
 ; ---------------------------------------------------------------------------
@@ -13598,7 +13599,7 @@ locret_CCC8:
 
 
 sub_CCCA:
-							; sub_8064+110p ...
+							; Field_PauseGame+110p ...
 		movea.w	($FFFFD862).w,a0
 		movea.w	($FFFFD864).w,a1
 		move.w	8(a0),d0
@@ -16906,7 +16907,7 @@ locret_EBAC:
 ; =============== S U B	R O U T	I N E =======================================
 
 
-sub_EBAE:
+Level_UpdateHUD:
 		lea	($FFFFD85C).w,a6
 
 loc_EBB2:
@@ -16921,7 +16922,7 @@ loc_EBBA:
 		move.b	6(a6),d0
 		jsr	loc_EBC8(pc,d0.w)
 		bra.s	loc_EBB2
-; End of function sub_EBAE
+; End of function Level_UpdateHUD
 
 ; ---------------------------------------------------------------------------
 
@@ -16968,24 +16969,24 @@ loc_EC02:
 loc_EC20:
 		move.b	#bgm_GameOver,d0
 		jsr	(PlayMusic).l
-		move.w	#$300,d0
+		move.w	#$300,d0		; this basically performs a spinlock for 12 seconds
 
-loc_EC2E:
+.loop:
 		bclr	#7,($FFFFFFC9).w
 
-loc_EC34:
-		tst.b	($FFFFFFC9).w
-		bpl.s	loc_EC34
-		dbf	d0,loc_EC2E
+.wait:
+		tst.b	($FFFFFFC9).w	
+		bpl.s	.wait
+		dbf	d0,.loop
 		clr.w	(v_subgamemode).w
 		move.w	($FFFFD834).w,d0
 		addq.w	#1,d0
 		andi.w	#1,d0
 		move.w	d0,($FFFFD834).w
 		clr.w	($FFFFD836).w
-		move.w	#$10,(v_gamemode).w
-		movea.l	(RomStart).w,sp
-		jmp	(MAINPROG).w
+		move.w	#id_Field,(v_gamemode).w; change game mode to Field
+		movea.l	(RomStart).w,sp		; set the stack pointer
+		jmp	(MAINPROG).w		; jump to the main game loop
 ; ---------------------------------------------------------------------------
 
 loc_EC62:
@@ -17824,7 +17825,7 @@ sub_F328:
 
 
 sub_F374:
-							; sub_8B7E+70p
+							; Level_PauseGame+70p
 		tst.b	($FFFFFDC1).w
 		bgt.s	loc_F37C
 		bsr.s	sub_F328
@@ -18013,7 +18014,7 @@ loc_F504:
 		cmpi.w	#$14,d0
 		bge.s	locret_F536
 		jsr	loc_F520(pc,d0.w)
-		jsr	(sub_1640).w
+		jsr	(BuildSprites).w
 		bra.s	sub_F4FE
 ; ---------------------------------------------------------------------------
 		rts
@@ -18047,7 +18048,7 @@ loc_F53E:
 		tst.b	($FFFFFFC9).w
 		bpl.s	loc_F53E
 		jsr	(sub_96E).w
-		jsr	(sub_1640).w
+		jsr	(BuildSprites).w
 		tst.b	($FFFFFDC2).w
 		beq.s	loc_F562
 		btst	#7,($FFFFC93D).w
@@ -18472,13 +18473,13 @@ sub_F94A:
 ; =============== S U B	R O U T	I N E =======================================
 
 
-sub_F954:
+Level_AnimateBG:
 		move.w	($FFFFD834).w,d0
 		add.w	d0,d0
 		lea	loc_F964(pc),a0
 		adda.w	(a0,d0.w),a0
 		jmp	(a0)
-; End of function sub_F954
+; End of function Level_AnimateBG
 
 ; ---------------------------------------------------------------------------
 loc_F964:	dc.w locret_FA0A-loc_F964
