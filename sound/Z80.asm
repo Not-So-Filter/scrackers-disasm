@@ -330,9 +330,8 @@ loc_B9:
 		ld	a, zmake68kBank(SoundBank)
 	else
 		; DANGER!
-		; This is bugged, it adds 1 to the bank, which makes it point
-		; to the DAC Index instead of the Sound Index.
-		ld	a, zmake68kBank(SoundBank)+1
+		; This is bugged, it's supposed to be the sound bank...
+		ld	a, zmake68kBank(DACBank)
 	endif
 		ld	(zSoundBank), a
 
@@ -1165,7 +1164,7 @@ PlaySoundID:
 		ret	nc				; do nothing...
 	else
 		; DANGER!
-		; Some checks are in incorrect ranges and not checked!
+		; Some checks are in incorrect ranges and not checked against any bounds!
 		; Music checks 80-9F (proper range should be 81-86)
 		; Special SFX checks B0-DF (proper range should be D0-D3)
 		cp	bgm_Last+1Ah			; is the ID music?
