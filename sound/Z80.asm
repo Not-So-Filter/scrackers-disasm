@@ -326,7 +326,7 @@ loc_B9:
 		call	StopAllSound
 		ld	a, zmake68kBank(MusicBank)
 		ld	(zMusicBank), a
-	if FixBugs
+	if fixBugs
 		ld	a, zmake68kBank(SoundBank)
 	else
 		; DANGER!
@@ -336,7 +336,7 @@ loc_B9:
 	endif
 		ld	(zSoundBank), a
 
-	if FixBugs
+	if fixBugs
 		ld	de, 0				; set DAC length to nothing
 	endif
 		; DANGER!
@@ -345,7 +345,7 @@ loc_B9:
 		; constant crashes on hardware if nothing is played on the
                 ; Sega Screen or anywhere that sound isn't being played.
 		ld	hl, zSoundBank
-	if ~~FixBugs
+	if ~~fixBugs
 		ld	a, (hl)
 	endif
 		bankswitch

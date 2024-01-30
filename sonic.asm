@@ -7,7 +7,7 @@
 
 	cpu 68000
 
-FixBugs = 0
+fixBugs = 0
 ;	| If 1, fixes some bugs (mainly sound driver related)
 zeroOffsetOptimization = 0
 ;	| If 1, makes a handful of zero-offset instructions smaller
