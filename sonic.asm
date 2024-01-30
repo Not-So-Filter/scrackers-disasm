@@ -18912,13 +18912,12 @@ DAC_Sample2_End:even
 DAC_Sample3:	binclude	"Sound/DAC/Tom.dpcm"	; DAC 83-85 [Hi to Low pitches] (Timpani/Tom-beat Sample)
 DAC_Sample3_End:even
 ; ---------------------------------------------------------------------------
-; these two samples are read in the Z80 table and can be heard when note 86
-; and 87 are triggered in the SMPS music (however they are not used in any of
-; the SMPS music)
+; these two samples can be heard when note 86 and 87 are triggered in music
+; (however they are not used in any of the regular music)
 ; ---------------------------------------------------------------------------
-DAC_Sample4:	binclude	"Sound/DAC/Let's Go.dpcm" ; DAC 86 (Unknown voice "Let"s Go" or "Ley"k Go" in Japanese accent)
+DAC_Sample4:	binclude	"Sound/DAC/Let's Go.dpcm" ; DAC 86 (Unknown voice: "Lets Go" or "Ley'k Go" in Japanese accent)
 DAC_Sample4_End:even
-DAC_Sample5:	binclude	"Sound/DAC/Hey.dpcm"	; DAC 87 (Unknown voice "Hey!" or "Hez!" in Japanese accent)
+DAC_Sample5:	binclude	"Sound/DAC/Hey.dpcm"	; DAC 87 (Unknown voice: "Hey!" or "Hez!" in Japanese accent)
 DAC_Sample5_End:even
 		finishBank
 ; ---------------------------------------------------------------------------
