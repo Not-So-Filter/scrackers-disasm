@@ -1,11 +1,20 @@
 Snd05_Ring_Loss_Header:
 	smpsHeaderStartSong 3, 1
+	if ~~fixBugs
 	smpsHeaderVoice     Snd05_Ring_Loss_Voices+$4000
+	else
+	smpsHeaderVoice     Snd05_Ring_Loss_Voices
+	endif
 	smpsHeaderTempoSFX  $01
 	smpsHeaderChanSFX   $02
 
+	if ~~fixBugs
 	smpsHeaderSFXChannel cFM5, Snd05_Ring_Loss_FM5+$4000,	$00, $05
 	smpsHeaderSFXChannel cFM6, Snd05_Ring_Loss_FM6+$4000,	$00, $08
+	else
+	smpsHeaderSFXChannel cFM5, Snd05_Ring_Loss_FM5,	$00, $05
+	smpsHeaderSFXChannel cFM6, Snd05_Ring_Loss_FM6,	$00, $08
+	endif
 
 ; FM5 Data
 Snd05_Ring_Loss_FM5:

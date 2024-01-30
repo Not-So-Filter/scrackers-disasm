@@ -1366,7 +1366,7 @@ sub_DAA:
 
 ; ===========================================================================
 
-		include "_inc\Nemesis Decompression.asm"
+		include "_inc/Nemesis Decompression.asm"
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -1549,8 +1549,8 @@ loc_1034:
 		dbf	d1,loc_1034
 		rts
 
-		include "_inc\Enigma Decompression.asm"
-		include "_inc\Kosinski Decompression.asm"
+		include "_inc/Enigma Decompression.asm"
+		include "_inc/Kosinski Decompression.asm"
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -2504,7 +2504,7 @@ loc_1A10:
 ;
 ; ---------------------------------------------------------------------------
 
-; Something to do with Collision"s Rotation
+; Something to do with collision rotation
 
 sub_1A3C:
 		movea.w	d4,a3
@@ -3005,13 +3005,13 @@ loc_1E0C:
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 CollisionArrayNorm:
-		binclude	"collide\Collision Array (Normal).bin"
+		binclude	"collide/Collision Array (Normal).bin"
 		even
 CollisionArrayRota:
-		binclude	"collide\Collision Array (Rotated).bin"
+		binclude	"collide/Collision Array (Rotated).bin"
 		even
 CurveResistMappings:
-		binclude	"collide\Angle Map.bin"
+		binclude	"collide/Angle Map.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -3658,7 +3658,7 @@ word_4368:	dc.w 0
 		dc.w $6B4E
 		dc.w $F9
 		dc.w $6000
-PAL_Unknown_1:	binclude	"Palettes\PalUnknown01.bin"
+PAL_Unknown_1:	binclude	"Palettes/PalUnknown01.bin"
 		even
 		dc.b $82, $83, $84, $85, $8D, $90, $87,	$8B, $8C, $91, $92, 0, $48, 0, $89, 8
 		dc.b 0,	$FF, $4A, $FF, $6A, $61, $69, $4E, 0, $8A, $4E,	0, $8B,	$4E, 0,	$CC
@@ -3686,7 +3686,7 @@ PAL_Unknown_1:	binclude	"Palettes\PalUnknown01.bin"
 		dc.b $23, 0, 0,	$4E, $D, $4C, $7F, $60,	$4E, $80, 0, $1B, $7E, 0, $22, $77
 		dc.b 0,	$1F, $FF, $72, $32, $D8, 2, 0, $E3, $4E, $10, $60, $60,	$4E, $70, $30
 		dc.b $D8, 2, 0,	$ED, $43, 0, $8D, $D3, $41, $D4, $1E, 0, $30, $51, $FF,	$4E
-PAL_Unknown_2:	binclude	"Palettes\PalUnknown02.bin"
+PAL_Unknown_2:	binclude	"Palettes/PalUnknown02.bin"
 		even
 		dc.b $4E, $4E, $30, $D8, $4E, 0, $60, 0, $60, 0, $48, $41, 2, $21, $C8,	$4C
 		dc.b 1,	$46, $27, $70, $72, $74, $36, $C0, $4E,	8, $41,	2, $23,	$4C, 0,	0
@@ -4093,8 +4093,8 @@ SoundDriverLoad:
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 Z80_Driver:
-		include	"sound\Z80.asm"
-Z80_Driver_end:
+		include	"sound/Z80.asm"
+Z80_Driver_end:	even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -5287,9 +5287,9 @@ SegatoVDPRep:
 		rte
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-PAL_Segalogo:	binclude	"Palettes\PalSegaLogo.bin" ; palettes used in the Sega logo
+PAL_Segalogo:	binclude	"Palettes/PalSegaLogo.bin" ; palettes used in the Sega logo
 		even
-ARTCRA_SegaLogo:binclude	"artcra\Sega Logo.bin"	; compressed Sega patterns
+ARTCRA_SegaLogo:binclude	"artcra/Sega Logo.bin"	; compressed Sega patterns
 		even
 ; ---------------------------------------------------------------------------
 ; Unknown Data
@@ -5408,7 +5408,7 @@ loc_7462:
 		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-PAL_MainMenus:	binclude	"Palettes\PalMainMenus.bin"
+PAL_MainMenus:	binclude	"Palettes/PalMainMenus.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -5516,16 +5516,16 @@ sub_75BC:
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ARTNEM_MainMenusText:
-		binclude	"artnem\Main Menu Text.bin"
+		binclude	"artnem/Main Menu Text.bin"
 		even
 MAPUNC_TitleMenu_1:
-		binclude	"Uncompressed\MapuncTitleMenu01.bin" ; Uncompressed mappings	for the	title screen banner
+		binclude	"Uncompressed/MapuncTitleMenu01.bin" ; Uncompressed mappings	for the	title screen banner
 		even
 MAPUNC_TitleMenu_2:
-		binclude	"Uncompressed\MapuncTitleMenu02.bin" ; Uncompressed mappings	for the	title menu selection
+		binclude	"Uncompressed/MapuncTitleMenu02.bin" ; Uncompressed mappings	for the	title menu selection
 		even
 MAPUNC_TitleMenu_3:
-		binclude	"Uncompressed\MapuncTitleMenu03.bin" ; Uncompressed mappings	for the	title menu (1ST	ROM 19940401)
+		binclude	"Uncompressed/MapuncTitleMenu03.bin" ; Uncompressed mappings	for the	title menu (1ST	ROM 19940401)
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -5566,7 +5566,7 @@ Fields:
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 PAL_PrimaryColours_Field:
-		binclude	 "Palettes\PalPrimaryColoursField.bin"
+		binclude	 "Palettes/PalPrimaryColoursField.bin"
 		even
 ; ---------------------------------------------------------------------------
 loc_7ED8:	dc.w $8230
@@ -5591,7 +5591,7 @@ loc_7EF8:
 		tst.b	($FFFFFFC9).w			; I think these act like a lagger, removing them...
 		bpl.s	loc_7EF8			; ...causes the fields to run extremely fast
 		bsr.w	sub_F390
-		jsr	(sub_7F2E).l			; something to do with controls (when commented out, controls wouldn"t work)
+		jsr	(sub_7F2E).l			; something to do with controls (when commented out, controls wouldn't work)
 		jsr	(sub_8064).l			; pause menu bar related?
 		jsr	(sub_CCCA).l			; commented out causes screen not to follow durin normal play, and stars on the tether didn"t animate
 		jsr	(sub_81F8).l			; Sonic/Tails object related
@@ -6585,7 +6585,7 @@ word_87BC:	dc.l ANI_SonicFields
 
 ; ===========================================================================
 
-		include "_inc\Crackers Decompression.asm"
+		include "_inc/Crackers Decompression.asm"
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -6656,7 +6656,7 @@ loc_896C:
 		bra.w	loc_89E0
 ; ---------------------------------------------------------------------------
 PAL_PrimaryColours:
-		binclude	"Palettes\PalPrimaryColours.bin"
+		binclude	"Palettes/PalPrimaryColours.bin"
 		even
 loc_89C8:	dc.w $8230
 		dc.w $832C
@@ -6981,7 +6981,7 @@ loc_8D00:
 		dbf	d7,loc_8D00
 		rts
 ; ---------------------------------------------------------------------------
-PAL_TechnoTowerZone:binclude "Palettes\PalTechnoTowerZone.bin"
+PAL_TechnoTowerZone:binclude "Palettes/PalTechnoTowerZone.bin"
 		even
 ; ---------------------------------------------------------------------------
 
@@ -7229,22 +7229,22 @@ sub_9098:
 
 ; ---------------------------------------------------------------------------
 ARTNEM_MenuSelectorBorder:
-		binclude	"artnem\Menu Select Border.bin" ; Selector Art for Select Menu screen
+		binclude	"artnem/Menu Select Border.bin" ; Selector Art for Select Menu screen
 		even
 MAPUNC_SelectMenu_1:
-		binclude	"Uncompressed\MapuncSelectMenu01.bin" ; Uncompressed mappings	for the	select menu (Top W? numbers that scroll)
+		binclude	"Uncompressed/MapuncSelectMenu01.bin" ; Uncompressed mappings	for the	select menu (Top W? numbers that scroll)
 		even
 MAPUNC_SelectMenu_2:
-		binclude	"Uncompressed\MapuncSelectMenu02.bin" ; Uncompressed mappings for the select menu (World ? words)
+		binclude	"Uncompressed/MapuncSelectMenu02.bin" ; Uncompressed mappings for the select menu (World ? words)
 		even
 MAPUNC_SelectMenu_3:
-		binclude	"Uncompressed\MapuncSelectMenu03.bin" ; Uncompressed mappings	for the	select menu (Attraction	LV.? words)
+		binclude	"Uncompressed/MapuncSelectMenu03.bin" ; Uncompressed mappings	for the	select menu (Attraction	LV.? words)
 		even
 MAPUNC_SelectMenu_4:
-		binclude	"Uncompressed\MapuncSelectMenu04.bin" ; Uncompressed mappings	for the	select menu (Field/Attraction words)
+		binclude	"Uncompressed/MapuncSelectMenu04.bin" ; Uncompressed mappings	for the	select menu (Field/Attraction words)
 		even
 MAPUNC_SelectMenu_5:
-		binclude	"Uncompressed\MapuncSelectMenu05.bin" ; Uncompressed mappings	for the	select menu (Special Stage word)
+		binclude	"Uncompressed/MapuncSelectMenu05.bin" ; Uncompressed mappings	for the	select menu (Special Stage word)
 		even
 ; ---------------------------------------------------------------------------
 
@@ -7315,7 +7315,7 @@ loc_9452:
 		enable_ints
 		move.b	($FFFFC93D).w,d0
 		bpl.s	loc_94A0
-		move.b	#$E0,d0
+		move.b	#flg_FadeOut,d0
 		jsr	(PlayMusic).l
 		move.w	#8,(v_gamemode).w
 		clr.l	(v_subgamemode).w
@@ -8203,7 +8203,7 @@ SSZ_MapBGLocs:	dc.l MAPENI_SSZ16x16_BG
 		dc.l MAPENI_SSZ128x128_BG
 		dc.l MAPENI_SSZLayout_BG
 PAL_SpeedSliderZone:
-		binclude	"Palettes\PalSpeedSliderZone.bin"
+		binclude	"Palettes/PalSpeedSliderZone.bin"
 		even
 TTZ_ArtLocs:	dc.l ARTNEM_TTZ8x8_FG
 		dc.l ARTNEM_TTZ8x8_BG
@@ -8251,7 +8251,7 @@ TTZ_MapBGLocs:	dc.l MAPENI_TTZ16x16_BG
 		dc.l MAPENI_TTZ128x128_BG
 		dc.l MAPENI_TTZLayout_BG
 PAL_TechnoTowerZoneUnused:
-		binclude	"Palettes\PalTechnoTowerZoneUnused.bin"
+		binclude	"Palettes/PalTechnoTowerZoneUnused.bin"
 		even
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -8774,13 +8774,13 @@ loc_A192:
 ; ---------------------------------------------------------------------------
 		bra.w	loc_A1BC			; tails controls
 ; ---------------------------------------------------------------------------
-		bra.w	loc_A1F2			; seems to effect the positioning of sonic"s arm
+		bra.w	loc_A1F2			; seems to effect the positioning of Sonics arm
 ; ---------------------------------------------------------------------------
 		bra.w	loc_A1FC			; something to do with when tails is still and sonic is running at full speed
 ; ---------------------------------------------------------------------------
-		bra.w	loc_A22A			; (I think) sonic"s loading parts
+		bra.w	loc_A22A			; (I think) Sonics loading parts
 ; ---------------------------------------------------------------------------
-		bra.w	loc_A234			; tails" loading parts (his two tails etc)
+		bra.w	loc_A234			; tails' loading parts (his two tails etc)
 ; ---------------------------------------------------------------------------
 
 loc_A1AA:
@@ -18589,7 +18589,7 @@ TTZ_AniTileLocs:dc.l $001023E0
 
 sub_FA44:
 		move.w	UnkReps(pc),d7			; load number of repeat times (22) to d7
-		lea	UnkData(pc),a0			; load data location to a0
+		lea	UnkReps+2(pc),a0		; load data location to a0
 
 loc_FA4C:
 		move.w	(a0)+,d1			; load VRam location
@@ -18608,8 +18608,7 @@ loc_FA4C:
 ; ---------------------------------------------------------------------------
 
 UnkReps:	dc.w $0022				; number of uncompressed art files to read
-
-UnkData:	dc.w $0000				; VRam location
+		dc.w $0000				; VRam location
 		dc.l AniArt_Hud1to9_Sym			; "0" Hud	; location of Art
 		dc.w $0020				; size of Art
 		dc.w $0080
@@ -18722,7 +18721,7 @@ UnkData:	dc.w $0000				; VRam location
 ; Data Location (0000FB82 - 0000FDAF)
 ; Striped out
 ; UnkData_0000FB82:
-		binclude	"UnknownCodes\UnknownData_0000FB82.bin"
+		binclude	"UnknownCodes/UnknownData_0000FB82.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -18732,7 +18731,7 @@ UnkData:	dc.w $0000				; VRam location
 ; Data Location (0000FDB0 - 0000FFFF)
 ; Striped out
 ; UnkData_0000FDB0:
-		binclude	"UnknownCodes\UnknownData_0000FDB0.bin"
+		binclude	"UnknownCodes/UnknownData_0000FDB0.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -18740,12 +18739,12 @@ UnkData:	dc.w $0000				; VRam location
 ; Music Data (Z80 aligned to $00010000)
 ; ---------------------------------------------------------------------------
 MusicBank:	startBank
-Music81:	include	"Sound\Music\Mus81 - Electoria.asm"
-Music82:	include	"Sound\Music\Mus82 - Walkin'.asm"
-Music83:	include	"Sound\Music\Mus83 - Hyper-Hyper.asm"
-Music84:	include	"Sound\Music\Mus84 - Evening Star.asm"
-Music85:	include	"Sound\Music\Mus85 - Moonrise.asm"
-Music86:	include	"Sound\Music\Mus86 - Game Over.asm"
+Music81:	include	"Sound/Music/Mus81 - Electoria.asm"
+Music82:	include	"Sound/Music/Mus82 - Walkin'.asm"
+Music83:	include	"Sound/Music/Mus83 - Hyper-Hyper.asm"
+Music84:	include	"Sound/Music/Mus84 - Evening Star.asm"
+Music85:	include	"Sound/Music/Mus85 - Moonrise.asm"
+Music86:	include	"Sound/Music/Mus86 - Game Over.asm"
 		even
 		finishBank
 ; ---------------------------------------------------------------------------
@@ -18756,7 +18755,7 @@ Music86:	include	"Sound\Music\Mus86 - Game Over.asm"
 ; Data Location (00011C66 - 00012250)
 ; Striped out
 ; UnkData_00011C66:
-		binclude	"UnknownCodes\UnknownData_00011C66.bin"
+		binclude	"UnknownCodes/UnknownData_00011C66.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -18765,7 +18764,7 @@ Music86:	include	"Sound\Music\Mus86 - Game Over.asm"
 ; Data Location (00012251 - 000123FF)
 ; Striped out
 ; UnkData_00012251:
-		binclude	"UnknownCodes\UnknownData_00012251.bin"
+		binclude	"UnknownCodes/UnknownData_00012251.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -18774,7 +18773,7 @@ Music86:	include	"Sound\Music\Mus86 - Game Over.asm"
 ; Data Location (00012400 - 00012FFF)
 ; Striped out
 ; UnkData_00012400:
-		binclude	"UnknownCodes\UnknownData_00012400.bin"
+		binclude	"UnknownCodes/UnknownData_00012400.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -18783,7 +18782,7 @@ Music86:	include	"Sound\Music\Mus86 - Game Over.asm"
 ; Data Location (00013000 - 000145FF)
 ; Striped out
 ; UnkData_00013000:
-		binclude	"UnknownCodes\UnknownData_00013000.bin"
+		binclude	"UnknownCodes/UnknownData_00013000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -18792,7 +18791,7 @@ Music86:	include	"Sound\Music\Mus86 - Game Over.asm"
 ; Data Location (00014600 - 000150FF)
 ; Striped out
 ; UnkData_00014600:
-		binclude	"UnknownCodes\UnknownData_00014600.bin"
+		binclude	"UnknownCodes/UnknownData_00014600.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -18801,7 +18800,7 @@ Music86:	include	"Sound\Music\Mus86 - Game Over.asm"
 ; Data Location (00015100 - 0001562F)
 ; Striped out
 ; UnkData_00013000:
-		binclude	"UnknownCodes\UnknownData_00015100.bin"
+		binclude	"UnknownCodes/UnknownData_00015100.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -18812,35 +18811,35 @@ Music86:	include	"Sound\Music\Mus86 - Game Over.asm"
 ; Data Location (00016000 - 00016703)
 ; Striped out
 ; UnkData_00016000:
-		binclude	"UnknownCodes\UnknownData_00016000.bin"
+		binclude	"UnknownCodes/UnknownData_00016000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Align to $00018000, Sound Data (Unused by Z80)
 ; ---------------------------------------------------------------------------
 SoundBank:	startBank
-SoundA0:	include	"Sound\SFX\SndA0 - Jump.asm"	; Jump SFX (Same as Sonic CD FM NO.02)
-SoundA1:	include	"Sound\SFX\SndA1 - Cash Register.asm" ; Cash Machine SFX (Same as Sonic 1 SFX C5)
-SoundA2:	include	"Sound\SFX\SndA2.asm"		; strange noise (it has modulation of "01 01 28 00", which the "00" makes the modulation do nothing) (this MAY be a "get hit by spikes" SFX unfinished)
-SoundA3:	include	"Sound\SFX\SndA3 - Bomb.asm"	; Bomb explode SFX (Same as Sonic 1 SFX C4)
-SoundA4:	include	"Sound\SFX\SndA4 - Skid.asm"	; Skidding SFX (Same as Sonic 1 SFX A4)
-SoundA5:	include	"Sound\SFX\SndA5 - Ring Loss.asm" ; Ring Loss SFX (Same as Sonic 1 SFX C6)
-SoundA6:	include	"Sound\SFX\SndA6 - Ring.asm"	; Ring Collect SFX (Same as Sonic 1 SFX B5) (Plays on Right Speaker, may very well be the "right to left to right" speaker thing)
-SoundA7:	include	"Sound\SFX\SndA7 - Break Item.asm" ; Destroy Badnik/Monitor SFX (Same a Sonic 3 SFX 3D)
-SoundA8:	include	"Sound\SFX\SndA8 - Spring.asm"	; Spring SFX (Same as Sonic 3 SFX B1)
-SoundA9:	include	"Sound\SFX\SndA9 - Lamppost.asm" ; Check Point SFX (Same as Sonic 1 SFX A1)
+SoundA0:	include	"Sound/SFX/SndA0 - Jump.asm"	; Jump SFX (Same as Sonic CD FM NO.02)
+SoundA1:	include	"Sound/SFX/SndA1 - Cash Register.asm" ; Cash Machine SFX (Same as Sonic 1 SFX C5)
+SoundA2:	include	"Sound/SFX/SndA2.asm"		; strange noise (it has modulation of "01 01 28 00", which the "00" makes the modulation do nothing) (this MAY be a "get hit by spikes" SFX unfinished)
+SoundA3:	include	"Sound/SFX/SndA3 - Bomb.asm"	; Bomb explode SFX (Same as Sonic 1 SFX C4)
+SoundA4:	include	"Sound/SFX/SndA4 - Skid.asm"	; Skidding SFX (Same as Sonic 1 SFX A4)
+SoundA5:	include	"Sound/SFX/SndA5 - Ring Loss.asm" ; Ring Loss SFX (Same as Sonic 1 SFX C6)
+SoundA6:	include	"Sound/SFX/SndA6 - Ring.asm"	; Ring Collect SFX (Same as Sonic 1 SFX B5) (Plays on Right Speaker, may very well be the "right to left to right" speaker thing)
+SoundA7:	include	"Sound/SFX/SndA7 - Break Item.asm" ; Destroy Badnik/Monitor SFX (Same a Sonic 3 SFX 3D)
+SoundA8:	include	"Sound/SFX/SndA8 - Spring.asm"	; Spring SFX (Same as Sonic 3 SFX B1)
+SoundA9:	include	"Sound/SFX/SndA9 - Lamppost.asm" ; Check Point SFX (Same as Sonic 1 SFX A1)
 ; ---------------------------------------------------------------------------
-; these SFX below play Nothing (this plays F2 strait away and does nothing)
+; these SFX below play Nothing (plays F2 straight away and does nothing)
 ; however they have the same SMPS Instrument in each of them ("blurrr.. (buzzer) noise with static")
-; I"m asuming these are just simply blank SFX slots ready to be used when the sound
+; I'm asuming these are just simply blank SFX slots ready to be used when the sound
 ; programmers needed them.
 ; ---------------------------------------------------------------------------
-SoundAA:	include	"Sound\SFX\SndAA.asm"
-SoundAB:	include	"Sound\SFX\SndAB.asm"
-SoundAC:	include	"Sound\SFX\SndAC.asm"
-SoundAD:	include	"Sound\SFX\SndAD.asm"
-SoundAE:	include	"Sound\SFX\SndAE.asm"
-SoundAF:	include	"Sound\SFX\SndAF.asm"
+SoundAA:	include	"Sound/SFX/SndAA.asm"
+SoundAB:	include	"Sound/SFX/SndAB.asm"
+SoundAC:	include	"Sound/SFX/SndAC.asm"
+SoundAD:	include	"Sound/SFX/SndAD.asm"
+SoundAE:	include	"Sound/SFX/SndAE.asm"
+SoundAF:	include	"Sound/SFX/SndAF.asm"
 		finishBank
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -18852,7 +18851,7 @@ SoundAF:	include	"Sound\SFX\SndAF.asm"
 ; Data Location (00018341 - 00018740)
 ; Striped out
 ; UnkData_00018341:
-		binclude	"UnknownCodes\UnknownData_00018341.bin"
+		binclude	"UnknownCodes/UnknownData_00018341.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -18861,7 +18860,7 @@ SoundAF:	include	"Sound\SFX\SndAF.asm"
 ; Data Location (00018741 - 0001C98F)
 ; Striped out
 ; UnkData_00018741:
-		binclude	"UnknownCodes\UnknownData_00018741.bin"
+		binclude	"UnknownCodes/UnknownData_00018741.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -18870,7 +18869,7 @@ SoundAF:	include	"Sound\SFX\SndAF.asm"
 ; Data Location (0001C990 - 0001CD8F)
 ; Striped out
 ; UnkData_0001C990:
-		binclude	"UnknownCodes\UnknownData_0001C990.bin"
+		binclude	"UnknownCodes/UnknownData_0001C990.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -18879,7 +18878,7 @@ SoundAF:	include	"Sound\SFX\SndAF.asm"
 ; Data Location (0001CD90 - 0001F761)
 ; Striped out
 ; UnkData_0001CD90:
-		binclude	"UnknownCodes\UnknownData_0001CD90.bin"
+		binclude	"UnknownCodes/UnknownData_0001CD90.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -18889,7 +18888,7 @@ SoundAF:	include	"Sound\SFX\SndAF.asm"
 ; Data Location (0001F762 - 0001FB61)
 ; Striped out
 ; UnkData_0001F762:
-		binclude	"UnknownCodes\UnknownData_0001F762.bin"
+		binclude	"UnknownCodes/UnknownData_0001F762.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -18898,27 +18897,27 @@ SoundAF:	include	"Sound\SFX\SndAF.asm"
 ; Data Location (0001FB62 - 0001FFFF)
 ; Striped out
 ; UnkData_0001FB62:
-		binclude	"UnknownCodes\UnknownData_0001FB62.bin"
+		binclude	"UnknownCodes/UnknownData_0001FB62.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Align to $00020000, PCM Voice Data
 ; ---------------------------------------------------------------------------
 DACBank:	startBank
-DAC_Sample1:	binclude	"Sound\DAC\Kick.dpcm"	; DAC 81 (Beat Sample)
+DAC_Sample1:	binclude	"Sound/DAC/Kick.dpcm"	; DAC 81 (Beat Sample)
 DAC_Sample1_End:even
-DAC_Sample2:	binclude	"Sound\DAC\Snare.dpcm"	; DAC 82 (Snare Sample)
+DAC_Sample2:	binclude	"Sound/DAC/Snare.dpcm"	; DAC 82 (Snare Sample)
 DAC_Sample2_End:even
-DAC_Sample3:	binclude	"Sound\DAC\Tom.dpcm"	; DAC 83-85 [Hi to Low pitches] (Timpani/Tom-beat Sample)
+DAC_Sample3:	binclude	"Sound/DAC/Tom.dpcm"	; DAC 83-85 [Hi to Low pitches] (Timpani/Tom-beat Sample)
 DAC_Sample3_End:even
 ; ---------------------------------------------------------------------------
 ; these two samples are read in the Z80 table and can be heard when note 86
 ; and 87 are triggered in the SMPS music (however they are not used in any of
 ; the SMPS music)
 ; ---------------------------------------------------------------------------
-DAC_Sample4:	binclude	"Sound\DAC\Let's Go.dpcm" ; DAC 86 (Unknown voice "Let"s Go" or "Ley"k Go" in Japanese accent)
+DAC_Sample4:	binclude	"Sound/DAC/Let's Go.dpcm" ; DAC 86 (Unknown voice "Let"s Go" or "Ley"k Go" in Japanese accent)
 DAC_Sample4_End:even
-DAC_Sample5:	binclude	"Sound\DAC\Hey.dpcm"	; DAC 87 (Unknown voice "Hey!" or "Hez!" in Japanese accent)
+DAC_Sample5:	binclude	"Sound/DAC/Hey.dpcm"	; DAC 87 (Unknown voice "Hey!" or "Hez!" in Japanese accent)
 DAC_Sample5_End:even
 		finishBank
 ; ---------------------------------------------------------------------------
@@ -18929,7 +18928,7 @@ DAC_Sample5_End:even
 ; Data Location (000244A2 - 000247EF)
 ; Striped out
 ; UnkData_000244A2:
-		binclude	"UnknownCodes\UnknownData_000244A2.bin"
+		binclude	"UnknownCodes/UnknownData_000244A2.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -18938,7 +18937,7 @@ DAC_Sample5_End:even
 ; Data Location (000247F0 - 00026009)
 ; Striped out
 ; UnkData_000247F0:
-		binclude	"UnknownCodes\UnknownData_000247F0.bin"
+		binclude	"UnknownCodes/UnknownData_000247F0.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -18947,7 +18946,7 @@ DAC_Sample5_End:even
 ; Data Location (0002600A - 00028844)
 ; Striped out
 ; UnkData_0002600A:
-		binclude	"UnknownCodes\UnknownData_0002600A.bin"
+		binclude	"UnknownCodes/UnknownData_0002600A.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -18956,7 +18955,7 @@ DAC_Sample5_End:even
 ; Data Location (00028845 - 0002A222)
 ; Striped out
 ; UnkData_00028845:
-		binclude	"UnknownCodes\UnknownData_00028845.bin"
+		binclude	"UnknownCodes/UnknownData_00028845.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -18965,7 +18964,7 @@ DAC_Sample5_End:even
 ; Data Location (0002A223 - 0002AC5F)
 ; Striped out
 ; UnkData_0002A223:
-		binclude	"UnknownCodes\UnknownData_0002A223.bin"
+		binclude	"UnknownCodes/UnknownData_0002A223.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -18976,7 +18975,7 @@ DAC_Sample5_End:even
 ; Data Location (0002C000 - 0002D1FF)
 ; Striped out
 ; UnkData_0002C000:
-		binclude	"UnknownCodes\UnknownData_0002C000.bin"
+		binclude	"UnknownCodes/UnknownData_0002C000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -18985,91 +18984,91 @@ DAC_Sample5_End:even
 	align $3000
 ; ---------------------------------------------------------------------------
 ArtUnc_HUD:
-	binclude	"artunc\Hud.bin"		; Hud Patterns
+	binclude	"artunc/Hud.bin"		; Hud Patterns
 	even
 ; ---------------------------------------------------------------------------
 ARTNEM_RingTetherStarsUnused:
-	binclude	"artnem\Unused - Ring Tether Stars.bin" ; unused Ring tether stars
+	binclude	"artnem/Unused - Ring Tether Stars.bin" ; unused Ring tether stars
 	even
 ; ---------------------------------------------------------------------------
 ARTNEM_SSZ8x8_FG:
-	binclude	"artnem\8x8 - SSZ FG.bin"	; 8x8 tiles for SSZ FG
+	binclude	"artnem/8x8 - SSZ FG.bin"	; 8x8 tiles for SSZ FG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_SSZ16x16_FG:
-	binclude	"map16\SSZ FG.bin"		; 16x16 blocks for SSZ FG
+	binclude	"map16/SSZ FG.bin"		; 16x16 blocks for SSZ FG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_SSZ128x128_FG:
-	binclude	"map128\SSZ FG.bin"		; 128x128 chunks for SSZ FG
+	binclude	"map128/SSZ FG.bin"		; 128x128 chunks for SSZ FG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_SSZLayout_FG:
-	binclude	"levels\SSZ FG.bin"		; Layout for SSZ FG
+	binclude	"levels/SSZ FG.bin"		; Layout for SSZ FG
 	even
 ; ---------------------------------------------------------------------------
 COL_SSZPrimary:
-	binclude	"collide\ColSSZPrimary.bin"	; Primary Collisions for SSZ
+	binclude	"collide/ColSSZPrimary.bin"	; Primary Collisions for SSZ
 	even
 ; ---------------------------------------------------------------------------
 COL_SSZSecondary:
-	binclude	"collide\ColSSZSecondary.bin"	; Secondary Collisions for SSZ
+	binclude	"collide/ColSSZSecondary.bin"	; Secondary Collisions for SSZ
 	even
 ; ---------------------------------------------------------------------------
 ARTNEM_SSZ8x8_BG:
-	binclude	"artnem\8x8 - SSZ BG.bin"	; 8x8 tiles for SSZ BG
+	binclude	"artnem/8x8 - SSZ BG.bin"	; 8x8 tiles for SSZ BG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_SSZ16x16_BG:
-	binclude	"map16\SSZ BG.bin"		; 16x16 blocks for SSZ BG
+	binclude	"map16/SSZ BG.bin"		; 16x16 blocks for SSZ BG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_SSZ128x128_BG:
-	binclude	"map128\SSZ BG.bin"		; 128x128 chunks for SSZ BG
+	binclude	"map128/SSZ BG.bin"		; 128x128 chunks for SSZ BG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_SSZLayout_BG:
-	binclude	"levels\SSZ BG.bin"		; Layout for SSZ BG
+	binclude	"levels/SSZ BG.bin"		; Layout for SSZ BG
 	even
 ; ---------------------------------------------------------------------------
 ARTNEM_TTZ8x8_FG:
-	binclude	"artnem\8x8 - TTZ FG.bin"	; 8x8 tiles for TTZ FG
+	binclude	"artnem/8x8 - TTZ FG.bin"	; 8x8 tiles for TTZ FG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_TTZ16x16_FG:
-	binclude	"map16\TTZ FG.bin"		; 16x16 blocks for TTZ FG
+	binclude	"map16/TTZ FG.bin"		; 16x16 blocks for TTZ FG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_TTZ128x128_FG:
-	binclude	"map128\TTZ FG.bin"		; 128x128 chunks for TTZ FG
+	binclude	"map128/TTZ FG.bin"		; 128x128 chunks for TTZ FG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_TTZLayout_FG:
-	binclude	"levels\TTZ FG.bin"		; Layout for TTZ FG
+	binclude	"levels/TTZ FG.bin"		; Layout for TTZ FG
 	even
 ; ---------------------------------------------------------------------------
 COL_TTZPrimary:
-	binclude	"collide\ColTTZPrimary.bin"	; Primary Collisions for TTZ
+	binclude	"collide/ColTTZPrimary.bin"	; Primary Collisions for TTZ
 	even
 ; ---------------------------------------------------------------------------
 COL_TTZSecondary:
-	binclude	"collide\ColTTZSecondary.bin"	; Secondary Collisions for TTZ
+	binclude	"collide/ColTTZSecondary.bin"	; Secondary Collisions for TTZ
 	even
 ; ---------------------------------------------------------------------------
 ARTNEM_TTZ8x8_BG:
-	binclude	"artnem\8x8 - TTZ BG.bin"	; 8x8 tiles for TTZ BG
+	binclude	"artnem/8x8 - TTZ BG.bin"	; 8x8 tiles for TTZ BG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_TTZ16x16_BG:
-	binclude	"map16\TTZ BG.bin"		; 16x16 blocks for TTZ BG
+	binclude	"map16/TTZ BG.bin"		; 16x16 blocks for TTZ BG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_TTZ128x128_BG:
-	binclude	"map128\TTZ BG.bin"		; 128x128 chunks for TTZ BG
+	binclude	"map128/TTZ BG.bin"		; 128x128 chunks for TTZ BG
 	even
 ; ---------------------------------------------------------------------------
 MAPENI_TTZLayout_BG:
-	binclude	"levels\TTZ BG.bin"		; Layout for TTZ BG
+	binclude	"levels/TTZ BG.bin"		; Layout for TTZ BG
 	even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19077,107 +19076,107 @@ MAPENI_TTZLayout_BG:
 ; Title Card and Pause Bar Patterns
 ; ---------------------------------------------------------------------------
 ; Note:
-; in this section you"ll notice the coding...
+; in this section you'll notice the bytes...
 ;
-;		dc.w $20
+;		dc.w 32
 ;		dc.l $6
 ;
 ; ...right before the art itself, allow me to explain what it is:
 ;
-; the "0020" is the number of bytes long the current art tile(s) are
-; the "00000006" gets added to the address of the art lable to tell the engine
+; "32" is the number of bytes long the current art tile(s) are
+; "6" gets added to the address of the art label to tell the engine
 ; where the art is, (basically telling it to jump over that first word and
 ; long-word code to get to the art that is directly after it).
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ARTUNC_TitleCardBGAndPause:
-		dc.w $20				; 20 Bytes (1 tile)
+		dc.w 32					; 32 bytes (1 tile)
 		dc.l 6					; jump forward 6 bytes to art
-		binclude "artunc\TCBG1.bin"		; Yellow Pause Bar
+		binclude "artunc/TCBG1.bin"		; Yellow Pause Bar
 ; ---------------------------------------------------------------------------
 TCBG_Tile2:
-		dc.w $20				; 20 Bytes (1 tile)
+		dc.w 32					; 32 bytes (1 tile)
 		dc.l 6					; jump forward 6 bytes to art
-		binclude "artunc\TCBG2.bin"		; Title Card - Black tiles that appear to hide the level design before the title card appears
+		binclude "artunc/TCBG2.bin"		; Title Card - Black tiles that appear to hide the level design before the title card appears
 ; ---------------------------------------------------------------------------
 TCBG_Tile3:
-		dc.w $20				; 20 Bytes (1 tile)
+		dc.w 32					; 32 bytes (1 tile)
 		dc.l 6					; jump forward 6 bytes to art
-		binclude "artunc\TCBG3.bin"		; Title Card - Dark Gray/Blue Bar that comes down first
+		binclude "artunc/TCBG3.bin"		; Title Card - Dark Gray/Blue Bar that comes down first
 ; ---------------------------------------------------------------------------
 TCBG_Tile4:
-		dc.w $20				; 20 Bytes (1 tile)
+		dc.w 32					; 32 bytes (1 tile)
 		dc.l 6					; jump forward 6 bytes to art
-		binclude "artunc\TCBG4.bin"		; Title Card - Light Gray/Blue Bar that appears from top right
+		binclude "artunc/TCBG4.bin"		; Title Card - Light Gray/Blue Bar that appears from top right
 ; ---------------------------------------------------------------------------
 TCBG_Tile5:
-		dc.w $20				; 20 Bytes (1 tile)
+		dc.w 32					; 32 bytes (1 tile)
 		dc.l 6					; jump forward 6 bytes to art
-		binclude "artunc\TCBG5.bin"		; Title Card - Pure White tiles that appear from the left
+		binclude "artunc/TCBG5.bin"		; Title Card - Pure White tiles that appear from the left
 ; ---------------------------------------------------------------------------
 TCBG_Tile6:
-		dc.w $20				; 20 Bytes (1 tile)
+		dc.w 32					; 32 bytes (1 tile)
 		dc.l 6					; jump forward 6 bytes to art
-		binclude "artunc\TCBG6.bin"		; Title Card - Faded Blue tiles that appear from the bottom that move over the Pure White tiles
+		binclude "artunc/TCBG6.bin"		; Title Card - Faded Blue tiles that appear from the bottom that move over the Pure White tiles
 ; ---------------------------------------------------------------------------
 TCBG_Tile7:
-		dc.w $20				; 20 Bytes (1 tile)
+		dc.w 32					; 32 bytes (1 tile)
 		dc.l 6					; jump forward 6 bytes to art
-		binclude "artunc\TCBG7.bin"		; ??? (Unused)
+		binclude "artunc/TCBG7.bin"		; ??? (Unused)
 ; ---------------------------------------------------------------------------
 TCBG_Tile8:
-		dc.w $20				; 20 Bytes (1 tile)
+		dc.w 32					; 32 bytes (1 tile)
 		dc.l 6					; jump forward 6 bytes to art
-		binclude "artunc\TCBG8.bin"		; Title Card - Dark Blue tiles on bottom right
+		binclude "artunc/TCBG8.bin"		; Title Card - Dark Blue tiles on bottom right
 ; ---------------------------------------------------------------------------
 TCBG_Tile9:
-		dc.w $20				; 20 Bytes (1 tile)
+		dc.w 32					; 32 bytes (1 tile)
 		dc.l 6					; jump forward 6 bytes to art
-		binclude "artunc\TCBG9.bin"		; Title Card - Light blue tiles that appear on the bottom and right
+		binclude "artunc/TCBG9.bin"		; Title Card - Light blue tiles that appear on the bottom and right
 ; ---------------------------------------------------------------------------
 TCBG_TileA:
-		dc.w $20				; 20 Bytes (1 tile)
+		dc.w 32					; 32 bytes (1 tile)
 		dc.l 6					; jump forward 6 bytes to art
-		binclude "artunc\TCBGA.bin"		; Title Card - Red thin bar that appears from the right
+		binclude "artunc/TCBGA.bin"		; Title Card - Red thin bar that appears from the right
 ; ---------------------------------------------------------------------------
 TCBG_TileB:
-		dc.w $40				; 40 Bytes (2 tiles)
+		dc.w 32*2				; 64 bytes (2 tiles)
 		dc.l 6					; jump forward 6 bytes to art
-		binclude "artunc\TCBGB.bin"		; Title Card - White Zig-Zag tiles that appear overlapping the light Gray/Blue Bar that appears from top right
+		binclude "artunc/TCBGB.bin"		; Title Card - White Zig-Zag tiles that appear overlapping the light Gray/Blue Bar that appears from top right
 ; ---------------------------------------------------------------------------
 TCBG_TileC:
-		dc.w $40				; 40 Bytes (2 tiles)
+		dc.w 32*2				; 64 bytes (2 tiles)
 		dc.l 6					; jump forward 6 bytes to art
-		binclude "artunc\TCBGC.bin"		; Title Card - White Zig-Zag tiles that appear overlapping middle section
+		binclude "artunc/TCBGC.bin"		; Title Card - White Zig-Zag tiles that appear overlapping middle section
 ; ---------------------------------------------------------------------------
 TCBG_TileD:
-		dc.w $40				; 40 Bytes (2 tiles)
+		dc.w 32*2				; 64 bytes (2 tiles)
 		dc.l 6					; jump forward 6 bytes to art
-		binclude "artunc\TCBGD.bin"		; Title Card - Light blue Zig-Zag tiles (The Light blue tiles overlapping the white Zig-Zag tiles basically)
+		binclude "artunc/TCBGD.bin"		; Title Card - Light blue Zig-Zag tiles (The Light blue tiles overlapping the white Zig-Zag tiles basically)
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Nemesis Compressed Object Patterns
 ; ---------------------------------------------------------------------------
 ARTNEM_Springs:
-	binclude	"artnem\Springs.bin"		; Red and Yellow Springs
+	binclude	"artnem/Springs.bin"		; Red and Yellow Springs
 	even
 ; ---------------------------------------------------------------------------
 ARTNEM_SpikesHoz:
-	binclude	"artnem\Spikes Horizontal.bin"	; Horizontal Spikes
+	binclude	"artnem/Spikes Horizontal.bin"	; Horizontal Spikes
 	even
 ; ---------------------------------------------------------------------------
 ARTNEM_SpikesVer:
-	binclude	"artnem\Spikes Vertical.bin"	; Vertical Spikes
+	binclude	"artnem/Spikes Vertical.bin"	; Vertical Spikes
 	even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sprite Mappings - "Sprngs" and "Spikes" Objects
 ; ---------------------------------------------------------------------------
-	include	"PLCMAPANI\MAP_Springs.asm"		; Spring Mappings
-	include	"PLCMAPANI\MAP_Spikes.asm"		; Spikes Mappings
+	include	"PLCMAPANI/MAP_Springs.asm"		; Spring Mappings
+	include	"PLCMAPANI/MAP_Spikes.asm"		; Spikes Mappings
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19266,11 +19265,11 @@ unk_42364:		dc.b $FF,$A0,$FF,$AC,$FF,$B8
 ; ===========================================================================
 ; --------------------------------------------------------------------------
 Objpos_SSZ:
-	binclude	"objpos\SSZ.bin"		; Speed Slider Zone"s Object Position
+	binclude	"objpos/SSZ.bin"		; Speed Slider Zone"s Object Position
 	even
 ; ---------------------------------------------------------------------------
 Objpos_TTZ:
-	binclude	"objpos\TTZ.bin"		; Techno Tower Zone"s Object Position
+	binclude	"objpos/TTZ.bin"		; Techno Tower Zone"s Object Position
 	even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19278,39 +19277,39 @@ Objpos_TTZ:
 ; uncompressed Art (Used for animation)
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedFanFG1:
-	binclude	"artunc\TTZAnimatedFanFG1.bin"	; Fan tiles 1
+	binclude	"artunc/TTZAnimatedFanFG1.bin"	; Fan tiles 1
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedFanFG2:
-	binclude	"artunc\TTZAnimatedFanFG2.bin"	; Fan tiles 2
+	binclude	"artunc/TTZAnimatedFanFG2.bin"	; Fan tiles 2
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG1:
-	binclude	"artunc\TTZAnimatedTurbineBG1.bin" ; Turbine tiles 1
+	binclude	"artunc/TTZAnimatedTurbineBG1.bin" ; Turbine tiles 1
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG2:
-	binclude	"artunc\TTZAnimatedTurbineBG2.bin" ; Turbine tiles 2
+	binclude	"artunc/TTZAnimatedTurbineBG2.bin" ; Turbine tiles 2
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG3:
-	binclude	"artunc\TTZAnimatedTurbineBG3.bin" ; Turbine tiles 3
+	binclude	"artunc/TTZAnimatedTurbineBG3.bin" ; Turbine tiles 3
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG4:
-	binclude	"artunc\TTZAnimatedTurbineBG4.bin" ; Turbine tiles 4
+	binclude	"artunc/TTZAnimatedTurbineBG4.bin" ; Turbine tiles 4
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG5:
-	binclude	"artunc\TTZAnimatedTurbineBG5.bin" ; Turbine tiles 5
+	binclude	"artunc/TTZAnimatedTurbineBG5.bin" ; Turbine tiles 5
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG6:
-	binclude	"artunc\TTZAnimatedTurbineBG6.bin" ; Turbine tiles 6
+	binclude	"artunc/TTZAnimatedTurbineBG6.bin" ; Turbine tiles 6
 	even
 ; ---------------------------------------------------------------------------
 ARTUNC_TTZAnimatedTurbineBG7:
-	binclude	"artunc\TTZAnimatedTurbineBG7.bin" ; Turbine tiles 7
+	binclude	"artunc/TTZAnimatedTurbineBG7.bin" ; Turbine tiles 7
 	even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19318,27 +19317,27 @@ ARTUNC_TTZAnimatedTurbineBG7:
 ; Multiple Uncompressed Art (some of these are unused)
 ; ---------------------------------------------------------------------------
 AniArt_Combi:						; "COMBI" (Unused)
-	binclude	"artunc\Combi_Un.bin"
+	binclude	"artunc/Combi_Un.bin"
 AniArt_Limits:						; "LIMITS" (Unused)
-	binclude	"artunc\Limits_Un.bin"
+	binclude	"artunc/Limits_Un.bin"
 AniArt_StripBlock:					; Striped Block (Unused)
-	binclude	"artunc\StripBlock_Un.bin"
+	binclude	"artunc/StripBlock_Un.bin"
 AniArt_Score:						; "SCORE" (Unused)
-	binclude	"artunc\Score_Un.bin"
+	binclude	"artunc/Score_Un.bin"
 AniArt_Rings:						; "RINGS" (Unused)
-	binclude	"artunc\Rings_Un.bin"
+	binclude	"artunc/Rings_Un.bin"
 AniArt_SLTime:						; "/TIME" (Unused)
-	binclude	"artunc\SLTime_Un.bin"
+	binclude	"artunc/SLTime_Un.bin"
 AniArt_Hud1to9_Sym:					; "0" to "9" Hud (Exclaimation Mark, and Minute/Second Symbol)
-	binclude	"artunc\Hud0to9_Sym.bin"
+	binclude	"artunc/Hud0to9_Sym.bin"
 AniArt_RingSprites:					; Ring Sprites
-	binclude	"artunc\Spark_Ring.bin"
+	binclude	"artunc/Spark_Ring.bin"
 AniArt_Tether:						; Tether Star Sprites
-	binclude	"artunc\Tether.bin"
+	binclude	"artunc/Tether.bin"
 AniArt_MultiStars:					; Multiple Stars (Unused)
-	binclude	"artunc\MultipleStars_Un.bin"
+	binclude	"artunc/MultipleStars_Un.bin"
 AniArt_MiliSymbol:					; "" (Second/Mili-Second Symbol)
-	binclude	"artunc\Hud_Sym2.bin"
+	binclude	"artunc/Hud_Sym2.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19346,28 +19345,28 @@ AniArt_MiliSymbol:					; "" (Second/Mili-Second Symbol)
 ; ---------------------------------------------------------------------------
 
 PAL_RainbowField:
-	binclude	"Palettes\PalRainbowField.bin"	; Palettes for Rainbow Field
+	binclude	"Palettes/PalRainbowField.bin"	; Palettes for Rainbow Field
 	even
 ARTCRA_RainbowField8x8:
-	binclude	"artcra\Rainbow Field.bin"	; 8x8 tiles for Rainbow Field
+	binclude	"artcra/Rainbow Field.bin"	; 8x8 tiles for Rainbow Field
 	even
 MAPUNC_RainbowFieldFG:
-	binclude	"Uncompressed\MapuncRainbowFieldFG.bin" ; Screen Map Codes for Rainbow Field FG
+	binclude	"Uncompressed/MapuncRainbowFieldFG.bin" ; Screen Map Codes for Rainbow Field FG
 	even
 MAPUNC_RainbowFieldBG:
-	binclude	"Uncompressed\MapuncRainbowFieldBG.bin" ; Screen Map Codes for Rainbow Field BG
+	binclude	"Uncompressed/MapuncRainbowFieldBG.bin" ; Screen Map Codes for Rainbow Field BG
 	even
 PAL_ElectricField:
-	binclude	"Palettes\PalElectricField.bin"	; Palettes for Electric Field
+	binclude	"Palettes/PalElectricField.bin"	; Palettes for Electric Field
 	even
 ARTCRA_ElectricField8x8:
-	binclude	"artcra\Electric Field.bin"	; 8x8 tiles for Electric Field
+	binclude	"artcra/Electric Field.bin"	; 8x8 tiles for Electric Field
 	even
 MAPUNC_ElectricFieldFG:
-	binclude	"Uncompressed\MapuncElectricFieldFG.bin" ; Screen Map Codes for Electric Field FG
+	binclude	"Uncompressed/MapuncElectricFieldFG.bin" ; Screen Map Codes for Electric Field FG
 	even
 MAPUNC_ElectricFieldBG:
-	binclude	"Uncompressed\MapuncElectricFieldBG.bin" ; Screen Map Codes for Electric Field BG
+	binclude	"Uncompressed/MapuncElectricFieldBG.bin" ; Screen Map Codes for Electric Field BG
 	even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19380,7 +19379,7 @@ MAPUNC_ElectricFieldBG:
 ; Data Location (00054460 - 00025A3FF)
 ; Striped out
 ; UnkData_00054460:
-		binclude	"UnknownCodes\UnknownData_00054460.bin"
+		binclude	"UnknownCodes/UnknownData_00054460.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19389,7 +19388,7 @@ MAPUNC_ElectricFieldBG:
 	align $6000
 ; ---------------------------------------------------------------------------
 ARTUNC_SonicArms:
-	binclude	"artunc\SonicArms.bin"		; Sonic"s Arms
+	binclude	"artunc/SonicArms.bin"		; Sonic"s Arms
 	even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19399,7 +19398,7 @@ ARTUNC_SonicArms:
 	align $1000
 ; ---------------------------------------------------------------------------
 ARTUNC_TailsArms:
-	binclude	"artunc\TailsArms.bin"		; Tails" Arms
+	binclude	"artunc/TailsArms.bin"		; Tails" Arms
 	even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19407,90 +19406,90 @@ ARTUNC_TailsArms:
 ; PLC, Mappings & Main Index Block - Sonic"s Arm
 ; ---------------------------------------------------------------------------
 PLCMAP_SonArm_MainIndex:
-	include	"PLCMAPANI\PLCMAP_IndxBlck_SonicArm.asm"
+	include	"PLCMAPANI/PLCMAP_IndxBlck_SonicArm.asm"
 ; ---------------------------------------------------------------------------
 PLC_SonicArm:
-	include	"PLCMAPANI\PLC_SonicArm.asm"
+	include	"PLCMAPANI/PLC_SonicArm.asm"
 ; ---------------------------------------------------------------------------
 Map_SonicArm:
-	include	"PLCMAPANI\MAP_SonicArm.asm"
+	include	"PLCMAPANI/MAP_SonicArm.asm"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Animation, PLC, Mappings & Main Index Block - Sonic
 ; ---------------------------------------------------------------------------
 ANI_Sonic:
-	include	"PLCMAPANI\ANI_Sonic.asm"
+	include	"PLCMAPANI/ANI_Sonic.asm"
 ; ---------------------------------------------------------------------------
 PLCMAP_Sonic_MainIndex:
-	include	"PLCMAPANI\PLCMAP_IndxBlck_Sonic.asm"
+	include	"PLCMAPANI/PLCMAP_IndxBlck_Sonic.asm"
 ; ---------------------------------------------------------------------------
 PLC_Sonic:
-	include	"PLCMAPANI\PLC_Sonic.asm"
+	include	"PLCMAPANI/PLC_Sonic.asm"
 ; ---------------------------------------------------------------------------
 Map_Sonic:
-	include	"PLCMAPANI\MAP_Sonic.asm"
+	include	"PLCMAPANI/MAP_Sonic.asm"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; PLC, Mappings & Main Index Block - Tails" Arm
 ; ---------------------------------------------------------------------------
 PLCMAP_TalArm_MainIndex:
-	include	"PLCMAPANI\PLCMAP_IndxBlck_TailsArm.asm"
+	include	"PLCMAPANI/PLCMAP_IndxBlck_TailsArm.asm"
 ; ---------------------------------------------------------------------------
 PLC_TailsArm:
-	include	"PLCMAPANI\PLC_TailsArm.asm"
+	include	"PLCMAPANI/PLC_TailsArm.asm"
 ; ---------------------------------------------------------------------------
 MAP_TailsArm:
-	include	"PLCMAPANI\MAP_TailsArm.asm"
+	include	"PLCMAPANI/MAP_TailsArm.asm"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Animation, PLC, Mappings & Main Index Block - Tails
 ; ---------------------------------------------------------------------------
 ANI_Tails:
-	include	"PLCMAPANI\ANI_Tails.asm"
+	include	"PLCMAPANI/ANI_Tails.asm"
 ; ---------------------------------------------------------------------------
 PLCMAP_Tails_MainIndex:
-	include	"PLCMAPANI\PLCMAP_IndxBlck_Tails.asm"
+	include	"PLCMAPANI/PLCMAP_IndxBlck_Tails.asm"
 ; ---------------------------------------------------------------------------
 PLC_Tails:
-	include	"PLCMAPANI\PLC_Tails.asm"
+	include	"PLCMAPANI/PLC_Tails.asm"
 ; ---------------------------------------------------------------------------
 MAP_Tails:
-	include	"PLCMAPANI\MAP_Tails.asm"
+	include	"PLCMAPANI/MAP_Tails.asm"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Animation, PLC, Mappings & Main Index Block - Sonic Fields
 ; ---------------------------------------------------------------------------
 ANI_SonicFields:
-	include	"PLCMAPANI\ANI_SonicFields.asm"
+	include	"PLCMAPANI/ANI_SonicFields.asm"
 ; ---------------------------------------------------------------------------
 PLCMAP_SonicFields_MainIndex:
-	include	"PLCMAPANI\PLCMAP_IndxBlck_SonicFields.asm"
+	include	"PLCMAPANI/PLCMAP_IndxBlck_SonicFields.asm"
 ; ---------------------------------------------------------------------------
 PLC_SonicFields:
-	include	"PLCMAPANI\PLC_SonicFields.asm"
+	include	"PLCMAPANI/PLC_SonicFields.asm"
 ; ---------------------------------------------------------------------------
 Map_SonicFields:
-	include	"PLCMAPANI\MAP_SonicFields.asm"
+	include	"PLCMAPANI/MAP_SonicFields.asm"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Animation, PLC, Mappings & Main Index Block - Tails Fields
 ; ---------------------------------------------------------------------------
 ANI_TailsFields:
-	include	"PLCMAPANI\ANI_TailsFields.asm"
+	include	"PLCMAPANI/ANI_TailsFields.asm"
 ; ---------------------------------------------------------------------------
 PLCMAP_TailsFields_MainIndex:
-	include	"PLCMAPANI\PLCMAP_IndxBlck_TailsFields.asm"
+	include	"PLCMAPANI/PLCMAP_IndxBlck_TailsFields.asm"
 ; ---------------------------------------------------------------------------
 PLC_TailsFields:
-	include	"PLCMAPANI\PLC_TailsFields.asm"
+	include	"PLCMAPANI/PLC_TailsFields.asm"
 ; ---------------------------------------------------------------------------
 Map_TailsFields:
-	include	"PLCMAPANI\MAP_TailsFields.asm"
+	include	"PLCMAPANI/MAP_TailsFields.asm"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19499,7 +19498,7 @@ Map_TailsFields:
 ; Data Location (00068FD6 - 0006AC5F)
 ; Striped out
 ; UnkData_00068FD6:
-		binclude	"UnknownCodes\UnknownData_00068FD6.bin"
+		binclude	"UnknownCodes/UnknownData_00068FD6.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19510,7 +19509,7 @@ Map_TailsFields:
 ; Data Location (0006C000 - 0006CE07)
 ; Striped out
 ; UnkData_0006C000:
-		binclude	"UnknownCodes\UnknownData_0006C000.bin"
+		binclude	"UnknownCodes/UnknownData_0006C000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19519,7 +19518,7 @@ Map_TailsFields:
 ; Data Location (0006CE08 - 0006D1FF)
 ; Striped out
 ; UnkData_0006CE08:
-		binclude	"UnknownCodes\UnknownData_0006CE08.bin"
+		binclude	"UnknownCodes/UnknownData_0006CE08.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19530,7 +19529,7 @@ Map_TailsFields:
 ; Data Location (00070000 - 00071813)
 ; Striped out
 ; UnkData_00070000:
-		binclude	"UnknownCodes\UnknownData_00070000.bin"
+		binclude	"UnknownCodes/UnknownData_00070000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19541,7 +19540,7 @@ Map_TailsFields:
 ; Data Location (00072000 - 00072763)
 ; Striped out
 ; UnkData_00072000:
-		binclude	"UnknownCodes\UnknownData_00072000.bin"
+		binclude	"UnknownCodes/UnknownData_00072000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19552,7 +19551,7 @@ Map_TailsFields:
 ; Data Location (00074000 - 0007562F)
 ; Striped out
 ; UnkData_00074000:
-		binclude	"UnknownCodes\UnknownData_00074000.bin"
+		binclude	"UnknownCodes/UnknownData_00074000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19563,7 +19562,7 @@ Map_TailsFields:
 ; Data Location (00076000 - 00076703)
 ; Striped out
 ; UnkData_00076000:
-		binclude	"UnknownCodes\UnknownData_00076000.bin"
+		binclude	"UnknownCodes/UnknownData_00076000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19571,7 +19570,7 @@ Map_TailsFields:
 ; ---------------------------------------------------------------------------
 	align $10000
 ; ---------------------------------------------------------------------------
-ARTUNC_Sonic:	binclude	"artunc\Sonic.bin"
+ARTUNC_Sonic:	binclude	"artunc/Sonic.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19581,7 +19580,7 @@ ARTUNC_Sonic:	binclude	"artunc\Sonic.bin"
 ; Data Location (0008C0A0 - 00090000)
 ; Striped out
 ; UnkData_0008C0A0:
-		binclude	"UnknownCodes\UnknownData_0008C0A0.bin"
+		binclude	"UnknownCodes/UnknownData_0008C0A0.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19590,7 +19589,7 @@ ARTUNC_Sonic:	binclude	"artunc\Sonic.bin"
 	align $4000
 ; ---------------------------------------------------------------------------
 ARTUNC_SonicField:
-		binclude	"artunc\SonicField.bin"
+		binclude	"artunc/SonicField.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19600,7 +19599,7 @@ ARTUNC_SonicField:
 ; Data Location (00093B20 - 0009562F)
 ; Striped out
 ; UnkData_00093B20:
-		binclude	"UnknownCodes\UnknownData_00093B20.bin"
+		binclude	"UnknownCodes/UnknownData_00093B20.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19611,7 +19610,7 @@ ARTUNC_SonicField:
 ; Data Location (00096000 - 00096703)
 ; Striped out
 ; UnkData_00096000:
-		binclude	"UnknownCodes\UnknownData_00096000.bin"
+		binclude	"UnknownCodes/UnknownData_00096000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19620,7 +19619,7 @@ ARTUNC_SonicField:
 	align $2000
 ; ---------------------------------------------------------------------------
 ARTUNC_UnknownHud:
-		binclude	"artunc\UnknownHud.bin"
+		binclude	"artunc/UnknownHud.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19630,7 +19629,7 @@ ARTUNC_UnknownHud:
 ; Data Location (00098740 - 0009FFFF)
 ; Striped out
 ; UnkData_00098740:
-		binclude	"UnknownCodes\UnknownData_00098740.bin"
+		binclude	"UnknownCodes/UnknownData_00098740.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19638,7 +19637,7 @@ ARTUNC_UnknownHud:
 ; ---------------------------------------------------------------------------
 	align $10
 ; ---------------------------------------------------------------------------
-ARTUNC_Tails:	binclude	"artunc\Tails.bin"
+ARTUNC_Tails:	binclude	"artunc/Tails.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19650,7 +19649,7 @@ ARTUNC_Tails:	binclude	"artunc\Tails.bin"
 ; Data Location (000AC000 - 000AD1F9)
 ; Striped out
 ; UnkData_000AC000:
-		binclude	"UnknownCodes\UnknownData_000AC000.bin"
+		binclude	"UnknownCodes/UnknownData_000AC000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19659,7 +19658,7 @@ ARTUNC_Tails:	binclude	"artunc\Tails.bin"
 	align $4000
 ; ---------------------------------------------------------------------------
 ARTUNC_TailsField:
-		binclude	"artunc\TailsField.bin"
+		binclude	"artunc/TailsField.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19669,7 +19668,7 @@ ARTUNC_TailsField:
 ; Data Location (000B3820 - 000B562F)
 ; Striped out
 ; UnkData_000B3820:
-		binclude	"UnknownCodes\UnknownData_000B3820.bin"
+		binclude	"UnknownCodes/UnknownData_000B3820.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19680,7 +19679,7 @@ ARTUNC_TailsField:
 ; Data Location (000B6000 - 000B6703)
 ; Striped out
 ; UnkData_000B6000:
-		binclude	"UnknownCodes\UnknownData_000B6000.bin"
+		binclude	"UnknownCodes/UnknownData_000B6000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19691,7 +19690,7 @@ ARTUNC_TailsField:
 ; Data Location (000C0000 - 000CA887)
 ; Striped out
 ; UnkData_000C0000:
-		binclude	"UnknownCodes\UnknownData_000C0000.bin"
+		binclude	"UnknownCodes/UnknownData_000C0000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19702,7 +19701,7 @@ ARTUNC_TailsField:
 ; Data Location (000CC000 - 000D58BF)
 ; Striped out
 ; UnkData_000CC000:
-		binclude	"UnknownCodes\UnknownData_000CC000.bin"
+		binclude	"UnknownCodes/UnknownData_000CC000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19713,7 +19712,7 @@ ARTUNC_TailsField:
 ; Data Location (000D6000 - 000D6703)
 ; Striped out
 ; UnkData_000D6000:
-		binclude	"UnknownCodes\UnknownData_000D6000.bin"
+		binclude	"UnknownCodes/UnknownData_000D6000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19724,7 +19723,7 @@ ARTUNC_TailsField:
 ; Data Location (000D8000 - 000DA3FF)
 ; Striped out
 ; UnkData_000D8000:
-		binclude	"UnknownCodes\UnknownData_000D8000.bin"
+		binclude	"UnknownCodes/UnknownData_000D8000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19735,7 +19734,7 @@ ARTUNC_TailsField:
 ; Data Location (000E0000 - 000E3067)
 ; Striped out
 ; UnkData_000E0000:
-		binclude	"UnknownCodes\UnknownData_000E0000.bin"
+		binclude	"UnknownCodes/UnknownData_000E0000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19746,7 +19745,7 @@ ARTUNC_TailsField:
 ; Data Location (000E4000 - 000E4EC7)
 ; Striped out
 ; UnkData_000E4000:
-		binclude	"UnknownCodes\UnknownData_000E4000.bin"
+		binclude	"UnknownCodes/UnknownData_000E4000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19757,7 +19756,7 @@ ARTUNC_TailsField:
 ; Data Location (000E6000 - 000EAC5F)
 ; Striped out
 ; UnkData_000E6000:
-		binclude	"UnknownCodes\UnknownData_000E6000.bin"
+		binclude	"UnknownCodes/UnknownData_000E6000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19768,7 +19767,7 @@ ARTUNC_TailsField:
 ; Data Location (000EC000 - 000ED1FF)
 ; Striped out
 ; UnkData_000EC000:
-		binclude	"UnknownCodes\UnknownData_000EC000.bin"
+		binclude	"UnknownCodes/UnknownData_000EC000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19779,7 +19778,7 @@ ARTUNC_TailsField:
 ; Data Location (000F0000 - 000F1813)
 ; Striped out
 ; UnkData_000F0000:
-		binclude	"UnknownCodes\UnknownData_000F0000.bin"
+		binclude	"UnknownCodes/UnknownData_000F0000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19790,7 +19789,7 @@ ARTUNC_TailsField:
 ; Data Location (000F2000 - 000F2763)
 ; Striped out
 ; UnkData_000F2000:
-		binclude	"UnknownCodes\UnknownData_000F2000.bin"
+		binclude	"UnknownCodes/UnknownData_000F2000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19801,7 +19800,7 @@ ARTUNC_TailsField:
 ; Data Location (000F4000 - 000F562F)
 ; Striped out
 ; UnkData_000F4000:
-		binclude	"UnknownCodes\UnknownData_000F4000.bin"
+		binclude	"UnknownCodes/UnknownData_000F4000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -19812,7 +19811,7 @@ ARTUNC_TailsField:
 ; Data Location (000F6000 - 000F6703)
 ; Striped out
 ; UnkData_000F6000:
-		binclude	"UnknownCodes\UnknownData_000F6000.bin"
+		binclude	"UnknownCodes/UnknownData_000F6000.bin"
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------

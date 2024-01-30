@@ -1,10 +1,18 @@
 Snd00_Jump_Header:
 	smpsHeaderStartSong 3, 1
+	if ~~fixBugs
 	smpsHeaderVoice     Snd00_Jump_Voices+$4000
+	else
+	smpsHeaderVoice     Snd00_Jump_Voices
+	endif
 	smpsHeaderTempoSFX  $01
 	smpsHeaderChanSFX   $01
 
+	if ~~fixBugs
 	smpsHeaderSFXChannel cFM6, Snd00_Jump_FM6+$4000,	$EB, $09
+	else
+	smpsHeaderSFXChannel cFM6, Snd00_Jump_FM6,	$EB, $09
+	endif
 
 ; FM6 Data
 Snd00_Jump_FM6:

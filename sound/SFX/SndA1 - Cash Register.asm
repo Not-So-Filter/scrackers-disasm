@@ -1,12 +1,22 @@
 Snd01_Cash_Register_Header:
 	smpsHeaderStartSong 3, 1
+	if ~~fixBugs
 	smpsHeaderVoice     Snd01_Cash_Register_Voices+$4000
+	else
+	smpsHeaderVoice     Snd01_Cash_Register_Voices
+	endif
 	smpsHeaderTempoSFX  $01
 	smpsHeaderChanSFX   $03
 
+	if ~~fixBugs
 	smpsHeaderSFXChannel cFM5, Snd01_Cash_Register_FM5+$4000,	$00, $00
 	smpsHeaderSFXChannel cFM4, Snd01_Cash_Register_FM4+$4000,	$00, $00
 	smpsHeaderSFXChannel cPSG3, Snd01_Cash_Register_PSG3+$4000,	$00, $00
+	else
+	smpsHeaderSFXChannel cFM5, Snd01_Cash_Register_FM5,	$00, $00
+	smpsHeaderSFXChannel cFM4, Snd01_Cash_Register_FM4,	$00, $00
+	smpsHeaderSFXChannel cPSG3, Snd01_Cash_Register_PSG3,	$00, $00
+	endif
 
 ; FM5 Data
 Snd01_Cash_Register_FM5:

@@ -339,13 +339,13 @@ loc_B9:
 	if fixBugs
 		ld	de, 0				; set DAC length to nothing
 	endif
+		ld	hl, zSoundBank
+	if ~~fixBugs
 		; DANGER!
 		; This is bugged, the DAC needs de to be cleared in order to
 		; not continue checking if there is a sample. This leads to
 		; constant crashes on hardware if nothing is played on the
                 ; Sega Screen or anywhere that sound isn't being played.
-		ld	hl, zSoundBank
-	if ~~fixBugs
 		ld	a, (hl)
 	endif
 		bankswitch
@@ -1148,14 +1148,35 @@ PlaySoundID:
 		ld	a, (zSoundQueue0)
 		bit	7, a
 		jp	z, StopAllSound			; 00-7F	- Stop All
-		cp	bgm_Last+1Ah
-		jp	c, zPlayMusic			; 80-9F	- Music
-		cp	sfx_Last+1
-		jp	c, PlaySFX			; 90-9F	- SFX
-		cp	flg_First
-		jp	c, PlaySpcSFX			; B0-DF	- Special SFX
-		cp	flg_Last+15h
-		jp	nc, StopAllSound
+	if fixBugs
+		cp	bgm_Last+1			; is the ID music?
+		jp	c, zPlayMusic			; if so, play music
+		cp	sfx_First			; is the ID after music but before SFX?
+		ret	c				; do nothing if so
+		cp	sfx_Last+1			; is the ID SFX?
+		jp	c, PlaySFX			; if so, play SFX
+		cp	spec_First			; is the ID after SFX but before special SFX?
+		ret	c				; do nothing if so
+		cp	spec_Last+1			; is the ID special SFX?
+		jp	c, PlaySpcSFX			; if so, play special SFX
+		cp	flg_First			; is the ID after special SFX but before command flags?
+		ret	c				; do nothing if so
+		cp	flg_Last			; is the ID after the command flags?
+		ret	nc				; do nothing...
+	else
+		; DANGER!
+		; Some checks are in incorrect ranges and not checked!
+		; Music checks 80-9F (proper range should be 81-86)
+		; Special SFX checks B0-DF (proper range should be D0-D3)
+		cp	bgm_Last+1Ah			; is the ID music?
+		jp	c, zPlayMusic			; if so, play music
+		cp	sfx_Last+1			; is the ID SFX?
+		jp	c, PlaySFX			; if so, play SFX
+		cp	flg_First			; is the ID special SFX?
+		jp	c, PlaySpcSFX			; if so, play special SFX
+		cp	flg_Last+15h			; is the ID after the command flags?
+		jp	nc, StopAllSound		; if so, Stop all sound
+	endif
 
 PlaySnd_Command:
 		sub	flg_First
@@ -2976,11 +2997,14 @@ byte_1139:	db    0,   0,	0,   0,	  1,   1,   1,	 1,   2,   2,	1
 		db    1,   1,	0,   0,	  0
 		db  84h, 01h, 82h, 04h
 MusicBanks:
-	; The way that this works is that each individual music track has it's own bank
-	; that it uses for finding and playing music from banks.
-	rept 6
-		db zmake68kBank(MusicBank)
-	endm
+		; The way that this works is that each individual music track has it's own bank
+		; that it uses for finding and playing music from banks.
+		db zmake68kBank(Music81)
+		db zmake68kBank(Music82)
+		db zmake68kBank(Music83)
+		db zmake68kBank(Music84)
+		db zmake68kBank(Music85)
+		db zmake68kBank(Music86)
 MusicIndex:
 ptr_mus81:	dw zmake68kPtr(Music81)
 ptr_mus82:	dw zmake68kPtr(Music82)
@@ -2991,11 +3015,10 @@ ptr_mus86:	dw zmake68kPtr(Music86)
 ptr_musend
 
 SoundIndex:
+	if ~~fixBugs
 		; DANGER!
 		; These pointers along with the pointers inside of the SFX are
 		; all half a bank too long!
-		; To fix this, remove the +4000h and +$4000 from both the pointers
-		; here and in the SMPS data itself.
 ptr_sndA0:	dw zmake68kPtr(SoundA0)+4000h
 ptr_sndA1:	dw zmake68kPtr(SoundA1)+4000h
 ptr_sndA2:	dw zmake68kPtr(SoundA2)+4000h
@@ -3012,17 +3035,39 @@ ptr_sndAC:	dw zmake68kPtr(SoundAC)+4000h
 ptr_sndAD:	dw zmake68kPtr(SoundAD)+4000h
 ptr_sndAE:	dw zmake68kPtr(SoundAE)+4000h
 ptr_sndAF:	dw zmake68kPtr(SoundAF)+4000h
+	else
+ptr_sndA0:	dw zmake68kPtr(SoundA0)
+ptr_sndA1:	dw zmake68kPtr(SoundA1)
+ptr_sndA2:	dw zmake68kPtr(SoundA2)
+ptr_sndA3:	dw zmake68kPtr(SoundA3)
+ptr_sndA4:	dw zmake68kPtr(SoundA4)
+ptr_sndA5:	dw zmake68kPtr(SoundA5)
+ptr_sndA6:	dw zmake68kPtr(SoundA6)
+ptr_sndA7:	dw zmake68kPtr(SoundA7)
+ptr_sndA8:	dw zmake68kPtr(SoundA8)
+ptr_sndA9:	dw zmake68kPtr(SoundA9)
+ptr_sndAA:	dw zmake68kPtr(SoundAA)
+ptr_sndAB:	dw zmake68kPtr(SoundAB)
+ptr_sndAC:	dw zmake68kPtr(SoundAC)
+ptr_sndAD:	dw zmake68kPtr(SoundAD)
+ptr_sndAE:	dw zmake68kPtr(SoundAE)
+ptr_sndAF:	dw zmake68kPtr(SoundAF)
+	endif
 ptr_sndend
 
 SpecSoundIndex:
+	if ~~fixBugs
 		; DANGER!
 		; Once again, these pointers along with the pointers inside of the
 		; SFX are all half a bank too long!
-		; To fix this, remove the +4000h and +$4000 from both the pointers
-		; here and in the SMPS data itself.
 ptr_sndD0:	dw zmake68kPtr(SoundA0)+4000h
 ptr_sndD1:	dw zmake68kPtr(SoundA1)+4000h
 ptr_sndD2:	dw zmake68kPtr(SoundA3)+4000h
+	else
+ptr_sndD0:	dw zmake68kPtr(SoundA0)
+ptr_sndD1:	dw zmake68kPtr(SoundA1)
+ptr_sndD2:	dw zmake68kPtr(SoundA3)
+	endif
 ptr_specend
 
 SndPriorities:	db 7Fh,	7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh, 7Fh,	7Fh, 7Fh

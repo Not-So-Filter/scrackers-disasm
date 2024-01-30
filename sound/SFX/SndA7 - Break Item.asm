@@ -1,11 +1,20 @@
 Snd07_Header:
 	smpsHeaderStartSong 3, 1
+	if ~~fixBugs
 	smpsHeaderVoice     Snd07_Voices+$4000
+	else
+	smpsHeaderVoice     Snd07_Voices
+	endif
 	smpsHeaderTempoSFX  $01
 	smpsHeaderChanSFX   $02
 
+	if ~~fixBugs
 	smpsHeaderSFXChannel cFM5, Snd07_FM5+$4000,	$00, $00
 	smpsHeaderSFXChannel cFM6, Snd07_FM6+$4000,	$00, $0B
+	else
+	smpsHeaderSFXChannel cFM5, Snd07_FM5,	$00, $00
+	smpsHeaderSFXChannel cFM6, Snd07_FM6,	$00, $0B
+	endif
 
 ; FM5 Data
 Snd07_FM5:
