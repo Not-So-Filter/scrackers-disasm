@@ -1152,23 +1152,25 @@ PlaySoundID:
 		jp	c, zPlayMusic			; 80-9F	- Music
 		cp	sfx_Last+1
 		jp	c, PlaySFX			; 90-9F	- SFX
-		cp	0E0h
+		cp	flg_First
 		jp	c, PlaySpcSFX			; B0-DF	- Special SFX
-		cp	0F9h
+		cp	flg_Last+15h
 		jp	nc, StopAllSound
 
 PlaySnd_Command:
-		sub	0E0h
+		sub	flg_First
 		ld	hl, CmdPtrTable
 		rst	ReadPtrTable
 		xor	a
 		ld	(zUnk_1C18), a
 		jp	(hl)
 ; ---------------------------------------------------------------------------
-CmdPtrTable:	dw FadeOutMusic
-		dw StopAllSound
-		dw SilencePSG
-		dw FadeInMusic
+CmdPtrTable:
+ptr_flgE0:	dw FadeOutMusic
+ptr_flgE1:	dw StopAllSound
+ptr_flgE2:	dw SilencePSG
+ptr_flgE3:	dw FadeInMusic
+ptr_flgend
 ; ---------------------------------------------------------------------------
 
 FadeInMusic:

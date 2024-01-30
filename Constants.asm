@@ -52,3 +52,10 @@ spec_Jump:	equ ((ptr_sndD0-SpecSoundIndex)/2)+spec_First
 spec_Cash:	equ ((ptr_sndD1-SpecSoundIndex)/2)+spec_First
 spec_Bomb:	equ ((ptr_sndD2-SpecSoundIndex)/2)+spec_First
 spec_Last:	equ ((ptr_sndend-SpecSoundIndex-2)/2)+spec_First
+
+flg_First:	= $E0
+flg_FadeOut:	equ ((ptr_flgE0-CmdPtrTable)/2)+flg_First
+flg_Stop:	equ ((ptr_flgE1-CmdPtrTable)/2)+flg_First
+flg_StopPSG:	equ ((ptr_flgE2-CmdPtrTable)/2)+flg_First
+flg_FadeIn:	equ ((ptr_flgE3-CmdPtrTable)/2)+flg_First
+flg_Last:	equ ((ptr_flgend-CmdPtrTable)/2)+flg_First
