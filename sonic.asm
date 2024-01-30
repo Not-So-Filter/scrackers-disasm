@@ -26,12 +26,12 @@ SonicDriverVer = 3 ; Tell SMPS2ASM that we are targetting Sonic 3's sound driver
 
 RomStart:	dc.l v_systemstack&$FFFFFF,	EntryPoint,	ErrorTrap,	ErrorTrap
 		dc.l ErrorTrap,	ErrorTrap,	ErrorTrap,	ErrorTrap
-		dc.l ErrorTrap,	$FFFFC81E,	$FFFFC812,	$FFFFC818
+		dc.l ErrorTrap,	unk_C81E,	unk_C812,	unk_C818
 		dc.l ErrorTrap,	ErrorTrap,	ErrorTrap,	ErrorTrap
 		dc.l ErrorTrap,	ErrorTrap,	ErrorTrap,	ErrorTrap
 		dc.l ErrorTrap,	ErrorTrap,	ErrorTrap,	ErrorTrap
-		dc.l $FFFFC824,	ErrorTrap,	$FFFFC82A,	ErrorTrap
-		dc.l $FFFFC836,	ErrorTrap,	$FFFFC830,	ErrorTrap
+		dc.l unk_C824,	ErrorTrap,	unk_C82A,	ErrorTrap
+		dc.l unk_C836,	ErrorTrap,	unk_C830,	ErrorTrap
 		dc.l ErrorTrap,	ErrorTrap,	ErrorTrap,	ErrorTrap
 		dc.l ErrorTrap,	ErrorTrap,	ErrorTrap,	ErrorTrap
 		dc.l ErrorTrap,	ErrorTrap,	ErrorTrap,	ErrorTrap
@@ -223,7 +223,7 @@ loc_336:
 loc_34A:
 		movem.l	d0-d6/a2,-(a0)
 		dbf	d7,loc_34A
-		lea	($FFFFC800).w,a0
+		lea	(unk_C800).w,a0
 		move.w	#$4EF9,d0			; machine code for 'jmp'
 		lea	UnknownRout001(pc),a1		; routine used here just has an 'rts'...
 		moveq	#2,d7
@@ -932,19 +932,19 @@ ControlInit_Unused:
 ; ---------------------------------------------------------------------------
 
 sub_96E:
-		lea	($FFFFC938).w,a1
+		lea	(unk_C938).w,a1
 		lea	($A10003).l,a0
-		lea	($FFFFC936).w,a2
+		lea	(unk_C936).w,a2
 		bsr.w	sub_9D4
 		lea	($A10005).l,a0
-		lea	($FFFFC937).w,a2
+		lea	(unk_C937).w,a2
 		bsr.w	sub_9D4
 		bsr.s	sub_992
 		rts
 
 sub_992:
 		moveq	#7,d0
-		cmpi.b	#7,($FFFFC936).w
+		cmpi.b	#7,(unk_C936).w
 		bne.s	loc_9A0
 		subq.w	#4,d0
 		bra.s	loc_9A2
@@ -953,7 +953,7 @@ loc_9A0:
 		subq.w	#1,d0
 
 loc_9A2:
-		cmpi.b	#7,($FFFFC937).w
+		cmpi.b	#7,(unk_C937).w
 		bne.s	loc_9B0
 		subq.w	#4,d0
 		bcs.s	locret_9D2
@@ -2517,10 +2517,10 @@ sub_1A3C:
 		andi.w	#$F000,d0
 		rol.w	#4,d0
 		lsl.w	#2,d0
-		lea	(v_systemstack&$FFFFFF).l,a1
+		lea	(unk_0200&$FFFFFF).l,a1
 		move.w	a3,d1
 		beq.s	loc_1A64
-		lea	($FF0600).l,a1
+		lea	(unk_0600&$FFFFFF).l,a1
 
 loc_1A64:
 		lea	(CollisionArrayRota).l,a2
@@ -2587,10 +2587,10 @@ sub_1AC8:
 		andi.w	#$F000,d0
 		rol.w	#4,d0
 		lsl.w	#2,d0
-		lea	(v_systemstack&$FFFFFF).l,a1
+		lea	(unk_0200&$FFFFFF).l,a1
 		move.w	a3,d1
 		beq.s	loc_1AF0
-		lea	($FF0600).l,a1
+		lea	(unk_0600&$FFFFFF).l,a1
 
 loc_1AF0:
 		exg	d6,d7
@@ -2648,12 +2648,12 @@ sub_1B3E:
 		move.w	d0,d3
 		tst.w	d4
 		bne.s	loc_1B5C
-		lea	(v_systemstack&$FFFFFF).l,a1
+		lea	(unk_0200&$FFFFFF).l,a1
 		rol.w	#2,d3
 		bra.s	loc_1B64
 
 loc_1B5C:
-		lea	($FF0600).l,a1
+		lea	(unk_0600&$FFFFFF).l,a1
 		rol.w	#4,d3
 
 loc_1B64:
@@ -2914,9 +2914,9 @@ W1C6A_loc08:
 		bsr.w	sub_1BF6
 		move.w	(a0),d0
 		move.w	a3,d1
-		lea	(v_systemstack&$FFFFFF).l,a1
+		lea	(unk_0200&$FFFFFF).l,a1
 		beq.s	loc_1D72
-		lea	($FF0600).l,a1
+		lea	(unk_0600&$FFFFFF).l,a1
 
 loc_1D72:
 		move.w	d0,d1
@@ -2971,7 +2971,7 @@ loc_1DB2:
 		beq.w	loc_1E0C
 		move.w	d1,d0
 		andi.w	#$3FF,d0
-		lea	(v_systemstack&$FFFFFF).l,a1
+		lea	(unk_0200&$FFFFFF).l,a1
 		move.b	(a1,d0.w),d0
 		andi.w	#$FF,d0
 		lsl.w	#4,d0
@@ -4116,7 +4116,7 @@ PlayMusic:
 SegaScreen:
 		pea	(a0)
 		lea	loc_6EB4(pc),a0
-		move.l	a0,($FFFFC832).w
+		move.l	a0,(v_vdpindex).w
 		movem.l	(sp)+,a0
 		jsr	(SoundDriverLoad).l		; load the Z80 Sound Driver
 		lea	loc_6442(pc),a0
@@ -4634,14 +4634,14 @@ loc_6864:
 		dbf	d7,loc_6860			; repeat 10 times
 		enable_ints				; set the stack register
 		lea	ARTCRA_SegaLogo(pc),a0		; load Crackers compressed Sega logo art address to a0
-		lea	(v_systemstack&$FFFFFF).l,a1			; load Ram address to dump, to a1
+		lea	(unk_0200&$FFFFFF).l,a1		; load Ram address to dump, to a1
 		jsr	(CracDec).l			; decompress the art and dump
 ; ---------------------------------------------------------------------------
 ; this part virtually copies the Sega art to a second location
 ; first location for Large SEGA letters, second location for small letters
 ; ---------------------------------------------------------------------------
-		lea	(v_systemstack&$FFFFFF).l,a0			; load dumped art location to a0
-		lea	($FF0A00).l,a1			; load second art location to a1
+		lea	(unk_0200&$FFFFFF).l,a0		; load dumped art location to a0
+		lea	(unk_0A00&$FFFFFF).l,a1		; load second art location to a1
 		move.l	#$48000000,(a1)+		; set VDP settings first to second art location
 		move.w	#$40,(a1)+			; then set repeat times to it
 		moveq	#3,d6				; set repeat times
@@ -4657,10 +4657,10 @@ loc_68BA:
 		dbf	d7,loc_68BA
 		lea	$180(a1),a1
 		dbf	d6,loc_68B8
-		lea	($FF0A00).l,a1
+		lea	(unk_0A00&$FFFFFF).l,a1
 		jsr	(SegaToVDP).l
-		lea	(v_systemstack&$FFFFFF).l,a0
-		lea	($FF0A00).l,a1
+		lea	(unk_0200&$FFFFFF).l,a0
+		lea	(unk_0A00&$FFFFFF).l,a1
 		moveq	#$7F,d6
 
 loc_68EE:
@@ -4684,7 +4684,7 @@ loc_68F0:
 		dbf	d7,loc_68F0
 		lea	$20(a1),a1
 		dbf	d6,loc_68EE
-		lea	($FF0A00).l,a0
+		lea	(unk_0A00&$FFFFFF).l,a0
 		lea	($FF2A00).l,a1
 		move.l	#$40000001,(a1)+
 		move.w	#$100,(a1)+
@@ -4767,22 +4767,22 @@ loc_69D2:
 		move.w	#$8164,(vdp_control_port).l
 		move.w	#$8164,($FFFFC9BA).w
 		bsr.w	SegaScrn_CheckRegion
-		lea	($FF0280).l,a0
+		lea	(unk_0200&$FFFFFF+$80).l,a0
 		bra.s	loc_6A02
 ; ---------------------------------------------------------------------------
 
 loc_69EC:
-		lea	($FF0480).l,a0
+		lea	(unk_0400&$FFFFFF+$80).l,a0
 		bra.s	loc_6A02
 ; ---------------------------------------------------------------------------
 
 loc_69F4:
-		lea	($FF0680).l,a0
+		lea	(unk_0600&$FFFFFF+$80).l,a0
 		bra.s	loc_6A02
 ; ---------------------------------------------------------------------------
 
 loc_69FC:
-		lea	($FF0880).l,a0
+		lea	(unk_0800&$FFFFFF+$80).l,a0
 
 loc_6A02:
 		move.w	#8,($FFFFFAC6).w
@@ -4800,7 +4800,7 @@ loc_6A02:
 ; ---------------------------------------------------------------------------
 
 loc_6A36:
-		lea	(v_systemstack&$FFFFFF).l,a0
+		lea	(unk_0200&$FFFFFF).l,a0
 		bra.s	loc_6A54
 ; ---------------------------------------------------------------------------
 
@@ -4810,12 +4810,12 @@ loc_6A3E:
 ; ---------------------------------------------------------------------------
 
 loc_6A46:
-		lea	($FF0600).l,a0
+		lea	(unk_0600&$FFFFFF).l,a0
 		bra.s	loc_6A54
 ; ---------------------------------------------------------------------------
 
 loc_6A4E:
-		lea	($FF0800).l,a0
+		lea	(unk_0800&$FFFFFF).l,a0
 
 loc_6A54:
 		move.w	#4,($FFFFFAC6).w
@@ -4833,7 +4833,7 @@ loc_6A54:
 ; ---------------------------------------------------------------------------
 
 loc_6A88:
-		lea	(v_systemstack&$FFFFFF).l,a0
+		lea	(unk_0200&$FFFFFF).l,a0
 		move.w	#$FFA0,d0
 		bra.s	loc_6AB6
 ; ---------------------------------------------------------------------------
@@ -4845,13 +4845,13 @@ loc_6A94:
 ; ---------------------------------------------------------------------------
 
 loc_6AA0:
-		lea	($FF0600).l,a0
+		lea	(unk_0600&$FFFFFF).l,a0
 		move.w	#$FFC0,d0
 		bra.s	loc_6AB6
 ; ---------------------------------------------------------------------------
 
 loc_6AAC:
-		lea	($FF0800).l,a0
+		lea	(unk_0800&$FFFFFF).l,a0
 		move.w	#$FFD0,d0
 
 loc_6AB6:
@@ -5033,18 +5033,18 @@ loc_6C70:
 		move.w	#$18,($FFFFCDDE).w
 		move.w	#$F8,($FFFFCA60).w
 		move.w	#$18,($FFFFCDE0).w
-		lea	(v_systemstack&$FFFFFF).l,a0
+		lea	(unk_0200&$FFFFFF).l,a0
 		movea.w	($FFFFD816).w,a6
 		bsr.w	sub_6CF0
 		lea	(unk_0400&$FFFFFF).l,a0
 		movea.w	($FFFFD818).w,a6
 		lea	$2C(a6),a6
 		bsr.w	sub_6CF0
-		lea	($FF0600).l,a0
+		lea	(unk_0600&$FFFFFF).l,a0
 		movea.w	($FFFFD816).w,a6
 		lea	$58(a6),a6
 		bsr.w	sub_6CF0
-		lea	($FF0800).l,a0
+		lea	(unk_0800&$FFFFFF).l,a0
 		movea.w	($FFFFD818).w,a6
 		lea	$8C(a6),a6
 
@@ -5324,7 +5324,7 @@ loc_735E:	bra.w	TitleLoad
 TitleLoad:
 		pea	(a0)
 		lea	loc_7576(pc),a0
-		move.l	a0,($FFFFC832).w
+		move.l	a0,(v_vdpindex).w
 		movem.l	(sp)+,a0
 		disable_ints
 		lea	loc_7382(pc),a0
@@ -5537,7 +5537,7 @@ MAPUNC_TitleMenu_3:
 Fields:
 		pea	(a0)
 		lea	loc_8010(pc),a0
-		move.l	a0,($FFFFC832).w
+		move.l	a0,(v_vdpindex).w
 		movem.l	(sp)+,a0
 		lea	loc_7ED8(pc),a0
 		jsr	(sub_8D0).w
@@ -5606,7 +5606,7 @@ loc_7EF8:
 
 Field_ReadController:
 		jsr	(sub_96E).w
-		lea	($FFFFC938).w,a3
+		lea	(unk_C938).w,a3
 		moveq	#0,d1
 		move.b	($FFFFD89C).w,d1
 		moveq	#7,d0
@@ -5629,7 +5629,7 @@ Field_ReadController:
 		lea	($FFFFD89C).w,a4
 		bsr.w	sub_7FB0
 		move.b	($FFFFFAFE).w,d0
-		lea	($FFFFC938).w,a3
+		lea	(unk_C938).w,a3
 		moveq	#0,d1
 		move.b	($FFFFD8AC).w,d1
 		bmi.s	loc_7FA8
@@ -6436,7 +6436,7 @@ sub_86BA:
 loc_86BC:
 		move.w	d7,-(sp)
 		disable_ints
-		lea	(v_systemstack&$FFFFFF).l,a1
+		lea	(unk_0200&$FFFFFF).l,a1
 		move.l	a1,d0
 		move.w	(a0)+,d1
 		move.w	(a0)+,d2
@@ -6596,7 +6596,7 @@ word_87BC:	dc.l ANI_SonicFields
 Levels:
 		pea	(a0)
 		lea	loc_8B1C(pc),a0
-		move.l	a0,($FFFFC832).w
+		move.l	a0,(v_vdpindex).w
 		movem.l	(sp)+,a0
 		lea	loc_89C8(pc),a0
 		jsr	(sub_8D0).w
@@ -6702,7 +6702,7 @@ loc_89EC:
 Level_ReadController:
 							; Level_PauseGame+32p
 		jsr	(sub_96E).w
-		lea	($FFFFC938).w,a3
+		lea	(unk_C938).w,a3
 		moveq	#0,d1
 		move.b	($FFFFD89C).w,d1
 		moveq	#7,d0
@@ -6725,7 +6725,7 @@ Level_ReadController:
 		lea	($FFFFD89C).w,a4
 		bsr.w	sub_8ABC
 		move.b	($FFFFFAFE).w,d0
-		lea	($FFFFC938).w,a3
+		lea	(unk_C938).w,a3
 		moveq	#0,d1
 		move.b	($FFFFD8AC).w,d1
 		bmi.s	loc_8AB4
@@ -6798,12 +6798,12 @@ loc_8B1C:
 		move.w	($FFFFD81A).w,d1
 		move.w	#$140,d2
 		jsr	(sub_5E8).w
-		lea	($FF0A00).l,a3
-		lea	($FF0B02).l,a4
+		lea	(unk_0A00&$FFFFFF).l,a3
+		lea	(unk_0B02&$FFFFFF).l,a4
 		lea	($FFFFC9DE).w,a5
 		jsr	(sub_14E4).w
-		lea	($FF0B84).l,a3
-		lea	($FF0C86).l,a4
+		lea	(unk_0B84&$FFFFFF).l,a3
+		lea	(unk_0C86&$FFFFFF).l,a4
 		lea	($FFFFCA1E).w,a5
 		jsr	(sub_14E4).w
 		ori.b	#$80,($FFFFFFC9).w
@@ -7008,7 +7008,7 @@ loc_8E14:
 loc_8E1C:
 		pea	(a0)
 		lea	loc_903C(pc),a0
-		move.l	a0,($FFFFC832).w
+		move.l	a0,(v_vdpindex).w
 		movem.l	(sp)+,a0
 		disable_ints
 		moveq	#$3F,d0
@@ -7267,7 +7267,7 @@ OptionSoundTest_SubModes:
 loc_93DC:
 		pea	(a0)
 		lea	loc_94B4(pc),a0
-		move.l	a0,($FFFFC832).w
+		move.l	a0,(v_vdpindex).w
 		movem.l	(sp)+,a0
 		disable_ints
 		moveq	#$3F,d0
@@ -7580,7 +7580,7 @@ loc_967C:
 		lea	SSZ_ArtLocs(pc),a2
 		bsr.w	sub_9D30
 		lea	($FFFFC9DE).w,a0
-		move.l	#v_128x128,$28(a0)
+		move.l	#v_128x128&$FFFFFF,$28(a0)
 		lea	SSZ_MapFGLocs(pc),a2
 		bsr.w	DecEniMapLocs
 		move.l	a1,($FFFFCA46).w
@@ -7595,12 +7595,12 @@ loc_967C:
 		bsr.w	DecEniMapLocs
 		move.l	a1,($FFFFFBC0).w
 		movea.l	a0,a1
-		lea	($FF0B84).l,a3
-		lea	($FF0C86).l,a4
-		clr.w	($FF0A00).l
-		clr.w	($FF0B02).l
-		clr.w	($FF0B84).l
-		clr.w	($FF0C86).l
+		lea	(unk_0B84&$FFFFFF).l,a3
+		lea	(unk_0C86&$FFFFFF).l,a4
+		clr.w	(unk_0A00&$FFFFFF).l
+		clr.w	(unk_0B02&$FFFFFF).l
+		clr.w	(unk_0B84&$FFFFFF).l
+		clr.w	(unk_0C86&$FFFFFF).l
 		bsr.w	sub_9DC6
 		enable_ints
 		addq.w	#4,($FFFFD82C).w
@@ -7614,15 +7614,15 @@ loc_9720:
 loc_972A:
 		movea.w	($FFFFD862).w,a0
 		lea	($FFFFC9DE).w,a1
-		lea	($FF0A00).l,a3
-		lea	($FF0B02).l,a4
+		lea	(unk_0A00&$FFFFFF).l,a3
+		lea	(unk_0B02&$FFFFFF).l,a4
 		bsr.w	sub_9EF8
 		bsr.w	sub_9F3A
 		bsr.w	sub_9DFE
 		movea.w	($FFFFD862).w,a0
 		lea	($FFFFCA1E).w,a1
-		lea	($FF0B84).l,a3
-		lea	($FF0C86).l,a4
+		lea	(unk_0B84&$FFFFFF).l,a3
+		lea	(unk_0C86&$FFFFFF).l,a4
 		bsr.s	sub_97B4
 		bsr.w	sub_9DFE
 		rts
@@ -7783,7 +7783,7 @@ loc_9898:
 		lea	TTZ_ArtLocs(pc),a2
 		bsr.w	sub_9D30
 		lea	($FFFFC9DE).w,a0
-		move.l	#v_128x128,$28(a0)
+		move.l	#v_128x128&$FFFFFF,$28(a0)
 		lea	TTZ_MapFGLocs(pc),a2
 		bsr.w	DecEniMapLocs
 		move.l	a1,($FFFFCA46).w
@@ -7798,8 +7798,8 @@ loc_9898:
 		bsr.w	DecEniMapLocs
 		move.l	a1,($FFFFFBC0).w
 		movea.l	a0,a1
-		lea	($FF0B84).l,a3
-		lea	($FF0C86).l,a4
+		lea	(unk_0B84&$FFFFFF).l,a3
+		lea	(unk_0C86&$FFFFFF).l,a4
 		bsr.w	sub_9DC6
 		enable_ints
 		addq.w	#4,($FFFFD82C).w
@@ -7813,15 +7813,15 @@ loc_991E:
 loc_9928:
 		movea.w	($FFFFD862).w,a0
 		lea	($FFFFC9DE).w,a1
-		lea	($FF0A00).l,a3
-		lea	($FF0B02).l,a4
+		lea	(unk_0A00&$FFFFFF).l,a3
+		lea	(unk_0B02&$FFFFFF).l,a4
 		bsr.w	sub_9EF8
 		bsr.w	sub_9F3A
 		bsr.w	sub_9DFE
 		movea.w	($FFFFD862).w,a0
 		lea	($FFFFCA1E).w,a1
-		lea	($FF0B84).l,a3
-		lea	($FF0C86).l,a4
+		lea	(unk_0B84&$FFFFFF).l,a3
+		lea	(unk_0C86&$FFFFFF).l,a4
 		bsr.s	sub_996A
 		bsr.w	sub_9F3A
 		jsr	(sub_9DFE).l
@@ -8260,12 +8260,12 @@ PAL_TechnoTowerZoneUnused:
 sub_9D30:
 		move.l	a0,-(sp)
 		movea.l	(a2)+,a0
-		lea	(v_systemstack&$FFFFFF).l,a4
+		lea	(unk_0200&$FFFFFF).l,a4
 		jsr	(NemDecToRAM).w
 		movea.l	(a2)+,a0
 		jsr	(NemDecToRAM).w
 		movea.l	(sp)+,a0
-		move.l	#v_systemstack&$FFFFFF,d0
+		move.l	#unk_0200&$FFFFFF,d0
 		moveq	#0,d1
 		move.w	$1C(a0),d1
 		lsl.w	#5,d1
@@ -8325,14 +8325,14 @@ DecEniMapLocs:
 
 sub_9DA2:
 		movea.l	(a2)+,a1
-		lea	(v_systemstack&$FFFFFF).l,a2
+		lea	(unk_0200&$FFFFFF).l,a2
 		moveq	#$7F,d0
 
 loc_9DAC:
 		move.l	(a1)+,(a2)+
 		move.l	(a1)+,(a2)+
 		dbf	d0,loc_9DAC
-		lea	($FF0600).l,a2
+		lea	(unk_0600&$FFFFFF).l,a2
 		moveq	#$7F,d0
 
 loc_9DBC:
@@ -18127,8 +18127,8 @@ loc_F5C2:
 
 loc_F5D8:
 		lea	($FFFFC9DE).w,a1
-		lea	($FF0A00).l,a3
-		lea	($FF0B02).l,a4
+		lea	(unk_0A00&$FFFFFF).l,a3
+		lea	(unk_0B02&$FFFFFF).l,a4
 		movea.l	a1,a5
 		movea.l	a3,a0
 		_move.w	0(a1),d0
