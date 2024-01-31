@@ -204,7 +204,9 @@ zmake68kBank function addr,(((addr&3F8000h)/zROMWindow))
 
 loc_0:
 		di
+	if ~~OptimiseDriver
 		di
+	endif
 		im	1
 		jp	InitDriver
 ; ---------------------------------------------------------------------------
@@ -236,10 +238,14 @@ WriteFMIorII:	rsttarget
 		ret	nz
 		add	a, (ix+zTrack.VoiceControl)
 		bit	2, (ix+zTrack.VoiceControl)
+	if ~~OptimiseDriver
 		jr	nz, WriteFMIIPart
+	else
+		jp	nz, WriteFMIIPart
+	endif
 ; End of function WriteFMIorII
 
-
+	if ~~OptimiseDriver
 ; =============== S U B	R O U T	I N E =======================================
 
 
@@ -264,6 +270,27 @@ WriteFMII:	rsttarget
 		ld	(zYM2612_D1), a
 		ret
 ; End of function WriteFMII
+	else	
+; =============== S U B	R O U T	I N E =======================================
+
+		align 8
+WriteFMI:	rsttarget
+		ld	(zYM2612_A0), a
+		ld	a, c
+		ld	(zYM2612_D0), a
+		ret
+; End of function WriteFMI
+
+; =============== S U B	R O U T	I N E =======================================
+
+		align 8
+WriteFMII:	rsttarget
+		ld	(zYM2612_A1), a
+		ld	a, c
+		ld	(zYM2612_D1), a
+		ret
+; End of function WriteFMII
+	endif
 
 ; ---------------------------------------------------------------------------
 
@@ -325,6 +352,12 @@ loc_AB:
 		pop	af
 		ld	b, 1
 		ret
+	
+	if OptimiseDriver	
+WriteFMIIPart:
+		sub	4
+		jp	WriteFMII
+	endif
 ; ---------------------------------------------------------------------------
 
 InitDriver:
@@ -2385,7 +2418,7 @@ loc_BC9:
 cfF0_Mods.betup:
 		ld	(ix+zTrack.ModulationPtrLow), e
 		ld	(ix+zTrack.ModulationPtrHigh), d
-		ld	(ix+zTrack.ModulationCtrl),	80h
+		ld	(ix+zTrack.ModulationCtrl), 80h
 		inc	de
 		inc	de
 		inc	de
@@ -2399,7 +2432,7 @@ cfF1_ModTypePFM:
 		ld	a, (de)
 
 cfF4_ModType:
-		ld	(ix+zTrack.ModulationCtrl),	a
+		ld	(ix+zTrack.ModulationCtrl), a
 		ret
 ; ---------------------------------------------------------------------------
 
@@ -2413,11 +2446,7 @@ cfF2_StopTrk:
 		call	GetSFXChnPtrs
 		ld	a, (zUpdateSound)
 		or	a
-	if OptimiseDriver
-		jr	z, loc_C94
-	else
 		jp	z, loc_C94
-	endif
 		xor	a
 		ld	(zUnk_1C18), a
 		bit	7, (iy+0)
@@ -2982,7 +3011,11 @@ zPlayDigitalAudio:
 		di					; 4
 		ld	a, 2Bh				; 7
 		ld	c, 0				; 7
+	if ~~OptimiseDriver
 		call	WriteFMI			; 17
+	else
+		rst	WriteFMI			; 11
+	endif
 
 loc_EED:
 		ei					; 4
@@ -3039,7 +3072,7 @@ loc_F1C:
 		or	l				; 4
 	if OptimiseDriver
 		jr	nz, .loc_F52			; 7
-							; 265 cycles in total
+							; 259 cycles in total
 	else
 		jp	nz, .loc_F52			; 10
 							; 268 cycles in total
