@@ -40,22 +40,22 @@ RomStart:	dc.l v_systemstack&$FFFFFF,	EntryPoint,	ErrorTrap,	ErrorTrap
 		dc.l ErrorTrap,	ErrorTrap,	ErrorTrap,	ErrorTrap
 		dc.l ErrorTrap,	ErrorTrap,	ErrorTrap,	ErrorTrap
 		dc.l ErrorTrap,	ErrorTrap,	ErrorTrap,	ErrorTrap
-ConsoleName:	dc.b "SEGA MEGA DRIVE "
-ProductDate:	dc.b "(C)SEGA 1994.JUL"
-LocalTitle:	dc.b "SONIC STUDIUM                                   "
-InterTitle:	dc.b "SONIC STUDIUM                                   "
-SerialNo:	dc.b "GM XXXXXXXX-XX"
+		dc.b "SEGA MEGA DRIVE "
+		dc.b "(C)SEGA 1994.JUL"
+		dc.b "SONIC STUDIUM                                   "
+		dc.b "SONIC STUDIUM                                   "
+		dc.b "GM XXXXXXXX-XX"
 Checksum:	dc.w 0
-IOS:		dc.b "J               "
+		dc.b "J               "
 ROM_Start:	dc.l RomStart
 ROM_Finish:	dc.l $1FFFFF
-RAM_Start:	dc.l v_startofram&$FFFFFF
-RAM_Finish:	dc.l $FFFFFF
-SRAMSupport:	dc.l $20202020
-SRAM_Start:	dc.l $20202020
-SRAM_Finish:	dc.l $20202020
-ProductNotes:	dc.b "                                                    "
-RegionsFor:	dc.b "JUE             "
+		dc.l v_startofram&$FFFFFF
+		dc.l $FFFFFF
+		dc.l $20202020
+		dc.l $20202020
+		dc.l $20202020
+		dc.b "                                                    "
+		dc.b "JUE             "
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Entry Point
@@ -864,17 +864,17 @@ MapScreen:
 		move.w	($FFFFD820).w,d6		; load number of tiles to increase to for each set of columns to d6
 		swap	d6				; swap words (Sets it to left for long-word amount)
 
-loc_8B0:
+.line:
 		move.l	d0,4(a0)			; set to VDP register
 		move.w	d1,d5				; load number of columns to d5
 
-loc_8B6:
+.cell:
 		move.w	(a1)+,d4			; load map
 		add.w	d3,d4				; add colour/plane/flip (Render Flag)
 		move.w	d4,(a0)				; dump to VRAM
-		dbf	d5,loc_8B6			; repeat til columns are dumped
+		dbf	d5,.cell			; repeat til columns are dumped
 		add.l	d6,d0				; increase VRAM location for next set of columns
-		dbf	d2,loc_8B0			; repeat til all rows are dumped
+		dbf	d2,.line			; repeat til all rows are dumped
 		cmp.w	d0,d0				; ?? Probably left in by accident
 		rts
 
@@ -4152,12 +4152,13 @@ SegaScreen:
 		move.l	a0,(v_vdpindex).w
 		movem.l	(sp)+,a0
 		jsr	(SoundDriverLoad).l		; load the Z80 Sound Driver
-		lea	loc_6442(pc),a0
+		lea	SegaScreen_VDPSettings(pc),a0
 		jsr	(SetupVDPUsingTable).w
 		bra.s	SegaContin
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-loc_6442:	dc.w $8230				; plane a: 
+SegaScreen_VDPSettings:
+		dc.w $8230				; plane a: 
 		dc.w $8407				; plane b:
 		dc.w $833C				; window table: 
 		dc.w $855C				; sprite table: B800
@@ -5361,11 +5362,12 @@ TitleLoad:
 		move.l	a0,(v_vdpindex).w
 		movem.l	(sp)+,a0
 		disable_ints
-		lea	loc_7382(pc),a0
+		lea	TitleScreen_VDPSettings(pc),a0
 		jsr	(SetupVDPUsingTable).w
 		bra.s	loc_739A
 ; ---------------------------------------------------------------------------
-loc_7382:	dc.w $8230
+TitleScreen_VDPSettings:
+		dc.w $8230
 		dc.w $8407
 		dc.w $833C
 		dc.w $857C

@@ -392,7 +392,7 @@ loc_B9:
 		; This is bugged, the DAC needs de to be cleared in order to
 		; not continue checking if there is a sample. This leads to
 		; constant crashes on hardware if nothing is played on the
-                ; Sega Screen or anywhere that sound isn't being played.
+		; Sega Screen or anywhere that sound isn't being played.
 		ld	a, (hl)
 	endif
 		bankswitch
