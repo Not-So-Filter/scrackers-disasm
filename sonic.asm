@@ -4219,9 +4219,9 @@ loc_64F2:
 		pea	(loc_64F2).l
 		bclr	#7,(v_lagger).w
 
-loc_64FE:
+.wait:
 		tst.b	(v_lagger).w
-		bpl.s	loc_64FE
+		bpl.s	.wait
 		move.w	(v_subgamemode).w,d0		; load sub mode to d0
 		jmp	SegaSubArray(pc,d0.w)		; jump to correct sub mode routine
 ; ===========================================================================
@@ -5451,9 +5451,9 @@ PAL_MainMenus:	binclude	"Palettes/PalMainMenus.bin"
 TitleStart:
 		bclr	#7,(v_lagger).w
 
-loc_74E2:
+.wait:
 		tst.b	(v_lagger).w
-		bpl.s	loc_74E2
+		bpl.s	.wait
 		move.w	($FFFFC946).w,d0
 		add.w	($FFFFD826).w,d0
 		bpl.s	loc_74F4
@@ -5573,7 +5573,7 @@ Fields:
 		lea	loc_8010(pc),a0
 		move.l	a0,(v_vdpindex).w
 		movem.l	(sp)+,a0
-		lea	loc_7ED8(pc),a0
+		lea	Fields_VDPSettings(pc),a0
 		jsr	(SetupVDPUsingTable).w
 		move.b	#bgm_Electoria,d0		; load BGM 81
 		jsr	(PlayMusic).l			; Play BGM
@@ -5604,7 +5604,8 @@ PAL_PrimaryColours_Field:
 		binclude	 "Palettes/PalPrimaryColoursField.bin"
 		even
 ; ---------------------------------------------------------------------------
-loc_7ED8:	dc.w $8230
+Fields_VDPSettings:
+		dc.w $8230
 		dc.w $832C
 		dc.w $8407
 		dc.w $8554
@@ -5621,9 +5622,9 @@ Fields_MainLoop:
 		pea	(Fields_MainLoop).l
 		bclr	#7,(v_lagger).w
 
-loc_7EF8:
+.wait:
 		tst.b	(v_lagger).w			; I think these act like a lagger, removing them...
-		bpl.s	loc_7EF8			; ...causes the fields to run extremely fast
+		bpl.s	.wait				; ...causes the fields to run extremely fast
 		bsr.w	sub_F390
 		jsr	(Field_ReadController).l
 		jsr	(Field_PauseGame).l
@@ -5767,9 +5768,9 @@ loc_8086:
 loc_808A:
 		bclr	#7,(v_lagger).w
 
-loc_8090:
+.wait:
 		tst.b	(v_lagger).w
-		bpl.s	loc_8090
+		bpl.s	.wait
 		jsr	(Field_ReadController).l
 		move.b	($FFFFD89E).w,d0
 		andi.b	#$70,d0				; "p"
@@ -6319,7 +6320,13 @@ PALCY_ElectricField_1:dc.w $CE0
 		dc.w $626
 		dc.w $404
 loc_856A:	dc.l $FFFFFAEC
+	if ~~fixBugs
+		; Bug: this uses palette entry 2 instead of 3 like intended
+		; perhaps intentional though, considering it can flash very fast.
 		dc.l $FFFFD41C
+	else
+		dc.l $FFFFD43C	
+	endif
 PALCY_ElectricField_2:dc.w $EE0
 		dc.w $64
 		dc.w $420
@@ -6372,7 +6379,13 @@ PALCY_ElectricField_2:dc.w $EE0
 		dc.b $FF
 		dc.b $FF
 loc_85D6:	dc.l $FFFFFAEE
+	if ~~fixBugs
+		; Bug: this uses palette entry 2 instead of 3 like intended
+		; perhaps intentional though, considering it can flash very fast.
 		dc.l $FFFFD41E
+	else
+		dc.l $FFFFD43E	
+	endif
 		dc.l $8E00032
 		dc.l $6C00005
 		dc.l $4A00005
@@ -6542,7 +6555,7 @@ loc_8748:
 		move.w	($FFFFD868).w,d0
 
 loc_8752:
-		lea	word_87BC(pc,d0.w),a3
+		lea	CharacterDataTable(pc,d0.w),a3
 		movea.l	(a3),a0
 		movea.l	$20(a3),a1
 		movea.l	$40(a3),a2
@@ -6583,7 +6596,8 @@ loc_87A4:
 ; End of function sub_8736
 
 ; ---------------------------------------------------------------------------
-word_87BC:	dc.l ANI_SonicFields
+CharacterDataTable:
+		dc.l ANI_SonicFields
 		dc.l ANI_TailsFields
 		dc.l 0
 		dc.l 0
@@ -6631,7 +6645,7 @@ Levels:
 		lea	loc_8B1C(pc),a0
 		move.l	a0,(v_vdpindex).w
 		movem.l	(sp)+,a0
-		lea	loc_89C8(pc),a0
+		lea	Level_VDPSettings(pc),a0
 		jsr	(SetupVDPUsingTable).w
 		move.b	#bgm_Electoria,d0
 		tst.w	($FFFFD834).w
@@ -6692,7 +6706,8 @@ loc_896C:
 PAL_PrimaryColours:
 		binclude	"Palettes/PalPrimaryColours.bin"
 		even
-loc_89C8:	dc.w $8230
+Level_VDPSettings:
+		dc.w $8230
 		dc.w $832C
 		dc.w $8407
 		dc.w $8578
@@ -6710,9 +6725,9 @@ Level_MainLoop:
 		pea	(Level_MainLoop).l
 		bclr	#7,(v_lagger).w
 
-loc_89EC:
+.wait:
 		tst.b	(v_lagger).w
-		bpl.s	loc_89EC
+		bpl.s	.wait
 		bsr.w	sub_F390
 		jsr	(Level_ReadController).l
 		jsr	(Level_PauseGame).l
@@ -6866,9 +6881,9 @@ loc_8BA0:
 loc_8BA4:
 		bclr	#7,(v_lagger).w
 
-loc_8BAA:
+.wait:
 		tst.b	(v_lagger).w
-		bpl.s	loc_8BAA
+		bpl.s	.wait
 		jsr	(Level_ReadController).l
 		move.w	($FFFFD8A4).w,d0
 		move.w	($FFFFD8A6).w,d1
@@ -7075,9 +7090,9 @@ LevelSelect_Init:
 LevelSelect_Main:
 		bclr	#7,(v_lagger).w
 
-loc_8EC6:
+.wait:
 		tst.b	(v_lagger).w
-		bpl.s	loc_8EC6
+		bpl.s	.wait
 		move.w	($FFFFC944).w,d0
 		add.w	($FFFFD834).w,d0
 		bpl.s	loc_8ED8
@@ -7332,9 +7347,9 @@ loc_9440:	dc.w $2F
 OptionSoundTest_Exit:
 		bclr	#7,(v_lagger).w
 
-loc_9452:
+.wait:
 		tst.b	(v_lagger).w
-		bpl.s	loc_9452
+		bpl.s	.wait
 		move.w	($FFFFC944).w,d0
 		add.b	d0,($FFFFD82B).w
 		move.w	($FFFFC946).w,d0
@@ -18039,9 +18054,9 @@ sub_F4E4:
 sub_F4FE:
 		bclr	#7,(v_lagger).w
 
-loc_F504:
+.wait:
 		tst.b	(v_lagger).w
-		bpl.s	loc_F504
+		bpl.s	.wait
 		move.w	($FFFFFDC4).w,d0
 		cmpi.w	#$14,d0
 		bge.s	locret_F536
@@ -18076,9 +18091,9 @@ locret_F536:
 sub_F538:
 		bclr	#7,(v_lagger).w
 
-loc_F53E:
+.wait:
 		tst.b	(v_lagger).w
-		bpl.s	loc_F53E
+		bpl.s	.wait
 		jsr	(sub_96E).w
 		jsr	(BuildSprites).w
 		tst.b	($FFFFFDC2).w
