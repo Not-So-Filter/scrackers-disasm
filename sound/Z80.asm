@@ -5,6 +5,9 @@
 ; Full disassembly and documentation by Filter
 ; ---------------------------------------------------------------------------
 
+FixDriverBugs = fixBugs
+OptimiseDriver = 0
+
 ; ===========================================================================
 
 zTrack STRUCT DOTS
@@ -338,7 +341,7 @@ loc_B9:
 		call	StopAllSound
 		ld	a, zmake68kBank(MusicBank)
 		ld	(zMusicBank), a
-	if fixBugs
+	if FixDriverBugs
 		ld	a, zmake68kBank(SoundBank)
 	else
 		; DANGER!
@@ -347,11 +350,11 @@ loc_B9:
 	endif
 		ld	(zSoundBank), a
 
-	if fixBugs
+	if FixDriverBugs
 		ld	de, 0				; set DAC length to nothing
 	endif
 		ld	hl, zSoundBank
-	if ~~fixBugs
+	if ~~FixDriverBugs
 		; DANGER!
 		; This is bugged, the DAC needs de to be cleared in order to
 		; not continue checking if there is a sample. This leads to
@@ -1148,7 +1151,7 @@ PlaySoundID:
 		ld	a, (zSoundQueue0)
 		bit	7, a
 		jp	z, StopAllSound			; 00-7F	- Stop All
-	if fixBugs
+	if FixDriverBugs
 		cp	bgm_Last+1			; is the ID music?
 		jp	c, zPlayMusic			; if so, play music
 		cp	sfx_First			; is the ID after music but before SFX?
@@ -2982,7 +2985,7 @@ ptr_mus86:	dw zmake68kPtr(Music86)
 ptr_musend
 
 SoundIndex:
-	if ~~fixBugs
+	if ~~FixDriverBugs
 		; DANGER!
 		; These pointers along with the pointers inside of the SFX are
 		; all half a bank too long!
@@ -3023,7 +3026,7 @@ ptr_sndAF:	dw zmake68kPtr(SoundAF)
 ptr_sndend
 
 SpecSoundIndex:
-	if ~~fixBugs
+	if ~~FixDriverBugs
 		; DANGER!
 		; Once again, these pointers along with the pointers inside of the
 		; SFX are all half a bank too long!
