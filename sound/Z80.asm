@@ -386,7 +386,11 @@ UpdateAll:
 		call	nz, DrumUpdateTrack
 		ld	b, (zTracksEnd-zSongFM1)/zTrack.len
 		ld	ix, zSongFM1
+	if OptimiseDriver
+		jp	TrkUpdateLoop
+	else
 		jr	TrkUpdateLoop
+	endif
 ; End of function UpdateAll
 
 
@@ -466,7 +470,11 @@ SendFMFreq:
 		bit	2, (ix+zTrack.PlaybackControl)
 		ret	nz
 		bit	0, (ix+zTrack.PlaybackControl)
+	if OptimiseDriver
+		jr	nz, loc_1B8
+	else
 		jp	nz, loc_1B8
+	endif
 
 loc_1AF:
 		ld	a, 0A4h
@@ -474,8 +482,12 @@ loc_1AF:
 		rst	WriteFMIorII
 		ld	a, 0A0h
 		ld	c, l
+	if OptimiseDriver
+		jp	WriteFMIorII
+	else
 		rst	WriteFMIorII
 		ret
+	endif
 ; ---------------------------------------------------------------------------
 
 loc_1B8:
@@ -561,7 +573,11 @@ loc_20B:
 		sub	81h
 		jp	p, GetNote
 		call	SetRest
+	if OptimiseDriver
+		jp	loc_25D
+	else
 		jr	loc_25D
+	endif
 ; ---------------------------------------------------------------------------
 
 GetNote:
@@ -584,9 +600,14 @@ loc_245:
 		jr	c, loc_24E
 		ex	af, af'
 		add	a, d
+	if OptimiseDriver
+		jp	loc_245
+; ---------------------------------------------------------------------------
+	else
 		jr	loc_245
 ; ---------------------------------------------------------------------------
 		ex	af, af'
+	endif
 
 loc_24E:
 		add	a, e
@@ -609,14 +630,22 @@ loc_25D:
 		jp	p, loc_29C
 		ld	a, (ix+zTrack.SavedDuration)
 		ld	(ix+zTrack.DurationTimeout), a
+	if OptimiseDriver
+		jp	loc_2A3
+	else
 		jr	loc_2A3
+	endif
 ; ---------------------------------------------------------------------------
 
 loc_270:
 		ld	a, (de)
 		inc	de
 		ld	(ix+zTrack.Detune), a
+	if OptimiseDriver
+		jp	loc_29B
+	else
 		jr	loc_29B
+	endif
 ; ---------------------------------------------------------------------------
 
 DoRawFreqMode:
@@ -711,8 +740,12 @@ DoNoteOn:
 		or	0F0h
 		ld	c, a
 		ld	a, 28h
+	if OptimiseDriver
+		jp	WriteFMI
+	else
 		call	WriteFMI
 		ret
+	endif
 
 ; =============== S U B	R O U T	I N E =======================================
 
@@ -792,7 +825,11 @@ ExecPanAnim:
 		ld	a, (ix+zTrack.PanAni1)
 		sub	2
 		ret	m
+	if OptimiseDriver
+		jp	loc_312
+	else
 		jr	loc_312
+	endif
 ; End of function ExecPanAnim
 
 ; ---------------------------------------------------------------------------
@@ -925,7 +962,11 @@ DoModEnv:
 		ex	de, hl
 		ld	hl, ModEnvPtrs
 		rst	ReadPtrTable
+	if OptimiseDriver
+		jp	loc_41C
+	else
 		jr	loc_41C
+	endif
 ; ---------------------------------------------------------------------------
 
 loc_419:
@@ -939,7 +980,11 @@ loc_41C:
 		ld	a, (hl)
 		pop	hl
 		bit	7, a
+	if OptimiseDriver
+		jr	z, ModEnv_Positive
+	else
 		jp	z, ModEnv_Positive
+	endif
 		cp	82h
 		jr	z, ModEnv_Jump2Idx		; 82	xx - jump to byte xx
 		cp	80h
@@ -956,12 +1001,20 @@ loc_41C:
 ModEnv_Jump2Idx:
 		inc	bc
 		ld	a, (bc)
+	if OptimiseDriver
+		jp	loc_419
+	else
 		jr	loc_419
+	endif
 ; ---------------------------------------------------------------------------
 
 ModEnv_Reset:
 		xor	a
+	if OptimiseDriver
+		jp	loc_419
+	else
 		jr	loc_419
+	endif
 ; ---------------------------------------------------------------------------
 
 ModEnv_ChgMult:
@@ -971,7 +1024,11 @@ ModEnv_ChgMult:
 		ld	(ix+zTrack.ModEnvSens), a
 		inc	(ix+zTrack.ModEnvIndex)
 		inc	(ix+zTrack.ModEnvIndex)
+	if OptimiseDriver
+		jp	loc_41C
+	else
 		jr	loc_41C
+	endif
 ; ---------------------------------------------------------------------------
 
 ModEnv_Positive:
@@ -1019,7 +1076,11 @@ loc_470:
 		jr	c, loc_492
 		ld	hl, -57Bh
 		add	hl, de
+	if OptimiseDriver
+		jp	loc_4A0
+	else
 		jr	loc_4A0
+	endif
 ; ---------------------------------------------------------------------------
 
 loc_492:
@@ -1139,8 +1200,12 @@ WriteInsReg:
 		inc	de
 		ld	c, (hl)
 		inc	hl
+	if OptimiseDriver
+		jp	WriteFMIorII
+	else
 		rst	WriteFMIorII
 		ret
+	endif
 ; End of function WriteInsReg
 
 
@@ -1330,7 +1395,11 @@ PlaySpcSFX:
 		ex	af, af'
 		ld	a, 80h
 		ld	hl, SpecSoundIndex
+	if OptimiseDriver
+		jp	loc_652
+	else
 		jr	loc_652
+	endif
 ; ---------------------------------------------------------------------------
 
 PlaySFX:
@@ -1429,7 +1498,11 @@ GetSFXChnPtrs:
 		bit	2, a
 		jr	z, loc_6FA
 		dec	a
+	if OptimiseDriver
+		jp	loc_6FA
+	else
 		jr	loc_6FA
+	endif
 ; ---------------------------------------------------------------------------
 
 loc_6E3:
@@ -1461,8 +1534,12 @@ loc_6FA:
 		pop	iy				; IY - Special SFX Track
 		pop	af
 		ld	hl, BGMChnPtrs
+	if OptimiseDriver
+		jp	ReadPtrTable			; HL - Music Track
+	else
 		rst	ReadPtrTable			; HL - Music Track
 		ret
+	endif
 ; End of function GetSFXChnPtrs
 
 
@@ -1727,7 +1804,11 @@ loc_88C:
 
 loc_898:
 		push	af
+	if OptimiseDriver
+		rst	WriteFMII
+	else
 		call	WriteFMII
+	endif
 		pop	af
 		inc	a
 		djnz	loc_898
@@ -1797,7 +1878,11 @@ loc_8E0:
 		bit	7, a
 		jr	z, loc_905
 		sub	bgm_Last
+	if OptimiseDriver
+		jr	c, loc_90B
+	else
 		jp	c, loc_90B
+	endif
 		sub	1Ah
 		ld	hl, SndPriorities
 		add	a, l
@@ -1907,7 +1992,11 @@ loc_A07:
 		ld	a, (de)
 		inc	de
 		cp	0E0h
+	if OptimiseDriver
+		jr	nc, cfHandler_Drum
+	else
 		jp	nc, cfHandler_Drum
+	endif
 		or	a
 		jp	m, loc_A16
 		dec	de
@@ -1919,7 +2008,11 @@ loc_A16:
 		jp	p, loc_A3E
 		push	de
 		sub	80h
+	if OptimiseDriver
+		jr	z, loc_A38
+	else
 		jp	z, loc_A38
+	endif
 		ld	hl, zSongFM6
 		set	2, (hl)
 		ex	af, af'
@@ -1927,7 +2020,11 @@ loc_A16:
 		ex	af, af'
 		ld	hl, zTracksStart
 		bit	2, (hl)
+	if OptimiseDriver
+		jr	nz, loc_A38
+	else
 		jp	nz, loc_A38
+	endif
 		ld	(zDACIndex), a
 
 loc_A38:
@@ -2048,7 +2145,11 @@ cfE9_SetLFO:
 		call	WriteFMI
 		inc	de
 		ld	c, 0C0h
+	if OptimiseDriver
+		jp	loc_AC1
+	else
 		jr	loc_AC1
+	endif
 ; ---------------------------------------------------------------------------
 
 cfE1_Detune:
@@ -2158,7 +2259,11 @@ cfEB_LoopExit:
 		add	hl, bc
 		ld	a, (hl)
 		dec	a
+	if OptimiseDriver
+		jr	z, loc_B5F
+	else
 		jp	z, loc_B5F
+	endif
 		inc	de
 		ret
 ; ---------------------------------------------------------------------------
@@ -2176,7 +2281,11 @@ cfEC_ChgPSGVol:
 		dec	(ix+zTrack.VolEnv)
 		add	a, (ix+zTrack.Volume)
 		cp	0Fh
+	if OptimiseDriver
+		jr	c, loc_B7A
+	else
 		jp	c, loc_B7A
+	endif
 		ld	a, 0Fh
 
 loc_B7A:
@@ -2186,14 +2295,22 @@ loc_B7A:
 
 cfED_FMChnWrite:
 		call	ReadFMCommand
+	if OptimiseDriver
+		jp	WriteFMIorII
+	else
 		rst	WriteFMIorII
 		ret
+	endif
 ; ---------------------------------------------------------------------------
 
 cfEE_FM1Write:
 		call	ReadFMCommand
+	if OptimiseDriver
+		jp	WriteFMI
+	else
 		call	WriteFMI
 		ret
+	endif
 
 ; =============== S U B	R O U T	I N E =======================================
 
@@ -2238,7 +2355,11 @@ SetInsFromSong:
 		and	7Fh
 		ld	b, a
 		call	JumpToInsData
+	if OptimiseDriver
+		jp	loc_BC4
+	else
 		jr	loc_BC4
+	endif
 ; ---------------------------------------------------------------------------
 
 loc_BBF:
@@ -2292,7 +2413,11 @@ cfF2_StopTrk:
 		call	GetSFXChnPtrs
 		ld	a, (zUpdateSound)
 		or	a
+	if OptimiseDriver
+		jr	z, loc_C94
+	else
 		jp	z, loc_C94
+	endif
 		xor	a
 		ld	(zUnk_1C18), a
 		bit	7, (iy+0)
@@ -2303,7 +2428,11 @@ cfF2_StopTrk:
 		push	iy
 		ld	l, (iy+zTrack.VoicesLow)
 		ld	h, (iy+zTrack.VoicesHigh)
+	if OptimiseDriver
+		jp	loc_C22
+	else
 		jr	loc_C22
+	endif
 ; ---------------------------------------------------------------------------
 
 loc_C1E:
@@ -2333,7 +2462,11 @@ loc_C48:
 		or	a
 		jp	p, loc_C54
 		call	SetInsFromSong
+	if OptimiseDriver
+		jp	loc_C91
+	else
 		jr	loc_C91
+	endif
 ; ---------------------------------------------------------------------------
 
 loc_C54:
@@ -2373,7 +2506,11 @@ loc_C99:
 		ld	(zPSG), a
 
 loc_CA9:
+	if OptimiseDriver
+		jp	loc_C94
+	else
 		jr	loc_C94
+	endif
 ; ---------------------------------------------------------------------------
 
 cfF3_PSGNoise:
@@ -2427,7 +2564,11 @@ cfF7_Loop:
 loc_CE9:
 		inc	de
 		dec	(hl)
+	if OptimiseDriver
+		jr	nz, cfF6_GoTo
+	else
 		jp	nz, cfF6_GoTo
+	endif
 		inc	de
 		ret
 ; ---------------------------------------------------------------------------
@@ -2540,8 +2681,12 @@ SendFM3SpcMode:
 		ld	(zFM3Settings), a
 		ld	c, a
 		ld	a, 27h
+	if OptimiseDriver
+		jp	WriteFMI
+	else
 		call	WriteFMI
 		ret
+	endif
 ; End of function SendFM3SpcMode
 
 ; ---------------------------------------------------------------------------
@@ -2682,7 +2827,11 @@ UpdatePSGTrk:
 		bit	4, (ix+zTrack.PlaybackControl)
 		ret	nz
 		call	PrepareModulat
+	if OptimiseDriver
+		jp	loc_E3D
+	else
 		jr	loc_E3D
+	endif
 ; ---------------------------------------------------------------------------
 
 loc_E31:
@@ -2767,7 +2916,11 @@ DoPSGVolEnv:
 		jr	z, VolEnv_Reset			; 80 - loop back to beginning
 		inc	bc
 		ld	a, (bc)
+	if OptimiseDriver
+		jp	loc_E92
+	else
 		jr	loc_E92
+	endif
 ; ---------------------------------------------------------------------------
 
 VolEnv_Off:
@@ -2778,7 +2931,11 @@ VolEnv_Off:
 
 VolEnv_Reset:
 		xor	a
+	if OptimiseDriver
+		jp	loc_E92
+	else
 		jr	loc_E92
+	endif
 ; ---------------------------------------------------------------------------
 
 VolEnv_Hold:
@@ -2880,8 +3037,13 @@ loc_F1C:
 		inc	hl				; 6
 		ld	a, h				; 4
 		or	l				; 4
+	if OptimiseDriver
+		jr	nz, .loc_F52			; 7
+							; 265 cycles in total
+	else
 		jp	nz, .loc_F52			; 10
 							; 268 cycles in total
+	endif
 		ld	hl, zROMWindow
 		di
 		exx
