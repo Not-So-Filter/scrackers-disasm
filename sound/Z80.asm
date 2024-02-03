@@ -171,7 +171,7 @@ bankswitch macro
 		ld	(hl), a
 		endm
 	endm
-	
+
 bankswitch_2 macro addr68k
 		ld	hl,zBankRegister
 		xor	a	; a = 0
@@ -270,7 +270,7 @@ WriteFMII:	rsttarget
 		ld	(zYM2612_D1), a
 		ret
 ; End of function WriteFMII
-	else	
+	else
 ; =============== S U B	R O U T	I N E =======================================
 
 		align 8
@@ -352,8 +352,8 @@ loc_AB:
 		pop	af
 		ld	b, 1
 		ret
-	
-	if OptimiseDriver	
+
+	if OptimiseDriver
 WriteFMIIPart:
 		sub	4
 		jp	WriteFMII
@@ -1250,32 +1250,38 @@ PlaySoundID:
 		bit	7, a
 		jp	z, StopAllSound			; 00-7F	- Stop All
 	if FixDriverBugs
-		cp	bgm_Last+1			; is the ID music?
+		cp	bgm_Last			; is the ID music?
 		jp	c, zPlayMusic			; if so, play music
+
 		cp	sfx_First			; is the ID after music but before SFX?
 		ret	c				; do nothing if so
-		cp	sfx_Last+1			; is the ID SFX?
+
+		cp	sfx_Last			; is the ID SFX?
 		jp	c, PlaySFX			; if so, play SFX
+
 		cp	spec_First			; is the ID after SFX but before special SFX?
 		ret	c				; do nothing if so
-		cp	spec_Last+1			; is the ID special SFX?
+
+		cp	spec_Last			; is the ID special SFX?
 		jp	c, PlaySpcSFX			; if so, play special SFX
+
 		cp	flg_First			; is the ID after special SFX but before command flags?
 		ret	c				; do nothing if so
-		cp	flg_Last+1			; is the ID after the command flags?
+
+		cp	flg_Last			; is the ID after the command flags?
 		ret	nc				; do nothing...
 	else
 		; DANGER!
 		; Some checks are in incorrect ranges and not checked against any bounds!
-		; Music checks 80-9F (proper range should be 81-86)
+		; Music checks 81-9F (proper range should be 81-86)
 		; Special SFX checks B0-DF (proper range should be D0-D3)
-		cp	bgm_Last+1Ah			; is the ID music?
+		cp	bgm_Last+19h			; is the ID music?
 		jp	c, zPlayMusic			; if so, play music
-		cp	sfx_Last+1			; is the ID SFX?
+		cp	sfx_Last			; is the ID SFX?
 		jp	c, PlaySFX			; if so, play SFX
 		cp	flg_First			; is the ID special SFX?
 		jp	c, PlaySpcSFX			; if so, play special SFX
-		cp	flg_Last+16h			; is the ID after the command flags?
+		cp	flg_Last+15h			; is the ID after the command flags?
 		jp	nc, StopAllSound		; if so, Stop all sound
 	endif
 
@@ -1910,7 +1916,7 @@ loc_8E0:
 		ld	c, a
 		bit	7, a
 		jr	z, loc_905
-		sub	bgm_Last
+		sub	bgm_Last-1
 	if OptimiseDriver
 		jr	c, loc_90B
 	else

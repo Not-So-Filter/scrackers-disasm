@@ -32,7 +32,7 @@ bgm_HyperHyper:	equ ((ptr_mus83-MusicIndex)/2)+bgm_First
 bgm_EveningStar:	equ ((ptr_mus84-MusicIndex)/2)+bgm_First
 bgm_Moonrise:	equ ((ptr_mus85-MusicIndex)/2)+bgm_First
 bgm_GameOver:	equ ((ptr_mus86-MusicIndex)/2)+bgm_First
-bgm_Last:	equ ((ptr_musend-MusicIndex-2)/2)+bgm_First
+bgm_Last:	equ ((ptr_musend-MusicIndex)/2)+bgm_First
 
 ; Sound effects
 sfx_First:	equ $A0
@@ -52,18 +52,18 @@ sfx_AC:		equ ((ptr_sndAC-SoundIndex)/2)+sfx_First
 sfx_AD:		equ ((ptr_sndAD-SoundIndex)/2)+sfx_First
 sfx_AE:		equ ((ptr_sndAE-SoundIndex)/2)+sfx_First
 sfx_AF:		equ ((ptr_sndAF-SoundIndex)/2)+sfx_First
-sfx_Last:	equ ((ptr_sndend-SoundIndex-2)/2)+sfx_First
+sfx_Last:	equ ((ptr_sndend-SoundIndex)/2)+sfx_First
 
 ; Special sound effects
 spec_First:	equ $D0
 spec_Jump:	equ ((ptr_sndD0-SpecSoundIndex)/2)+spec_First
 spec_Cash:	equ ((ptr_sndD1-SpecSoundIndex)/2)+spec_First
 spec_Bomb:	equ ((ptr_sndD2-SpecSoundIndex)/2)+spec_First
-spec_Last:	equ ((ptr_sndend-SpecSoundIndex-2)/2)+spec_First
+spec_Last:	equ ((ptr_sndend-SpecSoundIndex)/2)+spec_First
 
 flg_First:	= $E0
 flg_FadeOut:	equ ((ptr_flgE0-CmdPtrTable)/2)+flg_First
 flg_Stop:	equ ((ptr_flgE1-CmdPtrTable)/2)+flg_First
 flg_StopPSG:	equ ((ptr_flgE2-CmdPtrTable)/2)+flg_First
 flg_FadeIn:	equ ((ptr_flgE3-CmdPtrTable)/2)+flg_First
-flg_Last:	equ ((ptr_flgend-CmdPtrTable-2)/2)+flg_First
+flg_Last:	equ ((ptr_flgend-CmdPtrTable)/2)+flg_First
