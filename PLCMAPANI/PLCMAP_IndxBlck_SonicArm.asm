@@ -1,15 +1,13 @@
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-; PLC and Mapping Main Index Block - Sonic's Arm
+; PLC/Sprite map index block - Sonic's Arm
 ; ---------------------------------------------------------------------------
-; An Example of the setout:
+; An example of the setup:
 ;
-;		       vvMapping Pointersvv			    vvPLC Pointersvv
-;
-;		dc.w "Location"-Map_SonicArm,			"Location"-PLC_SonicArm
-;		dc.w "Location"-Map_SonicArm,			"Location"-PLC_SonicArm
-;		dc.w "Location"-Map_SonicArm,			"Location"-PLC_SonicArm
-; etc, etc
+;		dc.w Location-Map_SonicArm,			Location-PLC_SonicArm
+;		dc.w Location-Map_SonicArm,			Location-PLC_SonicArm
+;		dc.w Location-Map_SonicArm,			Location-PLC_SonicArm
+; etc, etc.
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 		dc.w MapSArm_Wait1-Map_SonicArm,		PLCSArm_Wait1-PLC_SonicArm

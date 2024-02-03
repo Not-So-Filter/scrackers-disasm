@@ -2,14 +2,12 @@
 ; ---------------------------------------------------------------------------
 ; PLC and Mapping Main Index Block - Tails Fields
 ; ---------------------------------------------------------------------------
-; An Example of the setout:
+; An example of the setup:
 ;
-;		       vvMapping Pointersvv			    vvPLC Pointersvv
-;
-;		dc.w "Location"-Map_TailsFields,			"Location"-PLC_TailsFields
-;		dc.w "Location"-Map_TailsFields,			"Location"-PLC_TailsFields
-;		dc.w "Location"-Map_TailsFields,			"Location"-PLC_TailsFields
-; etc, etc
+;		dc.w Location-Map_TailsFields,			Location-PLC_TailsFields
+;		dc.w Location-Map_TailsFields,			Location-PLC_TailsFields
+;		dc.w Location-Map_TailsFields,			Location-PLC_TailsFields
+; etc, etc.
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 		dc.w MapTalFld_StandForward-Map_TailsFields,	PLCTalFld_StandForward-PLC_TailsFields

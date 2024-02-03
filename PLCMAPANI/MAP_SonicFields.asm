@@ -2,17 +2,17 @@
 ; ---------------------------------------------------------------------------
 ; Mappings - Sonic Fields
 ; ---------------------------------------------------------------------------
-; Guide as Documented by Hivebrain
+; Guide as documented by Hivebrain
 ;
-;	Each mappings block consists of six bytes:
+;	Each map block consists of six bytes:
 ;
 ;		dc.w $SS,$YY,$TT,$TT,$XX,$ZZ
 ;
 ;	$SS   = Shape and size of sprite piece
 ;	$YY   = Y position of sprite piece
-;	$TTTT = Tile to read in VRam
+;	$TTTT = Tile to read in VRAM
 ;	$XX   = X position of sprite piece
-;	$ZZ   = whether it's the last map to use in the sprite or not (00 Include next map in sprite/FF End of sprite)
+;	$ZZ   = whether it's the last map to use in the sprite or not (00 = Include next map in sprite/FF = End of sprite)
 ;
 ; ---------------------------------------------------------------------------
 ; ===========================================================================

@@ -19134,11 +19134,11 @@ MAPENI_TTZLayout_BG:
 ; in this section you'll notice the bytes...
 ;
 ;		dc.w 32
-;		dc.l $6
+;		dc.l 6
 ;
 ; ...right before the art itself, allow me to explain what it is:
 ;
-; "32" is the number of bytes long the current art tile(s) are
+; "32" is the number of bytes long the current art tile(s) are,
 ; "6" gets added to the address of the art label to tell the engine
 ; where the art is, (basically telling it to jump over that first word and
 ; long-word code to get to the art that is directly after it).
@@ -19228,15 +19228,15 @@ ARTNEM_SpikesVer:
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-; Sprite Mappings - "Sprngs" and "Spikes" Objects
+; Sprite mapping - "Sprngs" and "Spikes" Objects
 ; ---------------------------------------------------------------------------
-	include	"PLCMAPANI/MAP_Springs.asm"		; Spring Mappings
-	include	"PLCMAPANI/MAP_Spikes.asm"		; Spikes Mappings
+	include	"PLCMAPANI/MAP_Springs.asm"		; Spring mapping
+	include	"PLCMAPANI/MAP_Spikes.asm"		; Spikes mapping
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-; Unknown Data, Something to do with Sprite Mappings or PLC (Possibly an
-; Index Block in here),
+; Unknown Data, Something to do with sprite mapping or PLC (Possibly an
+; index block in here?)
 ; ---------------------------------------------------------------------------
 
 unk_42358:		dc.b $FF,$64,$FF,$70,$FF,$7C
@@ -19249,10 +19249,10 @@ unk_42364:		dc.b $FF,$A0,$FF,$AC,$FF,$B8
 ; ---------------------------------------------------------------------------
 ; Format:	dc.w $XXXX,$YYYY,$AAAA,$FFFF
 ;
-; XXXX 	=	Object X Position (If FFFF is placed in X position then it's the end of the list)
-; YYYY	=	Object Y Position
-; AAAA	=	Object ID (This cannot be an odd value or the engine will crash)
-; FFFF	=	End of Object position code (Unless the object is a pathswapper)
+; XXXX 	=	X Position (If FFFF is placed in X position then it's the end of the list)
+; YYYY	=	Y Position
+; AAAA	=	ID (This cannot be an odd value or the engine will crash)
+; FFFF	=	End of definition (Unless the object is a pathswapper)
 ;
 ; ---------------------------------------------------------------------------
 ; List of valid and invalid Object IDs
@@ -19396,7 +19396,7 @@ AniArt_MiliSymbol:					; "" (Second/Mili-Second Symbol)
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-; Field Data (Palettes, Art, Mappings)
+; Field Data (Palettes, Art, mapping)
 ; ---------------------------------------------------------------------------
 
 PAL_RainbowField:
@@ -19406,10 +19406,10 @@ ARTCRA_RainbowField8x8:
 	binclude	"artcra/Rainbow Field.bin"	; 8x8 tiles for Rainbow Field
 	even
 MAPUNC_RainbowFieldFG:
-	binclude	"Uncompressed/MapuncRainbowFieldFG.bin" ; Screen Map Codes for Rainbow Field FG
+	binclude	"Uncompressed/MapuncRainbowFieldFG.bin" ; Screen map for Rainbow Field FG
 	even
 MAPUNC_RainbowFieldBG:
-	binclude	"Uncompressed/MapuncRainbowFieldBG.bin" ; Screen Map Codes for Rainbow Field BG
+	binclude	"Uncompressed/MapuncRainbowFieldBG.bin" ; Screen map for Rainbow Field BG
 	even
 PAL_ElectricField:
 	binclude	"Palettes/PalElectricField.bin"	; Palettes for Electric Field
@@ -19418,10 +19418,10 @@ ARTCRA_ElectricField8x8:
 	binclude	"artcra/Electric Field.bin"	; 8x8 tiles for Electric Field
 	even
 MAPUNC_ElectricFieldFG:
-	binclude	"Uncompressed/MapuncElectricFieldFG.bin" ; Screen Map Codes for Electric Field FG
+	binclude	"Uncompressed/MapuncElectricFieldFG.bin" ; Screen map for Electric Field FG
 	even
 MAPUNC_ElectricFieldBG:
-	binclude	"Uncompressed/MapuncElectricFieldBG.bin" ; Screen Map Codes for Electric Field BG
+	binclude	"Uncompressed/MapuncElectricFieldBG.bin" ; Screen map for Electric Field BG
 	even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -19438,27 +19438,27 @@ MAPUNC_ElectricFieldBG:
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-; Align to $00060000, Sonic"s Arms
+; Align to $00060000, Sonic's Arms
 ; ---------------------------------------------------------------------------
 	align $6000
 ; ---------------------------------------------------------------------------
 ARTUNC_SonicArms:
-	binclude	"artunc/SonicArms.bin"		; Sonic"s Arms
+	binclude	"artunc/SonicArms.bin"		; Sonic's Arms
 	even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-; Align to $00064000, Tails" Arms
+; Align to $00064000, Tails' Arms
 ; ---------------------------------------------------------------------------
 	align $1000
 ; ---------------------------------------------------------------------------
 ARTUNC_TailsArms:
-	binclude	"artunc/TailsArms.bin"		; Tails" Arms
+	binclude	"artunc/TailsArms.bin"		; Tails' Arms
 	even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-; PLC, Mappings & Main Index Block - Sonic"s Arm
+; PLC, mapping & Main index block - Sonic's Arm
 ; ---------------------------------------------------------------------------
 PLCMAP_SonArm_MainIndex:
 	include	"PLCMAPANI/PLCMAP_IndxBlck_SonicArm.asm"
@@ -19471,7 +19471,7 @@ Map_SonicArm:
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-; Animation, PLC, Mappings & Main Index Block - Sonic
+; Animation, PLC, mapping & Main index block - Sonic
 ; ---------------------------------------------------------------------------
 ANI_Sonic:
 	include	"PLCMAPANI/ANI_Sonic.asm"
@@ -19487,7 +19487,7 @@ Map_Sonic:
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-; PLC, Mappings & Main Index Block - Tails" Arm
+; PLC, mapping & Main index block - Tails' Arm
 ; ---------------------------------------------------------------------------
 PLCMAP_TalArm_MainIndex:
 	include	"PLCMAPANI/PLCMAP_IndxBlck_TailsArm.asm"
@@ -19500,7 +19500,7 @@ MAP_TailsArm:
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-; Animation, PLC, Mappings & Main Index Block - Tails
+; Animation, PLC, mapping & Main index block - Tails
 ; ---------------------------------------------------------------------------
 ANI_Tails:
 	include	"PLCMAPANI/ANI_Tails.asm"
@@ -19516,7 +19516,7 @@ MAP_Tails:
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-; Animation, PLC, Mappings & Main Index Block - Sonic Fields
+; Animation, PLC, mapping & Main index block - Sonic Fields
 ; ---------------------------------------------------------------------------
 ANI_SonicFields:
 	include	"PLCMAPANI/ANI_SonicFields.asm"
@@ -19532,7 +19532,7 @@ Map_SonicFields:
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-; Animation, PLC, Mappings & Main Index Block - Tails Fields
+; Animation, PLC, mapping & Main index block - Tails Fields
 ; ---------------------------------------------------------------------------
 ANI_TailsFields:
 	include	"PLCMAPANI/ANI_TailsFields.asm"

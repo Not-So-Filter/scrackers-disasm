@@ -1,8 +1,8 @@
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-; Patter Load Cues - Tails Fields
+; Pattern Load Cues - Tails Fields
 ; ---------------------------------------------------------------------------
-; Guide as Documented by Hivebrain
+; Guide as documented by Hivebrain
 ;
 ;	Each load cue consists of ten bytes:
 ;
@@ -11,7 +11,7 @@
 ;	$QQQQ = Number of tiles to load from Rom
 ;	$RRR- = Location to start reading the tiles
 ; ---------------------------------------------------------------------------
-; the rest were not mentioned on the guide, and I am asuming are:
+; the rest were not mentioned on the guide, and I am assuming are:
 ; ---------------------------------------------------------------------------
 ;	$---- = Unknown
 ;	$DDDD = I think it's some sort of dumping location (to dump the art)

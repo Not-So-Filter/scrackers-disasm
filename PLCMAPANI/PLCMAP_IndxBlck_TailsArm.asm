@@ -1,15 +1,13 @@
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-; PLC and Mapping Main Index Block - Tails Arm
+; PLC/Sprite map index block - Tails Arm
 ; ---------------------------------------------------------------------------
-; An Example of the setout:
+; An example of the setup:
 ;
-;		       vvMapping Pointersvv			    vvPLC Pointersvv
-;
-;		dc.w "Location"-Map_TailsArm,			"Location"-PLC_TailsArm
-;		dc.w "Location"-Map_TailsArm,			"Location"-PLC_TailsArm
-;		dc.w "Location"-Map_TailsArm,			"Location"-PLC_TailsArm
-; etc, etc
+;		dc.w Location-Map_TailsArm,			Location-PLC_TailsArm
+;		dc.w Location-Map_TailsArm,			Location-PLC_TailsArm
+;		dc.w Location-Map_TailsArm,			Location-PLC_TailsArm
+; etc, etc.
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 		dc.w MAPTArm_Pul_Lft_000-MAP_TailsArm,		PLCTArm_Pul_Lft_000-PLC_TailsArm

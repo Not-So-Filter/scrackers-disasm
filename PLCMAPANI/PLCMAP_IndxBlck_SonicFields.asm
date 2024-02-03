@@ -2,14 +2,12 @@
 ; ---------------------------------------------------------------------------
 ; PLC and Mapping Main Index Block - Sonic Fields
 ; ---------------------------------------------------------------------------
-; An Example of the setout:
+; An example of the setup:
 ;
-;		       vvMapping Pointersvv			    vvPLC Pointersvv
-;
-;		dc.w "Location"-Map_SonicFields,			"Location"-PLC_SonicFields
-;		dc.w "Location"-Map_SonicFields,			"Location"-PLC_SonicFields
-;		dc.w "Location"-Map_SonicFields,			"Location"-PLC_SonicFields
-; etc, etc
+;		dc.w Location-Map_SonicFields,			Location-PLC_SonicFields
+;		dc.w Location-Map_SonicFields,			Location-PLC_SonicFields
+;		dc.w Location-Map_SonicFields,			Location-PLC_SonicFields
+; etc, etc.
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 		dc.w MapSonFld_StandForward-Map_SonicFields,	PLCSonFld_StandForward-PLC_SonicFields
