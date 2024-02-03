@@ -9,6 +9,7 @@
 
 fixBugs = 0
 ;	| If 1, fixes some bugs (mainly sound driver related)
+;	Currently not recommended to be enabled due to corrupted arm art.
 zeroOffsetOptimization = 0
 ;	| If 1, makes a handful of zero-offset instructions smaller
 ; Include SMPS2ASM, for expressing SMPS bytecode in a portable and human-readable form.
@@ -9061,8 +9062,13 @@ loc_A3E0:
 		move.w	$2C(a6),d2
 		ext.l	d2
 		swap	d2
+	if fixBugs
+		eor.w	d2,d1
+		andi.w	#8,d1
+	else
 		eor.w	d1,d2
 		andi.w	#8,d2
+	endif
 		bne.s	loc_A40A
 		andi.w	#8,d1
 		eor.w	d1,$24(a6)
