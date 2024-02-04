@@ -617,7 +617,7 @@ sub_626:
 ;
 ; ---------------------------------------------------------------------------
 
-sub_6CC:
+PaletteFadeOut:
 		move.b	($FFFFD4E4).w,d1
 		bne.s	loc_6E0
 		move.b	d0,($FFFFD4E4).w
@@ -644,7 +644,7 @@ sub_6FE:
 		move.w	#$40,d3
 		subq.w	#1,d3
 
-loc_708:
+.loop:
 		move.w	(a0),d2
 		move.w	d2,d0
 		bsr.s	sub_72C
@@ -660,7 +660,7 @@ loc_708:
 		lsl.w	#8,d0
 		or.w	d0,d1
 		move.w	d1,(a0)+
-		dbf	d3,loc_708
+		dbf	d3,.loop
 		rts
 
 sub_72C:
@@ -4255,16 +4255,16 @@ MultiReturn:
 
 loc_6526:
 		tst.b	($FFFFC93C).w
-		bpl.s	loc_6532
+		bpl.s	Sega_ChooseAnimation
 		move.w	#$14,(v_subgamemode).w
 
-loc_6532:
+Sega_ChooseAnimation:
 		move.w	($FFFFFAC8).w,d0
-		jmp	loc_653A(pc,d0.w)
+		jmp	Sega_AnimationTable(pc,d0.w)
 
-loc_653A:
-		bra.w	loc_696A
-		bra.w	loc_6C20
+Sega_AnimationTable:
+		bra.w	Sega_MainAnimation
+		bra.w	Sega_AltAnimation
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -4332,7 +4332,7 @@ loc_65D2:
 		subq.w	#1,($FFFFFAC4).w		; minus 1 from colour number
 		bpl.w	MultiReturn			; if still positive, branch
 		moveq	#1,d0
-		jsr	(sub_6CC).w
+		jsr	(PaletteFadeOut).w
 		bne.w	MultiReturn
 		move.w	#id_Title,(v_gamemode).w	; set screen mode to title screen
 		clr.l	(v_subgamemode).w		; clear sub mode
@@ -4345,7 +4345,7 @@ loc_65D2:
 
 Sega_GotoTitle:
 		moveq	#1,d0
-		jsr	(sub_6CC).w
+		jsr	(PaletteFadeOut).w
 		bne.w	MultiReturn
 		move.w	#id_Title,(v_gamemode).w
 		clr.l	(v_subgamemode).w
@@ -4738,7 +4738,7 @@ loc_6934:
 
 ; ---------------------------------------------------------------------------
 
-loc_696A:
+Sega_MainAnimation:
 		subq.w	#1,($FFFFFAC6).w
 		bne.w	MultiReturn
 		addq.w	#4,($FFFFFAC4).w
@@ -5011,7 +5011,7 @@ loc_6BD8:
 		rts
 ; ---------------------------------------------------------------------------
 
-loc_6C20:
+Sega_AltAnimation:
 		move.w	($FFFFFAC4).w,d0
 		jmp	loc_6C28(pc,d0.w)
 ; ---------------------------------------------------------------------------
@@ -5144,14 +5144,9 @@ loc_6D6E:
 		enable_ints
 		lea	(dword_6DBC).l,a0
 		lea	($FFFFD164).w,a1
+		rept 8
 		move.l	(a0)+,(a1)+
-		move.l	(a0)+,(a1)+
-		move.l	(a0)+,(a1)+
-		move.l	(a0)+,(a1)+
-		move.l	(a0)+,(a1)+
-		move.l	(a0)+,(a1)+
-		move.l	(a0)+,(a1)+
-		move.l	(a0)+,(a1)+
+		endr
 		addq.w	#4,($FFFFFAC4).w
 		move.w	#$20,($FFFFFAC6).w		; " "
 		rts
