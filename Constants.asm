@@ -21,6 +21,36 @@ id_Null:	equ ptr_GM_Null-GameModeArray
 id_LevelSelect:	equ ptr_GM_LevelSelect-GameModeArray
 id_Options:	equ ptr_GM_Options-GameModeArray
 
+; Colours
+cBlack:		equ $000		; colour black
+cWhite:		equ $EEE		; colour white
+cBlue:		equ $E00		; colour blue
+cGreen:		equ $0E0		; colour green
+cRed:		equ $00E		; colour red
+cYellow:	equ cGreen+cRed		; colour yellow
+cAqua:		equ cGreen+cBlue	; colour aqua
+cMagenta:	equ cBlue+cRed		; colour magenta
+
+; Joypad input
+btnStart:	equ %10000000 ; Start button	($80)
+btnA:		equ %01000000 ; A		($40)
+btnC:		equ %00100000 ; C		($20)
+btnB:		equ %00010000 ; B		($10)
+btnR:		equ %00001000 ; Right		($08)
+btnL:		equ %00000100 ; Left		($04)
+btnDn:		equ %00000010 ; Down		($02)
+btnUp:		equ %00000001 ; Up		($01)
+btnDir:		equ %00001111 ; Any direction	($0F)
+btnABC:		equ %01110000 ; A, B or C	($70)
+bitStart:	equ 7
+bitA:		equ 6
+bitC:		equ 5
+bitB:		equ 4
+bitR:		equ 3
+bitL:		equ 2
+bitDn:		equ 1
+bitUp:		equ 0
+
 ; Object variables
 obMap:		equ $10					; mappings address (4 bytes)
 

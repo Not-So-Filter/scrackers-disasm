@@ -254,9 +254,9 @@ loc_336:
 		movea.w	d0,a2
 		move.w	#$7FD,d7
 
-loc_34A:
+.loop:
 		movem.l	d0-d6/a2,-(a0)
-		dbf	d7,loc_34A
+		dbf	d7,.loop
 		lea	(unk_C800).w,a0
 		move.w	#$4EF9,d0			; machine code for 'jmp'
 		lea	UnknownRout001(pc),a1		; routine used here just has an 'rts'...
@@ -278,42 +278,43 @@ loc_36E:
 		move.b	d0,($A1000B).l
 		move.b	d0,($A1000D).l
 
-loc_38A:
+.waitfordma:
 		move.w	(vdp_control_port).l,d0
 		btst	#1,d0				; is DMA running?
-		bne.s	loc_38A				; if not, wait until it's finished
+		bne.s	.waitfordma			; if not, wait until it's finished
 		lea	(vdp_data_port).l,a0
 		move.w	#$8F02,(vdp_control_port).l
 		move.w	#$8F02,($FFFFC9D6).w
+
 		moveq	#0,d0				; clear d0
 		move.l	#$40000000,(vdp_control_port).l	; set VDP in VRAM write mode
 		move.w	#$FFF,d1			; set repeat times
 
-Clear_VRAM01:
+.clrVRAM:
+		rept 4
 		move.l	d0,(a0)				; clear VRAM
-		move.l	d0,(a0)
-		move.l	d0,(a0)
-		move.l	d0,(a0)
-		dbf	d1,Clear_VRAM01			; repeat til VRAM is cleared
+		endm
+		dbf	d1,.clrVRAM			; repeat til VRAM is cleared
+
 		move.l	#$C0000000,(vdp_control_port).l	; set VDP in CRAM write mode
 		move.w	#7,d1				; set repeat times
 
-Clear_CRAM:
+.clrCRAM:
+		rept 4
 		move.l	d0,(a0)				; clear CRAM
-		move.l	d0,(a0)
-		move.l	d0,(a0)
-		move.l	d0,(a0)
-		dbf	d1,Clear_CRAM			; repeat til CRAM is cleared
+		endm
+		dbf	d1,.clrCRAM			; repeat til CRAM is cleared
+
 		move.l	#$40000010,(vdp_control_port).l	; set VDP mode
 		move.w	#4,d1				; set repeat times
 
-Clear_VRAM02:
-		move.l	d0,(a0)				; clear VDP stuff
-		move.l	d0,(a0)
-		move.l	d0,(a0)
-		move.l	d0,(a0)
-		dbf	d1,Clear_VRAM02			; repeat til VDP stuff is cleared
-		lea	VDPSetupArray(pc),a0		; load VDP setup values address to a0
+.clrVSRAM:
+		rept 4
+		move.l	d0,(a0)				; clear VSRAM
+		endm
+		dbf	d1,.clrVSRAM			; repeat til VSRAM is cleared
+
+		lea	InitialVDPSetupArray(pc),a0	; load VDP setup values address to a0
 		jsr	(SetupVDPUsingTable).l
 		resetZ80				; reset the Z80
 		move	#$2000,sr			; set the stack register
@@ -337,7 +338,8 @@ ErrorTrap:
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-VDPSetupArray:	dc.w $8004
+InitialVDPSetupArray:
+		dc.w $8004
 		dc.w $8104				; Display mode
 		dc.w $8230				; FG Scroll
 		dc.w $832C				; Window
@@ -378,11 +380,11 @@ VDPSetup_01:
 		lea	VDPClearArr_02(pc),a1		; load location just after VDP values to a1
 		moveq	#2,d1				; set repeat times
 
-VDPClr_SetDMA:
+.setDMA:
 		move.b	-(a1),d0			; get end value, dump to d0 and move back
 		move.w	d0,(a0)				; dump Complete Register value to VDP
 		addi.w	#$100,d0			; increase to next register value
-		dbf	d1,VDPClr_SetDMA		; repeat 2 more times
+		dbf	d1,.setDMA			; repeat 2 more times
 		move.w	#$C000,(a0)
 		move.w	#$0080,-(sp)
 		move.w	(sp)+,(a0)
@@ -3049,17 +3051,17 @@ CurveResistMappings:
 
 ; ---------------------------------------------------------------------------
 
-sub_3F14:
+CalcSine:
 		move.w	d2,d0
 		add.w	d0,d0
 		andi.w	#$1FE,d0
-		move.w	word_3F2A(pc,d0.w),d1
+		move.w	Sine_Table(pc,d0.w),d1
 		addi.w	#$80,d0
-		move.w	word_3F2A(pc,d0.w),d0
+		move.w	Sine_Table(pc,d0.w),d0
 		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-word_3F2A:	dc.w $0000,$0192,$0323,$04B5,$0645,$07D5,$0964,$0AF1,$0C7C,$0E05,$0F8C
+Sine_Table:	dc.w $0000,$0192,$0323,$04B5,$0645,$07D5,$0964,$0AF1,$0C7C,$0E05,$0F8C
 		dc.w $1111,$1294,$1413,$158F,$1708,$187D,$19EF,$1B5D,$1CC6,$1E2B,$1F8B
 		dc.w $20E7,$223D,$238E,$24DA,$261F,$275F,$2899,$29CD,$2AFA,$2C21,$2D41
 		dc.w $2E5A,$2F6B,$3076,$3179,$3274,$3367,$3453,$3536,$3612,$36E5,$37AF
@@ -4236,7 +4238,7 @@ SegaSubArray:	bra.w	SegaScreen
 ; ---------------------------------------------------------------------------
 		bra.w	loc_65C6
 ; ---------------------------------------------------------------------------
-		bra.w	loc_65F6
+		bra.w	Sega_GotoTitle
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -4289,7 +4291,7 @@ loc_654E:
 		jsr	(sub_86E).w
 		move.w	#0,($FFFFFAC4).w		; clear colour number
 		move.w	($FFFFD3E8).w,($FFFFFAC6).w	; save first colour to storage
-		move.w	#$EEE,($FFFFD3E8).w		; save white to colour palette
+		move.w	#cWhite,($FFFFD3E8).w		; save white to colour palette
 		addq.w	#4,(v_subgamemode).w		; increase sub mode
 		rts
 ; ===========================================================================
@@ -4309,7 +4311,7 @@ loc_6594:
 		adda.w	d0,a0				; add to colour palette location
 		move.w	($FFFFFAC6).w,(a0)+		; reload original colour from storage
 		move.w	(a0),($FFFFFAC6).w		; save next current colour to storage
-		move.w	#$EEE,(a0)			; save white to colour palette
+		move.w	#cWhite,(a0)			; save white to colour palette
 		addq.w	#1,($FFFFFAC4).w		; increase colour number to next colour
 		cmpi.w	#$C,($FFFFFAC4).w		; has colour number finished at C?
 		bne.w	MultiReturn			; if not, branch to return
@@ -4341,7 +4343,7 @@ loc_65D2:
 ;
 ; ---------------------------------------------------------------------------
 
-loc_65F6:
+Sega_GotoTitle:
 		moveq	#1,d0
 		jsr	(sub_6CC).w
 		bne.w	MultiReturn
@@ -4358,16 +4360,15 @@ SegaScrn_CheckRegion:
 		move.b	(z80_version).l,d0		; load Z80 version number
 		rol.b	#2,d0				; roll left 2 bits
 		andi.w	#2,d0				; get only the original 1st bit that was in version number
-		move.w	off_6626(pc,d0.w),($FFFFD402).w	; color a specific part of the palette depending on region
+		move.w	SegaTM_Palette(pc,d0.w),($FFFFD402).w	; color a specific part of the palette depending on if you have a domestic or overseas model
 		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ;
 ; ---------------------------------------------------------------------------
 
-off_6626:
-		;	black, white
-		dc.w	$0000,$0EEE
+SegaTM_Palette:
+		dc.w	cBlack,cWhite
 
 loc_662A:
 		lea	(vdp_data_port).l,a3
@@ -4627,14 +4628,9 @@ sub_682C:
 ; (Repeats for pixel values 0 to F)
 
 DumpTileSizedPixel:
+		rept 8
 		move.l	d0,(a3)				; set value to VRAM
-		move.l	d0,(a3)
-		move.l	d0,(a3)
-		move.l	d0,(a3)
-		move.l	d0,(a3)
-		move.l	d0,(a3)
-		move.l	d0,(a3)
-		move.l	d0,(a3)
+		endm
 		addi.l	#$11111111,d0			; increase all nybbles by 1
 		dbf	d7,DumpTileSizedPixel		; repeat 10 times
 		moveq	#0,d2				; clear d2
@@ -5307,14 +5303,9 @@ SegaToVDP:
 		move.l	d0,4(a5)			; set VDP settings to VDP
 
 SegatoVDPRep:
+		rept 8
 		move.l	(a0)+,(a5)			; dump data to VRAM
-		move.l	(a0)+,(a5)
-		move.l	(a0)+,(a5)
-		move.l	(a0)+,(a5)
-		move.l	(a0)+,(a5)
-		move.l	(a0)+,(a5)
-		move.l	(a0)+,(a5)
-		move.l	(a0)+,(a5)
+		endr
 		dbf	d7,SegatoVDPRep			; repeat
 		rte
 ; ===========================================================================
@@ -5361,7 +5352,7 @@ TitleLoad:
 		disable_ints
 		lea	TitleScreen_VDPSettings(pc),a0
 		jsr	(SetupVDPUsingTable).w
-		bra.s	loc_739A
+		bra.s	TitleLoad_Continue
 ; ---------------------------------------------------------------------------
 TitleScreen_VDPSettings:
 		dc.w $8230
@@ -5378,7 +5369,7 @@ TitleScreen_VDPSettings:
 		dc.w 0
 ; ---------------------------------------------------------------------------
 
-loc_739A:
+TitleLoad_Continue:
 		move.w	($FFFFD81C).w,d0
 		lsl.l	#2,d0
 		lsr.w	#2,d0
@@ -5428,14 +5419,14 @@ loc_739A:
 		lea	($FFFFD3E4).w,a1
 		moveq	#$F,d0
 
-loc_7462:
+.loadpalette:
 		move.l	(a0)+,(a1)+
-		dbf	d0,loc_7462
+		dbf	d0,.loadpalette
 		jsr	(VDPSetup_01).w
 		move.l	#$78000003,(vdp_control_port).l
 		move.l	#0,(vdp_data_port).l
 		move.l	#$1E00D0,(vdp_data_port).l
-		clr.w	($FFFFD826).w
+		clr.w	(v_titleselect).w
 		clr.w	($FFFFD832).w
 		enable_ints				; set the stack register
 		addq.w	#4,(v_subgamemode).w		; increase sub mode
@@ -5454,7 +5445,7 @@ TitleStart:
 		tst.b	(v_lagger).w
 		bpl.s	.wait
 		move.w	($FFFFC946).w,d0
-		add.w	($FFFFD826).w,d0
+		add.w	(v_titleselect).w,d0
 		bpl.s	loc_74F4
 		moveq	#0,d0
 
@@ -5464,7 +5455,7 @@ loc_74F4:
 		moveq	#3,d0
 
 loc_74FC:
-		move.w	d0,($FFFFD826).w
+		move.w	d0,(v_titleselect).w
 		lsl.w	#4,d0
 		addi.w	#$120,d0
 		move.w	d0,($FFFFD832).w
@@ -5476,12 +5467,12 @@ loc_74FC:
 loc_7512:
 		clr.w	($FFFFD83A).w
 		clr.w	(v_subgamemode).w
-		move.w	($FFFFD826).w,d0
-		beq.s	loc_7526
+		move.w	(v_titleselect).w,d0
+		beq.s	TitleScrn_PlayLevel
 		cmpi.w	#1,d0
-		bne.s	loc_7552
+		bne.s	TitleScrn_ToOption
 
-loc_7526:
+TitleScrn_PlayLevel:
 		move.w	#1,($FFFFD834).w
 		move.w	#1,($FFFFD836).w
 		move.w	#id_Level,(v_gamemode).w
@@ -5497,14 +5488,14 @@ loc_754A:
 		rts
 ; ---------------------------------------------------------------------------
 
-loc_7552:
-		cmpi.w	#2,($FFFFD826).w
-		bne.s	loc_7562
+TitleScrn_ToOption:
+		cmpi.w	#2,(v_titleselect).w
+		bne.s	TitleScrn_ToLevSel
 		move.w	#id_Options,(v_gamemode).w	; "@"
 		rts
 ; ---------------------------------------------------------------------------
 
-loc_7562:
+TitleScrn_ToLevSel:
 		move.b	#0,($FFFFD89C).w
 		move.b	#$FF,($FFFFD8AC).w
 		move.w	#id_LevelSelect,(v_gamemode).w	; "0"
@@ -5553,13 +5544,13 @@ ARTNEM_MainMenusText:
 		binclude	"artnem/Main Menu Text.bin"
 		even
 MAPUNC_TitleMenu_1:
-		binclude	"Uncompressed/MapuncTitleMenu01.bin" ; Uncompressed mappings for the	title screen banner
+		binclude	"Uncompressed/MapuncTitleMenu01.bin" ; Uncompressed screen map for the title screen - banner
 		even
 MAPUNC_TitleMenu_2:
-		binclude	"Uncompressed/MapuncTitleMenu02.bin" ; Uncompressed mappings for the	title menu selection
+		binclude	"Uncompressed/MapuncTitleMenu02.bin" ; Uncompressed screen map for the title screen - menu selection
 		even
 MAPUNC_TitleMenu_3:
-		binclude	"Uncompressed/MapuncTitleMenu03.bin" ; Uncompressed mappings for the	title menu (1ST	ROM 19940401)
+		binclude	"Uncompressed/MapuncTitleMenu03.bin" ; Uncompressed screen map for the title menu - "1ST	ROM 19940401"
 		even
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -5585,7 +5576,7 @@ Fields:
 		movem.l	d0-d7,(a1)
 		andi.w	#$81BC,($FFFFC9BA).w
 		move.w	($FFFFC9BA).w,(vdp_control_port).l
-		jsr	(sub_8634).l
+		jsr	(Field_LoadArt).l
 		jsr	(sub_15D0).w
 		move.w	#5,($FFFFD83C).w
 		move.w	#7,($FFFFD840).w
@@ -5772,7 +5763,7 @@ loc_808A:
 		bpl.s	.wait
 		jsr	(Field_ReadController).l
 		move.b	($FFFFD89E).w,d0
-		andi.b	#$70,d0				; "p"
+		andi.b	#btnABC,d0
 		beq.w	loc_814C
 		moveq	#0,d0
 		lea	($FFFFF9C0).w,a0
@@ -5810,20 +5801,19 @@ loc_80E0:
 		move.w	#$FFF,d1
 
 loc_810E:
+		rept 4
 		move.l	d0,(a0)
-		move.l	d0,(a0)
-		move.l	d0,(a0)
-		move.l	d0,(a0)
+		endr
 		dbf	d1,loc_810E
 		move.l	#$40000010,(vdp_control_port).l
 		move.l	($FFFFCDDE).w,(vdp_data_port).l
 		clr.w	(v_subgamemode).w
 		addq.w	#1,($FFFFD836).w
 		tst.w	($FFFFD834).w
-		beq.s	loc_813E
+		beq.s	.gotolevel
 		addq.w	#1,($FFFFD83A).w
 
-loc_813E:
+.gotolevel:
 		move.w	#id_Level,(v_gamemode).w
 		movea.l	(RomStart).w,sp
 		jmp	(MAINPROG).w
@@ -5924,7 +5914,7 @@ sub_821C:
 		tst.b	(a5)
 		bpl.s	loc_8236
 		move.b	($FFFFD89E).w,d0
-		andi.b	#$70,d0				; "p"
+		andi.b	#btnABC,d0
 		bne.w	loc_828C
 
 loc_8236:
@@ -6427,7 +6417,7 @@ locret_8630:
 ; =============== S U B	R O U T	I N E =======================================
 
 
-sub_8634:
+Field_LoadArt:
 		tst.w	($FFFFD834).w
 		bne.w	loc_866E
 		lea	(PAL_RainbowField).l,a0
@@ -6455,7 +6445,7 @@ loc_866E:
 		movea.w	($FFFFD818).w,a1
 		bsr.w	sub_86EA
 		rts
-; End of function sub_8634
+; End of function Field_LoadArt
 
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6651,7 +6641,7 @@ Levels:
 		beq.s	loc_88C2
 		move.w	($FFFFD83A).w,d0
 		andi.w	#3,d0
-		addi.w	#$82,d0				; "�"
+		addi.w	#bgm_Walkin,d0
 
 loc_88C2:
 		jsr	(PlayMusic).l
@@ -6679,7 +6669,7 @@ loc_88D2:
 		jsr	(sub_BE72).l
 		jsr	(sub_D1E0).l
 		jsr	(sub_EFD4).l
-		jsr	(sub_8C30).l
+		jsr	(Level_LoadObjectArt).l
 		enable_ints
 		jsr	(sub_8CCE).l
 		jsr	(sub_ED26).l
@@ -6746,7 +6736,6 @@ Level_MainLoop:
 
 
 Level_ReadController:
-							; Level_PauseGame+32p
 		jsr	(sub_96E).w
 		lea	(unk_C938).w,a3
 		moveq	#0,d1
@@ -6917,7 +6906,7 @@ sub_8BFE:
 		move.w	($FFFFD834).w,d0
 		andi.w	#1,d0
 		lsl.l	#2,d0
-		movea.l	off_8C20(pc,d0.w),a0
+		movea.l	ObjPos_Pointers(pc,d0.w),a0
 		lea	word_8C18(pc,d0.w),a1
 		move.w	(a1)+,d2
 		move.w	(a1),d3
@@ -6929,7 +6918,8 @@ word_8C18:	dc.w $3FFF
 		dc.w $7FF
 		dc.w $7FF
 		dc.w $FFF
-off_8C20:	dc.l Objpos_SSZ
+ObjPos_Pointers:
+		dc.l Objpos_SSZ
 		dc.l Objpos_TTZ
 		dc.l Objpos_SSZ
 		dc.l Objpos_TTZ
@@ -6937,9 +6927,9 @@ off_8C20:	dc.l Objpos_SSZ
 ; =============== S U B	R O U T	I N E =======================================
 
 
-sub_8C30:
+Level_LoadObjectArt:
 		tst.w	($FFFFD834).w
-		beq.s	locret_8C7E
+		beq.s	.exit
 		disable_ints
 		lea	(ARTNEM_Springs).l,a0
 		move.l	#$40E00002,(vdp_control_port).l
@@ -6953,11 +6943,12 @@ sub_8C30:
 		move.l	#$77E00001,(vdp_control_port).l
 		jsr	(NemDec).w
 
-locret_8C7E:
+.exit:
 		rts
-; End of function sub_8C30
+; End of function Level_LoadObjectArt
 
 ; ---------------------------------------------------------------------------
+; An earlier version of above?
 		lea	(word_8CBA).l,a1
 
 loc_8C86:
@@ -7023,9 +7014,9 @@ loc_8CE4:
 		lea	($FFFFD424).w,a0
 		move.b	#$1F,d7
 
-loc_8D00:
+.load:
 		move.w	(a1)+,(a0)+
-		dbf	d7,loc_8D00
+		dbf	d7,.load
 		rts
 ; ---------------------------------------------------------------------------
 PAL_TechnoTowerZone:binclude "Palettes/PalTechnoTowerZone.bin"
@@ -7078,8 +7069,8 @@ LevelSelect_Init:
 		move.l	#$600110,(vdp_data_port).l
 		move.w	#0,($FFFFD834).w
 		move.w	#0,($FFFFD836).w
-		move.l	#$EEE,($FFFFD3E4).w
-		move.l	#$EEE,($FFFFD404).w
+		move.l	#cWhite,($FFFFD3E4).w
+		move.l	#cWhite,($FFFFD404).w
 		jsr	(VDPSetup_01).w
 		enable_ints
 		addq.w	#4,(v_subgamemode).w
@@ -7204,11 +7195,11 @@ loc_8FE8:
 		addi.w	#$130,d0
 		move.w	d0,($FFFFD832).w
 		tst.b	($FFFFC93D).w
-		bmi.s	loc_9000
+		bmi.s	LevelSelect_PlaySpecial
 		rts
 ; ---------------------------------------------------------------------------
 
-loc_9000:
+LevelSelect_PlaySpecial:
 		clr.l	(v_subgamemode).w
 		cmpi.w	#9,($FFFFD834).w
 		bne.s	LevelSelect_PlayField
@@ -7749,7 +7740,7 @@ locret_97E6:
 		bne.s	loc_9846
 
 loc_980E:
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		move.w	d3,(a2)+
 		lsr.w	#8,d1
 		ext.w	d1
@@ -7769,7 +7760,7 @@ loc_980E:
 ; ---------------------------------------------------------------------------
 
 loc_9846:
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		move.w	d3,(a2)+
 		lsr.w	#8,d1
 		ext.w	d1
@@ -8055,14 +8046,14 @@ loc_9BA2:
 
 loc_9BA4:
 		addq.w	#1,d2
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		andi.w	#3,d0
 		add.w	d3,d0
 		move.w	d0,(a3)+
 		move.w	d4,(a3)+
 		dbf	d6,loc_9BA4
 		addq.w	#4,d2
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		andi.w	#4,d0
 		add.w	d3,d0
 		move.w	d0,(a3)+
@@ -8939,7 +8930,7 @@ loc_A296:
 		tst.b	(a5)
 		bpl.s	loc_A2CC
 		move.b	($FFFFD89E).w,d0
-		andi.b	#$70,d0				; "p"
+		andi.b	#btnABC,d0
 		beq.s	loc_A2CC
 		clr.w	$2C(a6)
 		bra.s	loc_A2D4
@@ -9225,7 +9216,7 @@ loc_A550:
 		addi.b	#-$80,d2
 
 loc_A56C:
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		move.w	$2C(a6),d2
 		muls.w	d2,d0
 		muls.w	d2,d1
@@ -9605,7 +9596,7 @@ loc_A8D6:
 		moveq	#-$20,d2
 
 loc_A8F8:
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		ext.l	d0
 		ext.l	d1
 		asl.l	#5,d0
@@ -9641,7 +9632,7 @@ loc_A94E:
 		addi.b	#-$80,d2
 
 loc_A96C:
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		move.w	$2C(a6),d2
 		muls.w	d2,d0
 		muls.w	d2,d1
@@ -9776,7 +9767,7 @@ sub_AAA4:
 		clr.w	$28(a6)
 		bclr	#0,$25(a6)
 		move.b	$2A(a6),d2
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		move.w	d0,d3
 		move.w	d1,d4
 		btst	#3,$25(a6)
@@ -9825,7 +9816,7 @@ loc_AB02:
 		subi.b	#$20,d0
 		cmpi.b	#$C0,d0
 		bcc.s	locret_AB00
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		asr.w	#8,d1
 		ext.w	d2
 		ext.l	d2
@@ -9874,7 +9865,7 @@ loc_AB5C:
 		tst.b	(a5)
 		bpl.s	loc_AB92
 		move.b	($FFFFD89E).w,d0
-		andi.b	#$70,d0				; "p"
+		andi.b	#btnABC,d0
 		beq.s	loc_AB92
 		clr.w	$2C(a6)
 		bra.s	loc_AB9A
@@ -10146,7 +10137,7 @@ loc_AE02:
 		addi.b	#-$80,d2
 
 loc_AE1E:
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		move.w	$2C(a6),d2
 		muls.w	d2,d0
 		muls.w	d2,d1
@@ -10521,7 +10512,7 @@ loc_B184:
 		moveq	#-$20,d2
 
 loc_B1A6:
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		ext.l	d0
 		ext.l	d1
 		asl.l	#5,d0
@@ -10557,7 +10548,7 @@ loc_B1FC:
 		addi.b	#-$80,d2
 
 loc_B21A:
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		move.w	$2C(a6),d2
 		muls.w	d2,d0
 		muls.w	d2,d1
@@ -10708,7 +10699,7 @@ sub_B388:
 		clr.w	$28(a6)
 		bclr	#0,$25(a6)
 		move.b	$2A(a6),d2
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		move.w	d0,d3
 		move.w	d1,d4
 		btst	#3,$25(a6)
@@ -10757,7 +10748,7 @@ loc_B3E6:
 		subi.b	#$20,d0
 		cmpi.b	#$C0,d0
 		bcc.s	locret_B3E4
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		asr.w	#8,d1
 		ext.w	d2
 		ext.l	d2
@@ -13541,7 +13532,7 @@ sub_CBC0:
 		addi.b	#-$80,d2
 
 loc_CBD8:
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		move.w	$2C(a6),d2
 		muls.w	d2,d0
 		muls.w	d2,d1
@@ -13555,7 +13546,7 @@ loc_CBD8:
 		or.l	d4,d2
 		beq.s	loc_CC0E
 		move.b	$2B(a6),d2
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		move.w	$2E(a6),d2
 		muls.w	d2,d0
 		muls.w	d2,d1
@@ -13618,7 +13609,7 @@ loc_CC62:
 		move.w	$C(a6),$C(a0)
 		move.w	d6,d2
 		bmi.s	loc_CCB8
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		lsr.w	#8,d2
 		ext.l	d0
 		ext.l	d1
@@ -13697,7 +13688,7 @@ sub_CCCA:
 		move.w	2(a2),d3
 		move.b	$2B(a0),d2
 		addi.b	#-$80,d2
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		move.w	(a2),d2
 		add.w	2(a2),d2
 		muls.w	d2,d0
@@ -13716,11 +13707,11 @@ loc_CD80:
 		lsl.w	#3,d3
 		move.b	$2B(a0),d2
 		move.b	($FFFFD89E).w,d4
-		andi.b	#$F,d4
+		andi.b	#btnDir,d4
 		bne.w	loc_CE32
 		btst	#0,$25(a0)
 		bne.s	loc_CDBC
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		muls.w	d3,d0
 		muls.w	d3,d1
 		asr.l	#6,d0
@@ -13743,14 +13734,14 @@ loc_CDBC:
 		addi.b	#-$80,d2
 
 loc_CDE6:
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		move.w	$2C(a0),d2
 		muls.w	d2,d0
 		muls.w	d2,d1
 		move.l	d0,d4
 		move.l	d1,d5
 		move.b	$2B(a0),d2
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		muls.w	d3,d0
 		muls.w	d3,d1
 		add.l	d4,d0
@@ -13764,7 +13755,7 @@ loc_CDE6:
 
 loc_CE14:
 							; sub_CCCA+102j
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		muls.w	d3,d0
 		lsl.l	#2,d0
 		swap	d0
@@ -13795,13 +13786,13 @@ loc_CE36:
 
 loc_CE4E:
 		move.b	($FFFFD89E).w,d4
-		andi.b	#$70,d4				; "p"
+		andi.b	#btnABC,d4
 		bne.w	loc_CEEE
 
 loc_CE5A:
 		btst	#0,$25(a1)
 		bne.s	loc_CE78
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		muls.w	d3,d0
 		muls.w	d3,d1
 		asr.l	#6,d0
@@ -13824,14 +13815,14 @@ loc_CE78:
 		addi.b	#-$80,d2
 
 loc_CEA2:
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		move.w	$2C(a1),d2
 		muls.w	d2,d0
 		muls.w	d2,d1
 		move.l	d0,d4
 		move.l	d1,d5
 		move.b	$2B(a1),d2
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		muls.w	d3,d0
 		muls.w	d3,d1
 		add.l	d4,d0
@@ -13845,7 +13836,7 @@ loc_CEA2:
 
 loc_CED0:
 							; sub_CCCA+1BEj
-		jsr	(sub_3F14).w
+		jsr	(CalcSine).w
 		muls.w	d3,d0
 		lsl.l	#2,d0
 		swap	d0

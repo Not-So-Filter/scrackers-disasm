@@ -11,6 +11,28 @@ bytesToWcnt function n,n>>1-1
 bytesToXcnt function n,x,n/x-1
 
 ; ---------------------------------------------------------------------------
+; Fill portion of RAM with contents from d0
+; input: start, end
+; ---------------------------------------------------------------------------
+
+FillRAM:	macro start,end
+		lea	(start).w,a1
+		move.w	#((end)-(start))/4-1,d1
+
+.loop:
+		move.l	d0,(a1)+
+		dbf	d1,.loop
+
+	if (end-start)&2
+		move.w	d0,(a1)+
+	endif
+
+	if (end-start)&1
+		move.b	d0,(a1)+
+	endif
+		endm
+
+; ---------------------------------------------------------------------------
 ; start the Z80
 ; ---------------------------------------------------------------------------
 startZ80:       macro
