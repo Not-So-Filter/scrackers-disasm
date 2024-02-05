@@ -49,7 +49,7 @@ RomStart:	dc.l v_systemstack&$FFFFFF,	EntryPoint,	ErrorTrap,	ErrorTrap
 Checksum:	dc.w 0
 		dc.b "J               "
 ROM_Start:	dc.l RomStart
-ROM_Finish:	dc.l $1FFFFF
+ROM_Finish:	dc.l (EndofROM*2)-1
 		dc.l v_startofram&$FFFFFF
 		dc.l $FFFFFF
 		dc.l $20202020
@@ -4191,7 +4191,7 @@ SegaContin:
 		lea	$20(a1),a1
 		movem.l	(a0)+,d0-d7
 		movem.l	d0-d7,(a1)
-		bsr.w	sub_682C
+		bsr.w	Sega_MapTiles
 		move.l	#$F01,d0
 		moveq	#1,d1
 		lea	($FFFFD164).w,a0
@@ -4273,10 +4273,10 @@ Sega_AnimationTable:
 
 SegaPaletteStart:
 		tst.b	($FFFFC93C).w
-		bpl.s	loc_654E
+		bpl.s	.cycling
 		move.w	#$14,(v_subgamemode).w
 
-loc_654E:
+.cycling:
 		subq.w	#1,($FFFFFAC4).w
 		bne.s	MultiReturn
 		moveq	#$3F,d0
@@ -4617,7 +4617,7 @@ loc_67BC:
 ; this section maps the "SEGA" large letters on screen correctly
 ; ---------------------------------------------------------------------------
 
-sub_682C:
+Sega_MapTiles:
 		lea	(vdp_data_port).l,a3		; load VDP address to a3
 		moveq	#$F,d7				; set repeat times
 		disable_ints				; set the stack register (Stopping VBlank)
@@ -4734,7 +4734,7 @@ loc_6934:
 		dbf	d6,loc_6932
 		lea	($FF2A00).l,a1
 		jmp	(SegaToVDP).l
-; End of function sub_682C
+; End of function Sega_MapTiles
 
 ; ---------------------------------------------------------------------------
 
@@ -4744,8 +4744,8 @@ Sega_MainAnimation:
 		addq.w	#4,($FFFFFAC4).w
 		move.w	($FFFFFAC4).w,d0
 
-loc_697A:
-		jmp	loc_697A(pc,d0.w)
+.submodes:
+		jmp	.submodes(pc,d0.w)
 ; ---------------------------------------------------------------------------
 		bra.w	loc_69D2
 ; ---------------------------------------------------------------------------
@@ -5013,10 +5013,10 @@ loc_6BD8:
 
 Sega_AltAnimation:
 		move.w	($FFFFFAC4).w,d0
-		jmp	loc_6C28(pc,d0.w)
+		jmp	.submodes(pc,d0.w)
 ; ---------------------------------------------------------------------------
 
-loc_6C28:
+.submodes:
 		bra.w	loc_6C48
 ; ---------------------------------------------------------------------------
 		bra.w	loc_6CFC
@@ -5326,13 +5326,13 @@ ARTCRA_SegaLogo:binclude	"artcra/Sega Logo.bin"	; compressed Sega patterns
 
 TitleScreen:
 		move.w	(v_subgamemode).w,d0		; load sub mode to d0
-		jmp	TitleScreen_Submodes(pc,d0.w)	; run code depending on index
+		jmp	.submodes(pc,d0.w)	; run code depending on index
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sega Screen Sub Modes
 ; ---------------------------------------------------------------------------
-TitleScreen_Submodes:
+.submodes:
 		bra.w	TitleLoad
 ; ---------------------------------------------------------------------------
 		bra.w	TitleStart
@@ -6081,9 +6081,9 @@ loc_837C:
 		lea	($FFFFCA5E).w,a0
 		move.w	#$DF,d1				; "�"
 
-loc_8392:
+.loop:
 		move.l	d0,(a0)+
-		dbf	d1,loc_8392
+		dbf	d1,.loop
 		lea	loc_856A(pc),a0
 		bsr.w	sub_860A
 		lea	loc_85D6(pc),a0
@@ -7028,10 +7028,10 @@ UnkRet002:
 
 LevelSelect:
 		move.w	(v_subgamemode).w,d0
-		jmp	LevelSelect_Submodes(pc,d0.w)
+		jmp	.submodes(pc,d0.w)
 ; ---------------------------------------------------------------------------
 
-LevelSelect_Submodes:
+.submodes:
 		bra.w	LevelSelect_Init
 ; ---------------------------------------------------------------------------
 		bra.w	LevelSelect_Main
@@ -7287,10 +7287,10 @@ UnkRet003:
 
 OptionSoundTest:
 		move.w	(v_subgamemode).w,d0
-		jmp	OptionSoundTest_SubModes(pc,d0.w)
+		jmp	.submodes(pc,d0.w)
 ; ---------------------------------------------------------------------------
 
-OptionSoundTest_SubModes:
+.submodes:
 		bra.w	OptionSoundTest_Main
 ; ---------------------------------------------------------------------------
 		bra.w	OptionSoundTest_Exit
@@ -14527,13 +14527,13 @@ loc_D216:
 		movea.w	d0,a6
 		moveq	#0,d0
 		move.w	6(a6),d0
-		jsr	loc_D224(pc,d0.w)
+		jsr	Obj_Index(pc,d0.w)
 		bra.s	loc_D20E
 ; End of function sub_D20A
 
 ; ---------------------------------------------------------------------------
 
-loc_D224:
+Obj_Index:
 		bra.w	loc_D2A8
 		bra.w	loc_D394
 		bra.w	loc_D484
@@ -19856,6 +19856,8 @@ ARTUNC_TailsField:
 ; ---------------------------------------------------------------------------
 		cnop -1,2<<lastbit(*)
 		dc.b $FF
+
+EndofROM:
 		END
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
