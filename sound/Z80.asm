@@ -3257,34 +3257,19 @@ DAC_Index:	dw .dac81
 		dw .dac85
 		dw .dac86
 		dw .dac87
-.dac81:		db dpcmLoopCounter(4800)
-		db zmake68kBank(DACBank)
-		dw DAC_Sample1_End-DAC_Sample1
-		dw zmake68kPtr(DAC_Sample1)
-.dac82:		db dpcmLoopCounter(14000)
-		db zmake68kBank(DACBank)
-		dw DAC_Sample2_End-DAC_Sample2
-		dw zmake68kPtr(DAC_Sample2)
-.dac83:		db dpcmLoopCounter(14000)
-		db zmake68kBank(DACBank)
-		dw DAC_Sample3_End-DAC_Sample3
-		dw zmake68kPtr(DAC_Sample3)
-.dac84:		db dpcmLoopCounter(12000)
-		db zmake68kBank(DACBank)
-		dw DAC_Sample3_End-DAC_Sample3
-		dw zmake68kPtr(DAC_Sample3)
-.dac85:		db dpcmLoopCounter(11000)
-		db zmake68kBank(DACBank)
-		dw DAC_Sample3_End-DAC_Sample3
-		dw zmake68kPtr(DAC_Sample3)
-.dac86:		db dpcmLoopCounter(14000)
-		db zmake68kBank(DACBank)
-		dw DAC_Sample4_End-DAC_Sample4
-		dw zmake68kPtr(DAC_Sample4)
-.dac87:		db dpcmLoopCounter(14000)
-		db zmake68kBank(DACBank)
-		dw DAC_Sample5_End-DAC_Sample5
-		dw zmake68kPtr(DAC_Sample5)
+DACMeta:	macro location,rate
+		db dpcmLoopCounter(rate)
+		db zmake68kBank(location)
+		dw location_End-location
+		dw zmake68kPtr(location)
+	endm
+.dac81:		DACMeta DAC_Sample1,4800
+.dac82:		DACMeta DAC_Sample2,14000
+.dac83:		DACMeta DAC_Sample3,14000
+.dac84:		DACMeta DAC_Sample3,12000
+.dac85:		DACMeta DAC_Sample3,11000
+.dac86:		DACMeta DAC_Sample4,14000
+.dac87:		DACMeta DAC_Sample5,14000
 
 		restore
 		padding	off
